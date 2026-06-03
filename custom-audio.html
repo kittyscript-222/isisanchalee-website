@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Custom Hypnosis Audio — Isis Anchalee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0A0807;
+      --gold: #C5A880;
+      --gold-light: #D4BC9A;
+      --cream: #F2EDE6;
+      --muted: rgba(242,237,230,0.45);
+      --border: rgba(197,168,128,0.15);
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans: 'Montserrat', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--cream); font-family: var(--sans); font-weight: 300; min-height: 100vh; overflow-x: hidden; }
+    .progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: var(--gold); z-index: 100; transition: width 0.5s ease; }
+    .quiz-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 5rem 1.5rem; }
+    .slide { display: none; max-width: 680px; width: 100%; animation: fadeUp 0.5s ease forwards; }
+    .slide.active { display: block; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* WELCOME */
+    .welcome-eyebrow { font-size: 0.68rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.8rem; }
+    .welcome-eyebrow::before { content:''; display:block; width:28px; height:0.5px; background:var(--gold); }
+    .welcome-title { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 300; line-height: 1.15; color: var(--cream); margin-bottom: 1.5rem; }
+    .welcome-title em { font-style: italic; color: var(--gold); }
+    .welcome-body { font-size: 1rem; line-height: 1.9; color: var(--muted); margin-bottom: 0.8rem; }
+    .welcome-divider { width: 40px; height: 0.5px; background: rgba(197,168,128,0.3); margin: 1.5rem 0; }
+
+    /* INCLUDES */
+    .includes { display: flex; flex-direction: column; gap: 0.7rem; margin: 1.5rem 0 2.5rem; }
+    .include-item { display: flex; align-items: flex-start; gap: 0.8rem; font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+    .include-item::before { content: '✦'; color: var(--gold); font-size: 0.6rem; margin-top: 0.25rem; flex-shrink: 0; }
+
+    /* QUESTION */
+    .q-num { font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.7rem; }
+    .q-num::before { content:''; display:block; width:20px; height:0.5px; background:var(--gold); }
+    .q-title { font-family: var(--serif); font-size: clamp(1.4rem, 3.5vw, 2rem); font-weight: 300; line-height: 1.25; color: var(--cream); margin-bottom: 0.8rem; }
+    .q-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.8; margin-bottom: 2rem; }
+
+    /* INPUTS */
+    .q-input { width: 100%; background: transparent; border: none; border-bottom: 0.5px solid rgba(197,168,128,0.3); color: var(--cream); font-family: var(--sans); font-size: 1.1rem; font-weight: 300; padding: 0.8rem 0; outline: none; transition: border-color 0.2s; caret-color: var(--gold); }
+    .q-input:focus { border-bottom-color: var(--gold); }
+    .q-input::placeholder { color: rgba(242,237,230,0.2); }
+    .q-textarea { width: 100%; resize: none; min-height: 140px; border: 0.5px solid rgba(197,168,128,0.2); padding: 1rem; line-height: 1.8; background: rgba(197,168,128,0.03); color: var(--cream); font-family: var(--sans); font-size: 1rem; font-weight: 300; outline: none; transition: border-color 0.2s; caret-color: var(--gold); }
+    .q-textarea:focus { border-color: rgba(197,168,128,0.5); }
+    .q-textarea::placeholder { color: rgba(242,237,230,0.2); }
+    .word-count { font-size: 0.72rem; color: rgba(197,168,128,0.4); margin-top: 0.5rem; text-align: right; transition: color 0.2s; }
+    .word-count.met { color: var(--gold); }
+
+    /* BUTTONS */
+    .btn-gold { background: var(--gold); color: var(--bg); border: none; font-family: var(--sans); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; padding: 1.1rem 2.8rem; cursor: pointer; transition: background 0.2s; display: inline-block; }
+    .btn-gold:hover { background: var(--gold-light); }
+    .btn-gold:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-outline { background: transparent; color: var(--gold); border: 0.5px solid rgba(197,168,128,0.35); font-family: var(--sans); font-size: 0.75rem; font-weight: 400; letter-spacing: 0.14em; text-transform: uppercase; padding: 1rem 2.2rem; cursor: pointer; transition: all 0.2s; display: inline-block; text-decoration: none; }
+    .btn-outline:hover { border-color: var(--gold); color: var(--cream); }
+    .btn-row { display: flex; gap: 1rem; align-items: center; margin-top: 2.5rem; flex-wrap: wrap; }
+    .btn-back { background: none; border: none; color: var(--muted); font-family: var(--sans); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: color 0.2s; padding: 0; }
+    .btn-back:hover { color: var(--cream); }
+    .field-error { font-size: 0.78rem; color: #e07070; margin-top: 0.5rem; display: none; }
+
+    /* PRICE TAG */
+    .price-tag { display: inline-flex; align-items: baseline; gap: 0.4rem; margin: 1.5rem 0; }
+    .price-amount { font-family: var(--serif); font-size: 2.8rem; font-weight: 300; color: var(--gold); line-height: 1; }
+    .price-note { font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(197,168,128,0.5); }
+
+    /* ENDING */
+    .ending-symbol { font-family: var(--serif); font-size: 3rem; color: var(--gold); margin-bottom: 2rem; }
+    .ending-title { font-family: var(--serif); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 300; color: var(--cream); margin-bottom: 1.5rem; line-height: 1.2; }
+    .ending-body { font-size: 1rem; color: var(--muted); line-height: 1.9; margin-bottom: 2.5rem; max-width: 520px; }
+
+    .quiz-footer { position: fixed; bottom: 2rem; right: 2rem; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(242,237,230,0.15); }
+
+    @media (max-width: 600px) {
+      .quiz-wrap { padding: 3.5rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+<div class="quiz-wrap">
+
+  <!-- SLIDE 0: WELCOME -->
+  <div class="slide active" id="slide-0">
+    <p class="welcome-eyebrow">Bespoke Creation</p>
+    <h1 class="welcome-title">Your custom<br><em>hypnosis audio</em></h1>
+    <div class="welcome-divider"></div>
+    <p class="welcome-body">A fully personalised 15-minute hypnosis journey with theta binaural beats — built entirely around your specific intention, in your own words.</p>
+    <div class="price-tag">
+      <span class="price-amount">$195</span>
+      <span class="price-note">· One-time · USD</span>
+    </div>
+    <div class="includes">
+      <div class="include-item">Custom 15-minute hypnosis audio created to rewire your mind and shift your identity for your exact goal</div>
+      <div class="include-item">Professional theta binaural beats woven throughout for deep subconscious access</div>
+      <div class="include-item">Delivered to your email within 3 working days</div>
+      <div class="include-item">Best results with daily listening for 21 days minimum</div>
+    </div>
+    <p class="welcome-body" style="font-size: 0.85rem; font-style: italic; color: rgba(242,237,230,0.3);">After payment you'll be guided to a short intake form. The more honestly and specifically you answer, the more powerful your audio will be.</p>
+    <div class="btn-row" style="margin-top: 2rem;">
+      <button class="btn-gold" id="pay-btn" onclick="handlePayment()">Order Now — $195 →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 1: NAME -->
+  <div class="slide" id="slide-1">
+    <p class="q-num">01 / 05</p>
+    <h2 class="q-title">What is your full name?</h2>
+    <input type="text" class="q-input" id="f-name" placeholder="Your full name" autocomplete="off" />
+    <p class="field-error" id="err-name">Please enter your name.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-name', 'err-name')">Continue →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: EMAIL -->
+  <div class="slide" id="slide-2">
+    <p class="q-num">02 / 05</p>
+    <h2 class="q-title">Where shall we deliver your audio?</h2>
+    <p class="q-desc">Your audio will be sent to this email within 3 working days.</p>
+    <input type="email" class="q-input" id="f-email" placeholder="your@email.com" autocomplete="off" />
+    <p class="field-error" id="err-email">Please enter a valid email address.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateEmail()">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: GOAL -->
+  <div class="slide" id="slide-3">
+    <p class="q-num">03 / 05</p>
+    <h2 class="q-title">What is the goal of your hypnosis audio?</h2>
+    <p class="q-desc">The more specific the better. A hypnosis audio works most powerfully when it focuses on one precise thing — not "confidence" in general, but confidence in a specific context, pattern, or area of your life. What is the exact thing you want to shift?</p>
+    <textarea class="q-textarea" id="f-goal" placeholder="Be as specific as possible..." rows="6" ></textarea>
+    <p class="field-error" id="err-goal">Please share your goal to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-goal', 'err-goal')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: FEEL -->
+  <div class="slide" id="slide-4">
+    <p class="q-num">04 / 05</p>
+    <h2 class="q-title">How do you want to feel?</h2>
+    <p class="q-desc">Describe the emotional and energetic state you want to embody. Not just the outcome — the felt sense of living from that place. What does it feel like in your body, your energy, your day-to-day experience?</p>
+    <textarea class="q-textarea" id="f-feel" placeholder="Describe the feeling in detail..." rows="6" oninput="updateWordCount('f-feel', 'wc-feel', 130)"></textarea>
+    <p class="word-count" id="wc-feel">0 / 130 words minimum</p>
+    <p class="field-error" id="err-feel">Please write at least 130 words.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateWords('f-feel', 'err-feel', 130)">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: VISION -->
+  <div class="slide" id="slide-5">
+    <p class="q-num">05 / 05</p>
+    <h2 class="q-title">What does your life look like when you have what you want?</h2>
+    <p class="q-desc">Paint the picture. If this audio fully worked and you embodied the shift completely — what would your daily life actually look like? Be specific and vivid. Describe real scenes, moments, relationships, and ways of being.</p>
+    <textarea class="q-textarea" id="f-vision" placeholder="Describe your life in vivid detail..." rows="7" oninput="updateWordCount('f-vision', 'wc-vision', 130)"></textarea>
+    <p class="word-count" id="wc-vision">0 / 130 words minimum</p>
+    <p class="field-error" id="err-vision">Please write at least 130 words.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="submitForm()">Submit →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: ENDING -->
+  <div class="slide" id="slide-6">
+    <div class="ending-symbol">✦</div>
+    <h2 class="ending-title">Your intake is<br>received.</h2>
+    <p class="ending-body">Thank you — your responses have been submitted. Your custom hypnosis audio will be crafted and delivered to your inbox within 3 working days. Check your spam folder if you don't see it.</p>
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+      <a href="shop.html" class="btn-gold">Return to Shop →</a>
+      <a href="index.html" class="btn-outline">Return to Website</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="quiz-footer">Isis Anchalee · Custom Hypnosis Audio</div>
+
+<script>
+  let current = 0;
+
+  function updateProgress() {
+    document.getElementById('progressBar').style.width = (current / 6) * 100 + '%';
+  }
+
+  function showSlide(n) {
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+    document.getElementById('slide-' + n).classList.add('active');
+    current = n; updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function nextSlide() { showSlide(current + 1); }
+  function prevSlide() { showSlide(current - 1); }
+
+  function validateAndNext(fieldId, errId) {
+    const val = document.getElementById(fieldId).value.trim();
+    if (!val) { document.getElementById(errId).style.display = 'block'; return; }
+    document.getElementById(errId).style.display = 'none';
+    nextSlide();
+  }
+
+  function validateEmail() {
+    const val = document.getElementById('f-email').value.trim();
+    const err = document.getElementById('err-email');
+    if (!val || !val.includes('@') || !val.includes('.')) { err.style.display = 'block'; return; }
+    err.style.display = 'none';
+    nextSlide();
+  }
+
+  function countWords(str) {
+    return str.trim().split(/\s+/).filter(w => w.length > 0).length;
+  }
+
+  function updateWordCount(fieldId, countId, min) {
+    const words = countWords(document.getElementById(fieldId).value);
+    const el = document.getElementById(countId);
+    el.textContent = words + ' / ' + min + ' words minimum';
+    el.classList.toggle('met', words >= min);
+  }
+
+  function validateWords(fieldId, errId, min) {
+    const words = countWords(document.getElementById(fieldId).value);
+    const err = document.getElementById(errId);
+    if (words < min) { err.style.display = 'block'; return; }
+    err.style.display = 'none';
+    nextSlide();
+  }
+
+  async function handlePayment() {
+    const btn = document.getElementById('pay-btn');
+    btn.textContent = 'Redirecting to checkout...';
+    btn.disabled = true;
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ productId: 'custom_audio' })
+      });
+      if (!res.ok) throw new Error();
+      const { url } = await res.json();
+      window.location.href = url;
+    } catch (err) {
+      btn.textContent = 'Order Now — $195 →';
+      btn.disabled = false;
+      alert('Something went wrong. Please try again or email hello@isisanchalee.com');
+    }
+  }
+
+  // Reset button on back navigation
+  window.addEventListener('pageshow', function(e) {
+    if (e.persisted) {
+      const btn = document.getElementById('pay-btn');
+      if (btn) { btn.textContent = 'Order Now — $195 →'; btn.disabled = false; }
+    }
+  });
+
+  // Check if returning from payment (session_id in URL = payment complete, skip to intake)
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('paid') === '1') showSlide(1);
+
+  async function submitForm() {
+    const vision = document.getElementById('f-vision').value.trim();
+    const words = countWords(vision);
+    if (words < 130) { document.getElementById('err-vision').style.display = 'block'; return; }
+    document.getElementById('err-vision').style.display = 'none';
+
+    const btn = document.querySelector('#slide-5 .btn-gold');
+    btn.textContent = 'Submitting...'; btn.disabled = true;
+
+    try {
+      await fetch('/api/custom-audio', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name:   document.getElementById('f-name').value.trim(),
+          email:  document.getElementById('f-email').value.trim(),
+          goal:   document.getElementById('f-goal').value.trim(),
+          feel:   document.getElementById('f-feel').value.trim(),
+          vision,
+        }),
+      });
+    } catch(e) {
+      console.error('Submission error:', e);
+    }
+
+    showSlide(6);
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+      const btn = document.querySelector('#slide-' + current + ' .btn-gold');
+      if (btn && !btn.disabled) btn.click();
+    }
+  });
+
+  updateProgress();
+</script>
+</body>
+</html>

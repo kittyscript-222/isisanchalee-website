@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Downloads — Isis Anchalee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --deep: #0E0B08;
+      --cream: #F5F0E8;
+      --gold: #B8975A;
+      --gold-light: #D4AF71;
+      --muted: rgba(245,240,232,0.55);
+      --border: rgba(184,151,90,0.2);
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans: 'Lato', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--deep);
+      color: var(--cream);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1.5rem;
+    }
+    .container { max-width: 560px; width: 100%; text-align: center; }
+    .symbol { font-size: 2.5rem; color: var(--gold); margin-bottom: 1.5rem; }
+    h1 { font-family: var(--serif); font-size: clamp(1.8rem, 5vw, 2.8rem); font-weight: 300; margin-bottom: 0.75rem; }
+    h1 em { font-style: italic; color: var(--gold-light); }
+    .subtitle { font-size: 1rem; color: var(--muted); line-height: 1.7; margin-bottom: 2rem; }
+    .email-notice {
+      display: flex; align-items: flex-start; gap: 0.8rem;
+      background: rgba(184,151,90,0.06); border: 0.5px solid var(--border);
+      padding: 1rem 1.2rem; margin-bottom: 2rem;
+      font-size: 0.88rem; color: var(--muted); line-height: 1.65; text-align: left;
+    }
+    .email-notice::before { content: '✉'; color: var(--gold); font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+    .loading { display: flex; flex-direction: column; align-items: center; gap: 1rem; color: var(--muted); }
+    .spinner { width: 32px; height: 32px; border: 1.5px solid rgba(184,151,90,0.2); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .files { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2.5rem; }
+    .file-card { border: 0.5px solid var(--border); padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; background: rgba(184,151,90,0.04); }
+    .file-name { font-size: 0.9rem; color: var(--cream); text-align: left; line-height: 1.4; }
+    .btn-download { flex-shrink: 0; background: var(--gold); color: var(--deep); font-family: var(--sans); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; font-weight: 400; padding: 0.6rem 1.2rem; text-decoration: none; white-space: nowrap; transition: background 0.2s; }
+    .btn-download:hover { background: var(--gold-light); }
+    .divider { width: 40px; height: 0.5px; background: rgba(184,151,90,0.3); margin: 2rem auto; }
+    .back-link { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); text-decoration: none; }
+    .back-link:hover { color: var(--gold-light); }
+    .error-msg { color: #e07070; font-size: 0.95rem; line-height: 1.6; }
+    @media (max-width: 480px) {
+      .file-card { flex-direction: column; align-items: flex-start; }
+      .btn-download { width: 100%; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="symbol">✦</div>
+    <h1>Your purchase is <em>confirmed</em></h1>
+    <p class="subtitle">Thank you. Your downloads are ready below — save them to your device and return to them whenever you need.</p>
+
+    <div id="content">
+      <div class="loading">
+        <div class="spinner"></div>
+        <span>Preparing your files...</span>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <a href="shop.html" class="back-link">← Return to shop</a>
+  </div>
+
+  <script>
+    async function loadDownloads() {
+      const params = new URLSearchParams(window.location.search);
+      const sessionId = params.get("session_id");
+      const content = document.getElementById("content");
+
+      if (!sessionId) {
+        content.innerHTML = `<p class="error-msg">No session found. If you completed a purchase, please check your email or contact us at <a href="mailto:hello@isisanchalee.com" style="color:var(--gold)">hello@isisanchalee.com</a></p>`;
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/downloads?session_id=${sessionId}`);
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Something went wrong");
+
+        const filesHtml = data.files.map(f => `
+          <div class="file-card">
+            <span class="file-name">${f.name}</span>
+            <a class="btn-download" href="${f.url}" download target="_blank">Download</a>
+          </div>
+        `).join("");
+
+        content.innerHTML = `
+          <div class="email-notice">
+            A copy of your downloads has been sent to your email address. Check your spam folder if you don't see it within a few minutes.
+          </div>
+          <div class="files">${filesHtml}</div>
+        `;
+      } catch (err) {
+        content.innerHTML = `
+          <p class="error-msg">
+            Something went wrong retrieving your files. Please email
+            <a href="mailto:hello@isisanchalee.com" style="color:var(--gold)">hello@isisanchalee.com</a>
+            with your order confirmation and we'll send them to you directly.
+          </p>
+        `;
+        console.error(err);
+      }
+    }
+
+    loadDownloads();
+  </script>
+</body>
+</html>

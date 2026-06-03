@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1:1 Mentorship — Isis Anchalee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --cream: #F5F0E8;
+    --warm-white: #FAF8F4;
+    --gold: #B8975A;
+    --gold-light: #D4B078;
+    --gold-pale: #EDE0C4;
+    --deep: #1C1814;
+    --muted: #6B5E4E;
+    --sage: #8A9E8C;
+    --border: rgba(184,151,90,0.2);
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'Lato', sans-serif;
+  }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); background: var(--warm-white); color: var(--deep); font-weight: 300; overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem 4rem;
+    background: rgba(250,248,244,0.94);
+    backdrop-filter: blur(12px);
+    border-bottom: 0.5px solid var(--border);
+  }
+  .nav-logo { font-family: var(--serif); font-size: 1.3rem; font-weight: 400; color: var(--deep); text-decoration: none; letter-spacing: 0.04em; }
+  .nav-logo span { color: var(--gold); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-size: 1rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+  .nav-book { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); text-decoration: none; border: 0.5px solid var(--gold); padding: 0.6rem 1.4rem; transition: all 0.3s; }
+  .nav-book:hover { background: var(--gold); color: var(--warm-white); }
+
+  /* HERO — full dark immersive */
+  .page-hero {
+    min-height: calc(100vh - 72px);
+    background: linear-gradient(to right, rgba(14,10,6,0.85) 35%, rgba(14,10,6,0.3) 100%), linear-gradient(to bottom, rgba(14,10,6,0.5) 0%, rgba(14,10,6,0.2) 50%, rgba(14,10,6,0.6) 100%), url('isis-mentorship.jpg') 65% 20% / cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
+    padding: 7rem 6rem 7rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-mandala {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    border: 0.5px solid rgba(184,151,90,0.06);
+    pointer-events: none;
+  }
+  .hero-mandala::before {
+    content: ''; position: absolute; inset: 40px;
+    border-radius: 50%; border: 0.5px solid rgba(184,151,90,0.08);
+  }
+  .hero-mandala::after {
+    content: ''; position: absolute; inset: 80px;
+    border-radius: 50%; border: 0.5px solid rgba(184,151,90,0.1);
+  }
+  .hero-glow {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px; height: 500px;
+    background: radial-gradient(ellipse, rgba(184,151,90,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .eyebrow { font-size: 1.05rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 2rem; display: flex; align-items: center; justify-content: flex-start; gap: 0.8rem; }
+  .eyebrow::before, .eyebrow::after { content: ''; width: 32px; height: 0.5px; background: var(--gold); display: block; }
+  .hero-title { font-family: var(--serif); font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 300; line-height: 1.1; color: var(--cream); margin-bottom: 2rem; position: relative; z-index: 2; }
+  .hero-title em { font-style: italic; color: var(--gold); }
+  .hero-sub { font-size: 1.05rem; line-height: 2; color: var(--cream); max-width: 520px; margin: 0 0 3.5rem; font-weight: 300; position: relative; z-index: 2; }
+  .hero-actions { display: flex; gap: 0.6rem; justify-content: flex-start; position: relative; z-index: 2; flex-wrap: wrap; }
+  .btn-gold { display: inline-block; font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; background: var(--gold); color: var(--warm-white); padding: 1rem 2.4rem; transition: all 0.3s; }
+  .btn-gold:hover { background: var(--gold-light); }
+  .btn-outline { display: inline-block; font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; border: 0.5px solid var(--gold); color: var(--cream); padding: 1rem 2.4rem; transition: all 0.3s; }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+  .btn-outline-dark { display: inline-block; font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; border: 0.5px solid var(--gold); color: var(--gold); padding: 1rem 2.4rem; transition: all 0.3s; }
+  .btn-outline-dark:hover { background: var(--gold); color: var(--warm-white); }
+
+  /* MANIFESTO SECTION */
+  .manifesto {
+    padding: 8rem 6rem;
+    background: var(--cream);
+    position: relative;
+    overflow: hidden;
+  }
+  .manifesto::after {
+    content: '"';
+    position: absolute; right: 4rem; top: 3rem;
+    font-family: var(--serif); font-size: 24rem; font-weight: 300;
+    color: rgba(184,151,90,0.07); line-height: 1;
+    pointer-events: none;
+  }
+  .manifesto-inner { max-width: 900px; }
+  .manifesto-quote {
+    font-family: var(--serif);
+    font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.6;
+    color: var(--deep);
+    margin-bottom: 2.5rem;
+    position: relative;
+    z-index: 2;
+  }
+  .manifesto-quote em { color: var(--gold); font-style: normal; }
+  .manifesto-sub { font-size: 1.05rem; line-height: 2; color: var(--muted); font-weight: 300; max-width: 680px; }
+
+  /* THE SCIENCE */
+  .section { padding: 8rem 6rem; }
+  .section-alt { background: var(--warm-white); }
+  .section-dark { background: var(--deep); }
+  .section-cream { background: var(--cream); }
+
+  .section-eyebrow { font-size: 1.05rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.8rem; }
+  .section-eyebrow::before { content: ''; width: 28px; height: 0.5px; background: var(--gold); display: block; }
+  .section-title { font-family: var(--serif); font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 300; line-height: 1.15; color: var(--deep); margin-bottom: 1.8rem; }
+  .section-title em { font-style: italic; color: var(--gold); }
+  .section-title-light { color: var(--cream); }
+  .body-text { font-size: 1.05rem; line-height: 2; color: var(--muted); font-weight: 300; margin-bottom: 1.2rem; }
+  .body-text-light { color: rgba(245,240,232,0.5); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; }
+
+  /* PILLARS */
+  .pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5px; background: var(--border); margin-top: 3rem; }
+  .pillar { background: var(--warm-white); padding: 3rem; transition: background 0.3s; }
+  .pillar:hover { background: var(--cream); }
+  .pillar-num { font-family: var(--serif); font-size: 3rem; font-weight: 300; font-style: italic; color: var(--gold-pale); line-height: 1; margin-bottom: 1rem; }
+  .pillar-title { font-family: var(--serif); font-size: 1.2rem; font-weight: 400; color: var(--deep); margin-bottom: 0.7rem; }
+  .pillar-desc { font-size: 1rem; line-height: 1.9; color: var(--muted); font-weight: 300; }
+
+  /* FOR WHO */
+  .who-grid { display: flex; flex-direction: column; gap: 0; margin-top: 3rem; }
+  .who-item { display: flex; gap: 2rem; padding: 2rem 0; border-bottom: 0.5px solid var(--border); align-items: flex-start; }
+  .who-check { width: 28px; height: 28px; border: 0.5px solid var(--gold); flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 0.15rem; }
+  .who-check::after { content: '✓'; font-size: 1rem; color: var(--gold); }
+  .who-text h4 { font-family: var(--serif); font-size: 1.05rem; color: var(--deep); margin-bottom: 0.3rem; font-weight: 400; }
+  .who-text p { font-size: 1rem; line-height: 1.8; color: var(--muted); font-weight: 300; }
+
+  /* WHAT'S INCLUDED */
+  .includes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(184,151,90,0.12); margin-top: 3rem; }
+  .include-item { background: var(--deep); padding: 2.5rem 2rem; }
+  .include-icon { font-family: var(--serif); font-size: 1.8rem; font-style: italic; color: var(--gold); margin-bottom: 1rem; line-height: 1; }
+  .include-title { font-family: var(--serif); font-size: 1rem; color: var(--cream); margin-bottom: 0.5rem; font-weight: 400; }
+  .include-desc { font-size: 1.05rem; line-height: 1.75; color: rgba(245,240,232,0.4); font-weight: 300; }
+
+  /* PRICING */
+  .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5px; background: var(--border); margin-top: 3rem; }
+  .price-card { background: var(--warm-white); padding: 3.5rem 3rem; }
+  .price-card-featured { background: var(--deep); }
+  .price-label { font-size: 1.05rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; }
+  .price-name { font-family: var(--serif); font-size: 1.5rem; font-weight: 300; color: var(--deep); margin-bottom: 0.5rem; }
+  .price-name-light { color: var(--cream); }
+  .price-duration { font-size: 1rem; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 2rem; text-transform: uppercase; }
+  .price-duration-light { color: rgba(245,240,232,0.35); }
+  .price-amount { font-family: var(--serif); font-size: 3rem; font-weight: 300; color: var(--deep); line-height: 1; margin-bottom: 0.3rem; }
+  .price-amount-light { color: var(--gold-light); }
+  .price-note { font-size: 1.05rem; color: var(--muted); letter-spacing: 0.06em; margin-bottom: 2.5rem; }
+  .price-note-light { color: rgba(245,240,232,0.3); }
+  .price-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 3rem; }
+  .price-list li { font-size: 1rem; color: var(--muted); display: flex; gap: 0.75rem; align-items: flex-start; line-height: 1.5; font-weight: 300; }
+  .price-list li::before { content: '—'; color: var(--gold); flex-shrink: 0; }
+  .price-list-light li { color: rgba(245,240,232,0.5); }
+  .price-divider { height: 0.5px; background: var(--border); margin: 2rem 0; }
+
+  /* TESTIMONIAL PULL */
+  .testimonial-pull {
+    background: var(--cream);
+    padding: 7rem 6rem;
+    text-align: center;
+  }
+  .pull-quote {
+    font-family: var(--serif);
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    font-style: italic;
+    font-weight: 300;
+    color: var(--deep);
+    max-width: 780px;
+    margin: 0 auto 2rem;
+    line-height: 1.6;
+  }
+  .pull-author { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .pull-author span { color: var(--gold); }
+
+  /* CTA */
+  .cta-strip { background: var(--deep); padding: 7rem 6rem; text-align: center; position: relative; overflow: hidden; }
+  .cta-strip::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 50%, rgba(184,151,90,0.07) 0%, transparent 65%); }
+  .cta-inner { position: relative; z-index: 2; }
+  .cta-strip h2 { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 300; color: var(--cream); margin-bottom: 1rem; line-height: 1.15; }
+  .cta-strip h2 em { font-style: italic; color: var(--gold); }
+  .cta-strip p { font-size: 1.05rem; color: rgba(245,240,232,0.4); margin-bottom: 3rem; max-width: 480px; margin-left: auto; margin-right: auto; line-height: 1.9; font-weight: 300; }
+  .cta-actions { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; }
+
+  footer { background: var(--deep); border-top: 0.5px solid rgba(184,151,90,0.1); padding: 2.5rem 6rem; display: flex; justify-content: space-between; align-items: center; }
+  .footer-logo { font-family: var(--serif); font-size: 1.1rem; color: var(--cream); text-decoration: none; }
+  .footer-logo span { color: var(--gold); }
+  .footer-links { display: flex; gap: 2rem; list-style: none; }
+  .footer-links a { font-size: 1.05rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(245,240,232,0.3); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--gold); }
+  .footer-copy { font-size: 1.05rem; color: rgba(245,240,232,0.2); }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+  .fade-up { opacity:0; animation: fadeUp 0.8s ease forwards; }
+  .d1 { animation-delay:0.15s; } .d2 { animation-delay:0.3s; } .d3 { animation-delay:0.45s; }
+
+  /* ===== MOBILE-FIRST RESPONSIVE ===== */
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    cursor: pointer; background: none; border: none; padding: 4px; z-index: 1001;
+  }
+  .hamburger span { display: block; width: 24px; height: 1.5px; background: var(--deep); transition: all 0.3s; }
+  .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+
+  .mobile-menu-close {
+    position: fixed;
+    top: 1.4rem; right: 1.5rem;
+    z-index: 10000;
+    display: none;
+    background: none; border: none;
+    cursor: pointer;
+    font-size: 1.4rem;
+    color: rgba(28,24,17,0.4);
+    line-height: 1;
+    transition: color 0.2s;
+    padding: 4px;
+  }
+  .mobile-menu-close:hover { color: var(--deep); }
+  @media (max-width: 900px) {
+    /* NAV */
+    nav { padding: 1.1rem 1.4rem; }
+        .nav-links {
+      display: flex;
+      position: fixed;
+      top: 0 !important; left: 0 !important;
+      width: 100vw !important; height: 100vh !important;
+      background-color: #FAF8F4 !important;
+      flex-direction: column;
+      align-items: stretch;
+      justify-content: center;
+      gap: 0;
+      z-index: 9999 !important;
+      list-style: none;
+      padding: 5rem 0 4rem;
+      margin: 0;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(100%);
+      transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .nav-links.open {
+      opacity: 1 !important;
+      pointer-events: all !important;
+      transform: translateX(0) !important;
+    }
+    .nav-links li {
+      width: 100%;
+      border-bottom: 0.5px solid rgba(184,151,90,0.15);
+    }
+    .nav-links li:first-child { border-top: 0.5px solid rgba(184,151,90,0.15); }
+    .nav-links a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2.4rem 1.8rem;
+      font-size: 0.72rem !important;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #1C1811 !important;
+      text-decoration: none;
+      font-family: var(--sans);
+      font-weight: 400;
+      transition: background 0.15s, color 0.15s;
+    }
+    .nav-links a::after {
+      content: '→';
+      font-size: 0.8rem;
+      color: rgba(184,151,90,0.4);
+      transition: color 0.15s, transform 0.2s;
+    }
+    .nav-links a:hover {
+      background: rgba(184,151,90,0.04);
+      color: #B8975A !important;
+    }
+    .nav-links a:hover::after { color: #B8975A; transform: translateX(3px); }
+    .nav-links a.active { color: #B8975A !important; }
+    .nav-links a.active::after { color: #B8975A; }
+    .mobile-menu-tagline-wrap {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 0; right: 0;
+      text-align: center;
+    }
+    .mobile-menu-tagline {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(28,24,17,0.25);
+    }
+    .nav-links a.active { color: #B8975A !important; }
+    .nav-cta, .nav-book, .cart-btn { display: none !important; }
+    .hamburger { display: flex; }
+
+    /* HERO */
+    #hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-left { padding: 7rem 1.8rem 3rem; }
+    .hero-right { min-height: 50vw; }
+    .hero-stat-bar { position: relative; grid-template-columns: 1fr 1fr 1fr; }
+    .hero-stat { padding: 1rem; }
+    .hero-stat-num { font-size: 1.4rem; }
+    .hero-stat-label { font-size: 1.05rem; }
+
+    /* ABOUT */
+    #about { grid-template-columns: 1fr; }
+    .about-image-col { min-height: 50vw; }
+    .about-image-quote blockquote { font-size: 1.1rem; }
+    .about-content { padding: 3rem 1.8rem; }
+
+    /* OFFERINGS */
+    #offerings { padding: 4rem 1.8rem; }
+    .offerings-header { flex-direction: column; align-items: flex-start; gap: 1rem; margin-bottom: 3rem; }
+    .offerings-tagline { text-align: left; max-width: 100%; }
+    .offerings-grid { grid-template-columns: 1fr; }
+    .offering-card { border-right: none; border-bottom: 0.5px solid rgba(184,151,90,0.15); padding: 2.5rem 1.8rem; }
+    .offering-card:last-child { border-bottom: none; }
+
+    /* PROCESS */
+    #process { padding: 4rem 1.8rem; }
+    .process-steps { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+    .process-steps::before { display: none; }
+    .process-header { margin-bottom: 3rem; }
+
+    /* TESTIMONIALS */
+    #testimonials { padding: 4rem 1.8rem; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .testimonial-card { padding: 2.4rem 1.8rem; }
+    .testimonials-header { margin-bottom: 3rem; }
+
+    /* SHOP */
+    #shop { padding: 4rem 1.8rem; }
+    .shop-header { flex-direction: column; align-items: flex-start; gap: 1rem; margin-bottom: 2.5rem; }
+    .shop-grid { grid-template-columns: 1fr 1fr; }
+
+    /* NEWSLETTER */
+    #newsletter { grid-template-columns: 1fr; padding: 4rem 1.8rem; gap: 3rem; }
+    .form-row { flex-direction: column; }
+
+    /* FOOTER */
+    footer { flex-direction: column; gap: 1.2rem; padding: 2.5rem 1.8rem; text-align: center; align-items: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; gap: 0.6rem; }
+
+    /* CART */
+    .cart-sidebar { width: 100%; right: -100%; }
+
+    /* PAGE HEROES (inner pages) */
+    .page-hero { grid-template-columns: 1fr; padding: 6rem 1.8rem 4rem; min-height: auto; }
+    .page-hero-left { padding: 6rem 1.8rem 4rem; }
+    .page-hero-left::before { font-size: 8rem; }
+    .page-hero-right { min-height: 200px; }
+    .page-hero { min-height: auto; }
+
+    /* TWO COL */
+    .two-col, .two-col-wide { grid-template-columns: 1fr; gap: 3rem; }
+    .retreat-intro { grid-template-columns: 1fr; }
+    .retreat-intro-left, .retreat-intro-right { padding: 3rem 1.8rem; }
+
+    /* GRIDS */
+    .offerings-grid, .clears-grid, .includes-grid, .included-grid,
+    .pillars, .programme-grid, .who-grid-cols { grid-template-columns: 1fr; }
+    .three-col { grid-template-columns: 1fr; }
+    .pricing-cards, .investment-cards, .pricing-grid { grid-template-columns: 1fr; }
+    .hero-stats { grid-template-columns: 1fr 1fr; }
+
+    /* SECTION PADDING */
+    .section { padding: 4rem 1.8rem; }
+    #process, #testimonials, #offerings, #shop, #about, #newsletter { }
+    .cta-strip { padding: 4rem 1.8rem; }
+    .shiva-feature { padding: 4rem 1.8rem; }
+    .manifesto { padding: 4rem 1.8rem; }
+    .testimonial-pull { padding: 4rem 1.8rem; }
+    .urgency-bar { padding: 1rem 1.4rem; flex-direction: column; align-items: flex-start; }
+    .hero { padding: 0 1.8rem 4rem; }
+
+    /* PROCESS STEPS on mobile */
+    .process-step { padding: 0 0.5rem; }
+
+    /* FAQ */
+    .faq-q { font-size: 1.05rem; }
+
+    /* SHOP single col on very small */
+  }
+
+  @media (max-width: 480px) {
+    .shop-grid { grid-template-columns: 1fr; }
+    .process-steps { grid-template-columns: 1fr; gap: 2rem; }
+    .hero-stat-bar { grid-template-columns: 1fr; }
+    .hero-stat { border-right: none; border-bottom: 0.5px solid rgba(255,255,255,0.1); }
+    .hero-stat:last-child { border-bottom: none; }
+    .hero-title, .hero-title-sub { }
+    .inv-card, .price-card { padding: 2rem 1.5rem; }
+    .pricing-cards, .investment-cards, .pricing-grid { max-width: 100% !important; }
+    .hero-actions, .cta-actions { flex-direction: column; }
+    .btn-gold, .btn-primary, .btn-outline, .btn-outline-dark, .btn-ghost { text-align: center; }
+    .shiva-feature::before { font-size: 16rem; }
+    .programme-grid { grid-template-columns: 1fr; }
+    .prog-item[data-num="IX"] { grid-column: auto; }
+    .hero-mandala { width: 300px; height: 300px; }
+    .hero-mandala::before { inset: 30px; }
+    .hero-mandala::after { inset: 60px; }
+  }
+
+
+
+
+
+  /* ===== CONVERSION OPTIMIZATIONS ===== */
+  .sticky-cta {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 90;
+    background: var(--deep);
+    border-top: 0.5px solid rgba(184,151,90,0.2);
+    padding: 0.9rem 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+    gap: 1rem;
+  }
+  .sticky-cta.visible { transform: translateY(0); }
+  .sticky-cta-left { display: flex; flex-direction: column; gap: 0.15rem; }
+  .sticky-cta-label { font-size: 1.05rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(245,240,232,0.35); }
+  .sticky-cta-text { font-family: var(--serif); font-size: 1.05rem; color: var(--cream); font-style: italic; }
+  .sticky-cta-actions { display: flex; gap: 0.8rem; align-items: center; flex-shrink: 0; }
+  .sticky-btn-gold { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; background: var(--gold); color: var(--deep); padding: 0.7rem 1.6rem; transition: all 0.2s; white-space: nowrap; font-weight: 400; }
+  .sticky-btn-gold:hover { background: var(--gold-light); }
+  .sticky-btn-ghost { font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; color: rgba(245,240,232,0.4); transition: color 0.2s; white-space: nowrap; }
+  .sticky-btn-ghost:hover { color: var(--gold); }
+  .sticky-cta-close { background: none; border: none; color: rgba(245,240,232,0.25); cursor: pointer; font-size: 1rem; padding: 0 0.2rem; flex-shrink: 0; }
+  .email-capture-overlay { display: none; position: fixed; inset: 0; z-index: 300; background: rgba(14,11,8,0.7); backdrop-filter: blur(6px); align-items: center; justify-content: center; padding: 1.5rem; }
+  .email-capture-overlay.open { display: flex; }
+  .email-capture-modal { background: var(--warm-white); max-width: 540px; width: 100%; padding: 3.5rem; position: relative; }
+  .ecm-close { position: absolute; top: 1.2rem; right: 1.5rem; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--muted); }
+  .ecm-eyebrow { font-size: 1.05rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem; }
+  .ecm-eyebrow::before { content: ''; width: 18px; height: 0.5px; background: var(--gold); display: block; }
+  .ecm-title { font-family: var(--serif); font-size: clamp(1.5rem, 3vw, 2rem); font-weight: 400; line-height: 1.15; color: var(--deep); margin-bottom: 0.8rem; }
+  .ecm-title em { font-style: italic; color: var(--gold); }
+  .ecm-desc { font-size: 1rem; line-height: 1.9; color: var(--muted); font-weight: 300; margin-bottom: 1.8rem; }
+  .ecm-input { background: var(--cream); border: 0.5px solid var(--border); padding: 0.85rem 1rem; font-family: var(--sans); font-size: 1rem; font-weight: 300; outline: none; color: var(--deep); transition: border-color 0.2s; width: 100%; }
+  .ecm-input:focus { border-color: var(--gold); }
+  .ecm-submit { background: var(--gold); border: none; color: var(--warm-white); font-family: var(--sans); font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 1rem; cursor: pointer; transition: background 0.3s; font-weight: 300; width: 100%; }
+  .ecm-submit:hover { background: var(--deep); }
+  .ecm-perk { font-size: 1rem; color: var(--muted); display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem; }
+  .ecm-perk::before { content: '✓'; color: var(--gold); font-size: 1.05rem; }
+  .ecm-skip { font-size: 1.05rem; color: var(--muted); text-align: center; margin-top: 1.2rem; cursor: pointer; text-decoration: underline; display: block; }
+  .sliding-scale-note { background: rgba(184,151,90,0.05); border: 0.5px solid var(--border); padding: 1rem 1.4rem; margin-top: 1rem; font-size: 1.05rem; line-height: 1.7; color: var(--muted); }
+  .sliding-scale-note strong { color: var(--deep); font-weight: 400; }
+  .start-here { background: var(--deep); padding: 6rem; }
+  .start-here-title { font-family: var(--serif); font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 400; color: var(--cream); margin-bottom: 0.8rem; line-height: 1.15; text-align: center; }
+  .start-here-title em { font-style: italic; color: var(--gold); }
+  .start-here-sub { font-size: 1.05rem; color: rgba(245,240,232,0.4); margin-bottom: 3rem; font-weight: 300; text-align: center; }
+  .start-paths { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(184,151,90,0.12); max-width: 900px; margin: 0 auto; }
+  .start-path { background: var(--deep); padding: 2.5rem 2rem; text-align: left; transition: background 0.3s; cursor: pointer; text-decoration: none; display: block; }
+  .start-path:hover { background: #241E18; }
+  .start-path-tag { font-size: 1.05rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem; display: block; }
+  .start-path-title { font-family: var(--serif); font-size: 1.1rem; font-weight: 400; color: var(--cream); margin-bottom: 0.5rem; line-height: 1.3; }
+  .start-path-desc { font-size: 1.05rem; line-height: 1.7; color: rgba(245,240,232,0.4); font-weight: 300; margin-bottom: 1.2rem; }
+  .start-path-link { font-size: 1.05rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 0.4rem; }
+  .start-path-link::after { content: '→'; }
+  .inner-testimonials { padding: 5rem 6rem; background: var(--cream); }
+  .inner-testi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5px; background: var(--border); }
+  .inner-testi { background: var(--cream); padding: 2.5rem; }
+  .inner-testi-stars { display: flex; gap: 3px; margin-bottom: 1rem; }
+  .istar { width: 9px; height: 9px; background: var(--gold); clip-path: polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%); display: inline-block; }
+  .inner-testi-text { font-family: var(--serif); font-size: 1rem; font-style: italic; font-weight: 400; color: var(--deep); line-height: 1.7; margin-bottom: 1.5rem; }
+  .inner-testi-author { font-size: 1rem; letter-spacing: 0.08em; color: var(--muted); }
+  .inner-testi-author span { color: var(--gold); }
+  .intake-notice { background: rgba(184,151,90,0.07); border: 0.5px solid rgba(184,151,90,0.2); padding: 1rem 1.5rem; display: flex; align-items: center; gap: 0.8rem; margin-top: 1.5rem; }
+  .intake-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gold); flex-shrink: 0; animation: pulse-dot 2s ease-in-out infinite; }
+  @keyframes pulse-dot { 0%,100%{opacity:1}50%{opacity:0.3} }
+  .intake-text { font-size: 1rem; color: var(--muted); line-height: 1.5; }
+  .intake-text strong { color: var(--deep); font-weight: 400; }
+  @media(max-width:900px){
+    .sticky-cta{padding:0.8rem 1.4rem;}
+    .sticky-cta-text{display:none;}
+    .start-here{padding:4rem 1.8rem;}
+    .start-paths{grid-template-columns:1fr;}
+    .inner-testimonials{padding:3.5rem 1.8rem;}
+    .inner-testi-grid{grid-template-columns:1fr;}
+    .email-capture-modal{padding:2.5rem 1.8rem;}
+  }
+
+
+  /* WAITLIST MODAL */
+  .waitlist-overlay { display: none; position: fixed; inset: 0; z-index: 300; background: rgba(14,11,8,0.75); backdrop-filter: blur(6px); align-items: center; justify-content: center; padding: 1.5rem; }
+  .waitlist-overlay.open { display: flex; }
+  .waitlist-modal { background: var(--warm-white); max-width: 500px; width: 100%; padding: 3rem; position: relative; }
+  .wm-close { position: absolute; top: 1.2rem; right: 1.5rem; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--muted); }
+  .wm-eyebrow { font-size: 1.05rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.6rem; }
+  .wm-eyebrow::before { content: ''; width: 18px; height: 0.5px; background: var(--gold); display: block; }
+  .wm-title { font-family: var(--serif); font-size: 1.6rem; font-weight: 400; color: var(--deep); margin-bottom: 0.6rem; line-height: 1.2; }
+  .wm-title em { font-style: italic; color: var(--gold); }
+  .wm-desc { font-size: 1rem; line-height: 1.85; color: var(--muted); font-weight: 300; margin-bottom: 1.8rem; }
+  .wm-input { background: var(--cream); border: 0.5px solid var(--border); padding: 0.85rem 1rem; font-family: var(--sans); font-size: 1rem; font-weight: 300; outline: none; color: var(--deep); transition: border-color 0.2s; width: 100%; margin-bottom: 0.8rem; }
+  .wm-input:focus { border-color: var(--gold); }
+  .wm-submit { background: var(--gold); border: none; color: var(--warm-white); font-family: var(--sans); font-size: 1rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 1rem; cursor: pointer; transition: background 0.3s; font-weight: 300; width: 100%; }
+  .wm-submit:hover { background: var(--deep); }
+  .wm-note { font-size: 1.05rem; color: var(--muted); text-align: center; margin-top: 0.8rem; }
+  .dual-cta { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+
+
+  /* DHARMIC DEFINITION BOX */
+  .dharmic-box {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    border: 0.5px solid rgba(184,151,90,0.3);
+    background: rgba(14,11,8,0.5);
+    backdrop-filter: blur(8px);
+    padding: 0.5rem 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
+  }
+  .dharmic-word { font-family: var(--serif); font-size: 1.05rem; font-style: italic; color: var(--gold-light); }
+  .dharmic-pronunciation { font-size: 1.05rem; color: rgba(245,240,232,0.6); font-family: var(--sans); }
+  .dharmic-sep { width: 1px; height: 10px; background: rgba(184,151,90,0.3); align-self: center; flex-shrink: 0; }
+  .dharmic-def { font-size: 1rem; color: rgba(245,240,232,0.5); font-weight: 300; line-height: 1.6; }
+  .dharmic-def em { color: var(--gold); font-style: italic; }
+
+
+
+
+
+    .mobile-menu-logo {
+      position: fixed; top: 1.4rem; left: 1.8rem;
+      z-index: 10000; display: none;
+      font-family: var(--serif); font-size: 1.1rem; color: var(--deep);
+      text-decoration: none; letter-spacing: 0.04em;
+    }
+    .mobile-menu-logo span { color: var(--gold); }
+    .mobile-menu-footer {
+      position: absolute; bottom: 2.5rem; left: 0; right: 0;
+      display: flex; flex-direction: column; align-items: center; gap: 0.8rem;
+    }
+    .mobile-menu-tagline {
+      font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(28,24,20,0.3);
+    }
+  
+    .mobile-menu-close {
+      position: fixed;
+      top: 1.4rem; right: 1.5rem;
+      z-index: 10000;
+      display: none;
+      background: none; border: none;
+      cursor: pointer;
+      font-size: 1.4rem;
+      color: rgba(28,24,17,0.4);
+      line-height: 1;
+      transition: color 0.2s;
+      padding: 4px;
+    }
+    .mobile-menu-close:hover { color: var(--deep); }
+  
+  /* ── GLOBAL MOBILE FIXES ─────────────────────────────────────────── */
+  @media (max-width: 768px) {
+
+    /* SECTION PADDING */
+    .section, .section-alt { padding: 3rem 1.5rem !important; }
+    .section[style*="padding"], [class*="section"][style*="padding"] {
+      padding-left: 1.5rem !important;
+      padding-right: 1.5rem !important;
+    }
+
+    /* TWO-COLUMN GRIDS → SINGLE COLUMN */
+    [style*="grid-template-columns: 1fr 1px 1fr"],
+    [style*="grid-template-columns: 1fr 1fr"] {
+      display: flex !important;
+      flex-direction: column !important;
+    }
+
+    /* INVESTMENT CARDS */
+    .investment-cards, .inv-cards, [style*="inv-card"] {
+      grid-template-columns: 1fr !important;
+    }
+    .inv-card { padding: 2rem 1.5rem !important; }
+
+    /* PRICE PILL */
+    [style*="inline-flex"][style*="border: 0.5px solid rgba(184,151,90"] {
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    /* TIER BUTTONS */
+    .tier-btns, [style*="grid-template-columns: 1fr 1fr 1fr"] {
+      grid-template-columns: 1fr !important;
+    }
+
+    /* CUSTOM AUDIO CARD DARK SIDE */
+    [style*="background: #0f0d0a"][style*="padding: 3.5rem"],
+    [style*="background: var(--deep)"][style*="padding: 3.5rem"] {
+      padding: 2rem 1.5rem !important;
+    }
+
+    /* SEVA CARD */
+    [style*="max-width: 960px"][style*="background: #FEFAF7"] {
+      padding: 2rem 1.5rem !important;
+    }
+
+    /* CTA STRIP */
+    .cta-strip { padding: 3.5rem 1.5rem !important; }
+    .cta-strip h2 { font-size: clamp(1.6rem, 6vw, 2.5rem) !important; }
+    .cta-actions { flex-direction: column; gap: 1rem; align-items: stretch; }
+    .cta-actions a, .cta-actions button { text-align: center !important; }
+
+    /* TESTIMONIALS CAROUSEL */
+    #tCarousel [style*="padding: 4rem 0"] { padding: 2.5rem 0 !important; }
+
+    /* SECTION TITLES */
+    .section-title { font-size: clamp(1.6rem, 5vw, 2.5rem) !important; }
+
+    /* BUTTONS FULL WIDTH ON MOBILE */
+    .btn-gold, .btn-outline { width: 100%; text-align: center; display: block; }
+
+    /* SLIDING SCALE NOTE */
+    .sliding-scale-note, [style*="max-width: 960px"][style*="margin-top"] {
+      max-width: 100% !important;
+    }
+
+    /* FOOTER */
+    footer { flex-direction: column !important; gap: 1.5rem !important; padding: 2rem 1.5rem !important; text-align: center !important; align-items: center !important; }
+    .footer-links { flex-wrap: wrap !important; justify-content: center !important; }
+
+    /* HERO SECTIONS */
+    [style*="clamp(2rem, 5.5vw"] { font-size: clamp(1.8rem, 7vw, 3rem) !important; }
+
+    /* START HERE PATHS */
+    .start-paths { grid-template-columns: 1fr !important; }
+    .start-here { padding: 3rem 1.5rem !important; }
+  }
+
+  
+  /* ── GLOBAL 480px TIGHTENING ── */
+  @media (max-width: 480px) {
+    /* Side padding: drop from 1.8rem to 1rem on small phones */
+    .section,
+    #offerings, #process, #testimonials, #shop, #newsletter,
+    .cta-strip, .manifesto, .shiva-feature, .testimonial-pull,
+    .about-content, .hero-left, .page-hero-left,
+    .retreat-intro-left, .retreat-intro-right,
+    .free-audio-content, .mission-section, .about-intro,
+    .opening, .bio-section, .philosophy, .facts,
+    .inner-testimonials, .start-here, .logos-section,
+    .shop-section, .yogic-dict-section, .facilitators-section,
+    .for-you-section, .pricing-section, .testimonial-strip,
+    .speaking-photo-text,
+    footer { padding-left: 1rem !important; padding-right: 1rem !important; }
+
+    /* Hero padding */
+    .hero-left, .page-hero-left { padding: 6rem 1rem 2.5rem !important; }
+
+    /* email capture modal */
+    .email-capture-modal { padding: 2rem 1rem !important; }
+
+    /* sticky CTA text hidden */
+    .sticky-cta { padding: 0.7rem 1rem; }
+    .sticky-cta-text { display: none; }
+
+    /* inner testimonials grid */
+    .inner-testi-grid { grid-template-columns: 1fr !important; }
+    .inner-testi { padding: 2rem 0 !important; }
+
+    /* start paths */
+    .start-paths { grid-template-columns: 1fr !important; }
+    .start-here { padding: 3.5rem 1rem !important; }
+
+    /* cards */
+    .price-card, .inv-card, .pillar, .include-item { padding: 1.8rem 1.2rem !important; }
+    .offering-card { padding: 2rem 1rem !important; }
+    .testimonial-card { padding: 2rem 1rem !important; }
+    .who-item { gap: 1rem; }
+
+    /* CTA buttons full-width */
+    .btn-gold, .btn-primary, .btn-outline, .btn-outline-dark,
+    .btn-gold-outline { display: block; width: 100%; text-align: center; box-sizing: border-box; }
+    .hero-actions, .cta-actions { flex-direction: column; gap: 0.7rem; }
+
+    /* Shop grid */
+    .shop-grid, .sessions-grid { grid-template-columns: 1fr !important; }
+    .moon-rising-grid { grid-template-columns: 1fr 1fr !important; }
+
+    /* Process */
+    .process-steps { grid-template-columns: 1fr !important; gap: 2rem; }
+
+    /* stat bars */
+    .hero-stat-bar { grid-template-columns: 1fr !important; }
+    .hero-stat { border-right: none !important; border-bottom: 0.5px solid rgba(255,255,255,0.08) !important; }
+    .hero-stat:last-child { border-bottom: none !important; }
+
+    /* Retreat hero */
+    .hero { padding: 5rem 1rem 3rem !important; }
+
+    /* Programme */
+    .programme-grid { grid-template-columns: 1fr !important; }
+    .prog-item[data-num="IX"],
+    .prog-item[data-num="XIV"] { grid-column: auto !important; }
+
+    /* Yogic dict */
+    .yogic-dict-grid { grid-template-columns: 1fr !important; }
+
+    /* included */
+    .included-grid { grid-template-columns: 1fr !important; }
+
+    /* speaking photo */
+    .speaking-photo-strip { grid-template-columns: 1fr !important; }
+    .speaking-photo-img { min-height: 60vw !important; }
+
+    /* about bio */
+    .bio-inner { grid-template-columns: 1fr !important; }
+
+    /* phil grid */
+    .phil-grid { grid-template-columns: 1fr !important; }
+    .phil-item { border-right: none !important; border-bottom: 0.5px solid rgba(184,151,90,0.12) !important; }
+
+    /* facts */
+    .facts-grid { grid-template-columns: 1fr 1fr !important; }
+
+    /* free audio */
+    .free-audio-content { padding: 3rem 1rem !important; }
+  }
+
+  @media (max-width: 900px) {
+    .hero-section { padding: 7rem 1.8rem 4rem !important; min-height: auto !important; }
+  }
+
+  
+  /* ── GLOBAL 480px TIGHTENING ── */
+  @media (max-width: 480px) {
+    /* Side padding: drop from 1.8rem to 1rem on small phones */
+    .section,
+    #offerings, #process, #testimonials, #shop, #newsletter,
+    .cta-strip, .manifesto, .shiva-feature, .testimonial-pull,
+    .about-content, .hero-left, .page-hero-left,
+    .retreat-intro-left, .retreat-intro-right,
+    .free-audio-content, .mission-section, .about-intro,
+    .opening, .bio-section, .philosophy, .facts,
+    .inner-testimonials, .start-here, .logos-section,
+    .shop-section, .yogic-dict-section, .facilitators-section,
+    .for-you-section, .pricing-section, .testimonial-strip,
+    .speaking-photo-text,
+    footer { padding-left: 1rem !important; padding-right: 1rem !important; }
+
+    /* Hero padding */
+    .hero-left, .page-hero-left { padding: 6rem 1rem 2.5rem !important; }
+
+    /* email capture modal */
+    .email-capture-modal { padding: 2rem 1rem !important; }
+
+    /* sticky CTA text hidden */
+    .sticky-cta { padding: 0.7rem 1rem; }
+    .sticky-cta-text { display: none; }
+
+    /* inner testimonials grid */
+    .inner-testi-grid { grid-template-columns: 1fr !important; }
+    .inner-testi { padding: 2rem 0 !important; }
+
+    /* start paths */
+    .start-paths { grid-template-columns: 1fr !important; }
+    .start-here { padding: 3.5rem 1rem !important; }
+
+    /* cards */
+    .price-card, .inv-card, .pillar, .include-item { padding: 1.8rem 1.2rem !important; }
+    .offering-card { padding: 2rem 1rem !important; }
+    .testimonial-card { padding: 2rem 1rem !important; }
+    .who-item { gap: 1rem; }
+
+    /* CTA buttons full-width */
+    .btn-gold, .btn-primary, .btn-outline, .btn-outline-dark,
+    .btn-gold-outline { display: block; width: 100%; text-align: center; box-sizing: border-box; }
+    .hero-actions, .cta-actions { flex-direction: column; gap: 0.7rem; }
+
+    /* Shop grid */
+    .shop-grid, .sessions-grid { grid-template-columns: 1fr !important; }
+    .moon-rising-grid { grid-template-columns: 1fr 1fr !important; }
+
+    /* Process */
+    .process-steps { grid-template-columns: 1fr !important; gap: 2rem; }
+
+    /* stat bars */
+    .hero-stat-bar { grid-template-columns: 1fr !important; }
+    .hero-stat { border-right: none !important; border-bottom: 0.5px solid rgba(255,255,255,0.08) !important; }
+    .hero-stat:last-child { border-bottom: none !important; }
+
+    /* Retreat hero */
+    .hero { padding: 5rem 1rem 3rem !important; }
+
+    /* Programme */
+    .programme-grid { grid-template-columns: 1fr !important; }
+    .prog-item[data-num="IX"],
+    .prog-item[data-num="XIV"] { grid-column: auto !important; }
+
+    /* Yogic dict */
+    .yogic-dict-grid { grid-template-columns: 1fr !important; }
+
+    /* included */
+    .included-grid { grid-template-columns: 1fr !important; }
+
+    /* speaking photo */
+    .speaking-photo-strip { grid-template-columns: 1fr !important; }
+    .speaking-photo-img { min-height: 60vw !important; }
+
+    /* about bio */
+    .bio-inner { grid-template-columns: 1fr !important; }
+
+    /* phil grid */
+    .phil-grid { grid-template-columns: 1fr !important; }
+    .phil-item { border-right: none !important; border-bottom: 0.5px solid rgba(184,151,90,0.12) !important; }
+
+    /* facts */
+    .facts-grid { grid-template-columns: 1fr 1fr !important; }
+
+    /* free audio */
+    .free-audio-content { padding: 3rem 1rem !important; }
+  }
+
+  @media (max-width: 900px) {
+    .hero-section { padding: 7rem 1.8rem 4rem !important; min-height: auto !important; }
+  }
+
+  
+  /* SESSION CARD (shop-style) */
+  .session-card {
+    background: #FEFAF7;
+    border: 0.5px solid rgba(184,151,90,0.3);
+    padding: 3rem;
+    display: flex; flex-direction: column;
+    transition: background 0.3s;
+  }
+  .session-name { font-family: var(--serif); font-size: 1.5rem; font-weight: 400; color: var(--deep); margin-bottom: 0.8rem; line-height: 1.2; }
+  .session-name-light { color: var(--cream); }
+  .session-desc { font-size: 1rem; line-height: 1.95; color: var(--muted); font-weight: 300; margin-bottom: 2rem; flex: 1; }
+  .session-desc-light { color: rgba(245,240,232,0.45); }
+  .session-includes { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 2rem; }
+  .session-include { font-size: 1rem; color: var(--muted); display: flex; gap: 0.6rem; align-items: flex-start; line-height: 1.5; }
+  .session-include::before { content: '—'; color: var(--gold); flex-shrink: 0; }
+  .session-include-light { color: rgba(245,240,232,0.4); }
+  .session-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 1.5rem; border-top: 0.5px solid var(--border); flex-wrap: wrap; gap: 1rem; }
+  .session-footer-dark { border-top-color: rgba(184,151,90,0.15); }
+  .session-price { font-family: var(--serif); font-size: 1.5rem; font-weight: 400; color: var(--deep); }
+  .session-price-light { color: var(--gold-light); }
+  .session-price small { font-family: var(--sans); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); display: block; margin-top: 0.1rem; }
+  .session-price-light small { color: rgba(245,240,232,0.3); }
+  .btn-outline-cream { border-color: rgba(184,151,90,0.4) !important; color: rgba(245,240,232,0.6) !important; }
+  .btn-outline-cream:hover { border-color: var(--gold) !important; color: var(--gold) !important; background: transparent !important; }
+
+  
+  /* INCLUDE ICONS (SVG style matching retreats) */
+  .include-icon-svg {
+    width: 28px; height: 28px;
+    margin-bottom: 1.2rem;
+    color: var(--gold);
+    opacity: 0.85;
+  }
+  .include-icon-svg svg { width: 100%; height: 100%; }
+
+  </style>
+</head>
+<body>
+
+
+<!-- WAITLIST MODAL -->
+<div class="waitlist-overlay" id="waitlist-overlay">
+  <div class="waitlist-modal">
+    <button class="wm-close" onclick="closeWaitlist()">✕</button>
+    <p class="wm-eyebrow">Join the Waitlist</p>
+    <h2 class="wm-title">Be first in line for the<br><em>next intake</em></h2>
+    <p class="wm-desc">Mentorship spaces are strictly limited. Join the waitlist and you'll be the first to know when a new intake opens — often before it's announced publicly.</p>
+    <div id="wm-form">
+      <form onsubmit="submitWaitlist(event)">
+        <input type="text" class="wm-input" placeholder="Your first name">
+        <input type="email" class="wm-input" placeholder="Your email address">
+        <input type="text" class="wm-input" placeholder="What brings you here? (optional)">
+        <button type="submit" class="wm-submit">Join the Waitlist →</button>
+      </form>
+    </div>
+    <div id="wm-success" style="display:none; text-align:center; padding: 1.5rem 0;">
+      <p style="font-family:var(--serif);font-size:1.2rem;font-style:italic;color:var(--deep);margin-bottom:0.5rem;">You're on the list. ✦</p>
+      <p style="font-size:0.78rem;color:var(--muted);">You'll hear from Isis personally when a space opens.</p>
+    </div>
+    <p class="wm-note">No spam. Ever. Just a personal message when a space opens.</p>
+  </div>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">Isis <span>Anchalee</span></a>
+  <ul class="nav-links" id="nav-menu">
+    <li><a href="about.html">About</a></li>
+    <li><a href="rtt-hypnotherapy.html">RTT™ Hypnotherapy</a></li>
+    <li><a href="mentorship.html" class="active">Mentorship</a></li>
+    <li><a href="retreats.html">Retreats</a></li>
+    <li><a href="shop.html">Shop</a></li>
+  </ul>
+  <a href="mentorship-application.html" class="nav-book">Apply Now</a>
+  <a href="index.html" class="mobile-menu-logo" id="mobileMenuLogo">Isis <span>Anchalee</span></a>
+  <button class="mobile-menu-close" id="menuClose" onclick="toggleMenu()" aria-label="Close menu">✕</button>
+  <button class="hamburger" id="hamburger" aria-label="Open menu" onclick="toggleMenu()">
+    <span style="background:var(--deep)"></span>
+    <span style="background:var(--deep)"></span>
+    <span style="background:var(--deep)"></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+
+<section class="page-hero">
+  <div class="hero-mandala"></div>
+  <div class="hero-glow"></div>
+  <p class="eyebrow fade-up">1:1 Mentorship</p>
+  <h1 class="hero-title fade-up d1">
+    Dharmic Identity<br>
+    <em>Shift.</em>
+  </h1>
+  <div class="dharmic-box fade-up d2">
+    <span class="dharmic-word">dharmic</span>
+    <span class="dharmic-pronunciation">/ DAHR-mik /</span>
+    <div class="dharmic-sep"></div>
+    <span class="dharmic-def"><em>adj.</em> — from Sanskrit <em>dharma</em>; living in accordance with cosmic order, moral law, and the highest expression of one's purpose</span>
+  </div>
+  <p class="hero-sub fade-up d3">
+    Your subconscious identity is the blueprint from which your entire reality is constructed. Change the blueprint and you change the foundation of your entire life.<br><br>
+
+    We shift you into inner alignment with the life you desire — and then take it further beyond where modern identity work ends to simultaneously help you shift into the most whole, liberated, self-aware, compassionate, dharmic version of yourself capable of taking the highest-aligned action in the world.
+  </p>
+  <div class="hero-actions fade-up d3">
+    <div class="dual-cta">
+      <a href="mentorship-application.html" class="btn-gold">Apply Now</a>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section class="manifesto" id="what-is-this">
+  <div class="manifesto-inner">
+    <p class="section-eyebrow">The Philosophy</p>
+    <p class="manifesto-quote">
+      "95% of your cognitive operations are <em>subconscious</em>. Your brain makes every decision based on its sense of identity. So we don't just change what you do — we change who you are at your core."
+    </p>
+    <p class="manifesto-sub">I have lived this transformation firsthand and I know how powerful the work is. When we effectively reprogram your subconscious mind for alignment with the version of yourself that you want to be, your reality re-orients itself to align with its new identity, and result is a complete "timeline shift" into a new reality.<br><br>The secret to "manifestation" is neuroscience. It's about understanding how the brain works, how our reality is generated, and how to program our brain to be a match for the reality that we desire. And after more than a decade of full dedication to "the path" — I want to go even deeper than other mentors have taken you before. Instead of programming your inner reality to be in alignment with the outer reality you desire (which we WILL do), we will go even further to align your core identity with the most self-aware, loving, compassionate &amp; dharmic version of yourself that can possibly exist — optimizing your current life, and refining all of your karmic seeds that you are creating for your future.</p>
+  </div>
+</section>
+
+<!-- THE SCIENCE -->
+<section class="section section-alt">
+  <div class="two-col">
+    <div>
+      <p class="section-eyebrow">The Science</p>
+      <h2 class="section-title">Why identity<br><em>is everything</em></h2>
+      <p class="body-text">Neuroscience is clear: the brain makes its decisions based on what it believes is its identity. Every thought, action, and reality you experience flows from the identity your subconscious has accepted as true for yourself.</p>
+      <p class="body-text">This essentially means that the gap between where you are and where you want to be is actually identity problem — and that strategy and willpower alone, without a subconscious identity aligned with what you want, will always hit a ceiling.</p>
+      <p class="body-text">Everything you experience: the love you let in, the money you allow yourself to receive, the success you actually keep — is determined by how much of it your nervous system can hold before it reads expansion as a threat. Capacity is a biological reality, and underneath every capacity threshold lives a set of beliefs, encoded in the body long before you had the language to question them deciding what feels safe and what is rejected.</p>
+      <p class="body-text">This is why affirmations alone are not enough. Repeating "I am abundant" to a nervous system wired for scarcity is like painting over mold: the surface changes, but the mess still remains. "Fake it till you make it" and you will also hit the same wall because you can "perform" a new identity all day but you will still find yourself sabotaging, contracting, or pulling back because the operating system running underneath is still running unsupportive conditioning.</p>
+      <p class="body-text">Hypnotherapy works at a different layer entirely. Instead of attempting to overwrite the program from the outside, we go directly into the root layer (in the subconscious mind) where those original beliefs are stored and then neurologically change the code at the source. When the body stops reading expansion as a threat, your capacity shifts — and suddenly the love, the abundance, the version of yourself you have been reaching for stops being a performance and becomes the natural expression of who you are.</p>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 1.5px; background: var(--border);">
+      <div style="background: var(--cream); padding: 2rem;">
+        <p style="font-size: 0.85rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem;">The Research</p>
+        <p style="font-family: var(--serif); font-size: 1.5rem; font-weight: 300; color: var(--deep);">95%</p>
+        <p style="font-size: 1.05rem; line-height: 1.7; color: var(--muted); font-weight: 300;">of cognitive operations are subconscious. Your conscious mind is the tip of the iceberg.</p>
+      </div>
+      <div style="background: var(--cream); padding: 2rem;">
+        <p style="font-size: 0.85rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem;">The Reality</p>
+        <p style="font-family: var(--serif); font-size: 1.5rem; font-weight: 300; color: var(--deep);">Identity First</p>
+        <p style="font-size: 1.05rem; line-height: 1.7; color: var(--muted); font-weight: 300;">The brain filters reality through identity. Change the identity, and reality shifts to match.</p>
+      </div>
+      <div style="background: var(--cream); padding: 2rem;">
+        <p style="font-size: 0.85rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem;">The Method</p>
+        <p style="font-family: var(--serif); font-size: 1.5rem; font-weight: 300; color: var(--deep);">Quantum Shift</p>
+        <p style="font-size: 1.05rem; line-height: 1.7; color: var(--muted); font-weight: 300;">Subconscious reprogramming creates non-linear, rapid transformation — not incremental change.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE PILLARS -->
+<section class="section section-cream">
+  <p class="section-eyebrow">The Four Pillars</p>
+  <h2 class="section-title">What we <em>build together</em></h2>
+  <div class="pillars">
+    <div class="pillar">
+      <p class="pillar-num">I</p>
+      <h3 class="pillar-title">Self-Inquiry</h3>
+      <p class="pillar-desc">We do a deep dive into who you are, where you are, how you got here, and understand the systems and programs running in your mind that have created the version of you that exists today.</p>
+    </div>
+    <div class="pillar">
+      <p class="pillar-num">II</p>
+      <h3 class="pillar-title">Nervous System Regulation</h3>
+      <p class="pillar-desc">Lasting transformation cannot be built on a dysregulated nervous system. Before we reprogram the mind, we leverage techniques from classical yogic science to create regulation and coherence in the body first that prepares the soil for deep change to take root and hold.</p>
+    </div>
+    <div class="pillar">
+      <p class="pillar-num">III</p>
+      <h3 class="pillar-title">Clearing Subconscious Blocks</h3>
+      <p class="pillar-desc">Using RTT™ hypnotherapy, we locate and dissolve the unsupportive beliefs, blockages, and karmic patterns running beneath the surface — the inherited programs, past-life/ancestral imprints, and accumulated conditioning that quietly influences every choice, relationship, and ultimately every outcome in your life.</p>
+    </div>
+    <div class="pillar">
+      <p class="pillar-num">IV</p>
+      <h3 class="pillar-title">Aligning to Your Desired Timeline</h3>
+      <p class="pillar-desc">Insight without integration doesn't last. We then leverage neuroplasticity to anchor the shifts into your subconscious mind through customized hypnosis audios, building your perfect daily practice, and continued integration work — until your new identity radiates from within you as something you live, breathe, and move from in every moment.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY INNER WORK COMES FIRST -->
+<section class="section section-alt">
+  <div style="max-width: 820px; margin: 0 auto; text-align: center;">
+    <p class="section-eyebrow" style="justify-content: center;">Why Inner Work Comes First</p>
+    <h2 class="section-title" style="margin-bottom: 2rem;">The outer work only holds<br><em>when the inner work is done</em></h2>
+    <p class="body-text" style="margin-bottom: 1.2rem;">I have spent more than a decade of my life successfully building enterprise software applications (for clients like Boeing, Uber, Redbull, Akoin, etc.), designing luxury brands, creating exquisite products and scaling profitable companies. I grew my Instagram from 6k–40k within 6 months of posting regular content and I know the formula for how the algorithm works to grow large audiences quickly.</p>
+    <p class="body-text">I can play the outer game well — and I can absolutely support you to reverse-engineer the material life you want to build. But here is what I know to be true: every strategy, system, and structure built on top of an unexamined identity will eventually crack under its own weight. You can have the perfect offer, the right audience, and a brilliant business plan, and still self-sabotage because the person running it doesn't have capacity to hold it. So this is what we work on first — and from there I invite you even further to reshape your identity until you are meeting every moment as the fullest, most self-aware & realized version of yourself that can possibly exist.</p>
+  </div>
+</section>
+
+<!-- WHO THIS IS FOR -->
+<section class="section section-dark">
+  <div class="two-col">
+    <div>
+      <p class="section-eyebrow" style="color: var(--gold);">This is for you if...</p>
+      <h2 class="section-title section-title-light">You are <em>ready</em> to<br>become more</h2>
+      <p class="body-text body-text-light" style="margin-top: 1rem;">You're already doing big things in the world, but you know there's another level waiting for you ~ one where your work, your leadership, and your life feel deeply aligned with your highest purpose instead of just external accomplishment.</p>
+    </div>
+    <div class="who-grid">
+      <div class="who-item">
+        <div class="who-check"></div>
+        <div class="who-text">
+          <h4 style="color: var(--cream);">You're building something that matters</h4>
+          <p style="color: rgba(245,240,232,0.45);">Whether that's a company, a movement, a body of work, or a legacy — you can feel the magnitude of what you're here to create, and you're ready to become the version of yourself capable of bringing it into the highest expression.</p>
+        </div>
+      </div>
+      <div class="who-item">
+        <div class="who-check"></div>
+        <div class="who-text">
+          <h4 style="color: var(--cream);">You're committed to real evolution</h4>
+          <p style="color: rgba(245,240,232,0.45);">You want the real work — the inner shifts and identity-level transformation that makes everything else sustainable. You're willing to face what needs to be faced to evolve into the person capable of building your visions into reality.</p>
+        </div>
+      </div>
+      <div class="who-item">
+        <div class="who-check"></div>
+        <div class="who-text">
+          <h4 style="color: var(--cream);">You refuse to choose between success and inner evolution</h4>
+          <p style="color: rgba(245,240,232,0.45);">You want material success AND spiritual growth. You're building something extraordinary in the world while becoming someone genuinely evolved in the process. Dharma AND impact, not either/or.</p>
+        </div>
+      </div>
+      <div class="who-item">
+        <div class="who-check"></div>
+        <div class="who-text">
+          <h4 style="color: var(--cream);">You're ready for the quantum leap</h4>
+          <p style="color: rgba(245,240,232,0.45);">You're ready to truly face the parts within you that have been holding you back. You're excited to go deep into the subconscious reprogramming, the energetic recalibration, the identity shifts that create non-linear, exponential change.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT'S INCLUDED -->
+<section class="section section-dark" style="padding-top: 0;">
+  <p class="section-eyebrow" style="color: var(--gold);">What's Included</p>
+  <h2 class="section-title section-title-light">The full <em>container</em></h2>
+  <div class="includes-grid">
+    <div class="include-item">
+      <div class="include-icon-svg"><svg width="32" height="32" viewBox="0 0 48 48" fill="none">
+  <circle cx="24" cy="24" r="18" stroke="#B8975A" stroke-width="0.8"/>
+  <circle cx="24" cy="24" r="12" stroke="#B8975A" stroke-width="0.7" stroke-dasharray="3 2"/>
+  <circle cx="24" cy="24" r="6" stroke="#B8975A" stroke-width="0.8" fill="rgba(184,151,90,0.08)"/>
+  <path d="M24 18 C20 18 16 21 16 24 C16 27 20 30 24 30 C28 30 32 27 32 24 C32 21 28 18 24 18Z" stroke="#B8975A" stroke-width="0.6" fill="none"/>
+  <circle cx="24" cy="24" r="2.5" fill="#B8975A" opacity="0.55"/>
+</svg></div>
+      <h4 class="include-title">3 × 2-Hour RTT™ Hypnotherapy Sessions</h4>
+      <p class="include-desc">Three 2-hour RTT™ hypnotherapy sessions over 3 months — going deep into the subconscious to clear what is ready to shift and install your new identity at the root level.</p>
+    </div>
+    <div class="include-item">
+      <div class="include-icon-svg"><svg width="32" height="32" viewBox="0 0 48 48" fill="none">
+  <rect x="12" y="12" width="24" height="24" stroke="#B8975A" stroke-width="0.8" transform="rotate(45 24 24)" fill="rgba(184,151,90,0.05)"/>
+  <rect x="16" y="16" width="16" height="16" stroke="#B8975A" stroke-width="0.7" transform="rotate(45 24 24)" fill="rgba(184,151,90,0.08)"/>
+  <circle cx="24" cy="24" r="3" stroke="#B8975A" stroke-width="0.8" fill="rgba(184,151,90,0.2)"/>
+  <line x1="24" y1="8" x2="24" y2="12" stroke="#B8975A" stroke-width="0.7" opacity="0.5"/>
+  <line x1="24" y1="36" x2="24" y2="40" stroke="#B8975A" stroke-width="0.7" opacity="0.5"/>
+  <line x1="8" y1="24" x2="12" y2="24" stroke="#B8975A" stroke-width="0.7" opacity="0.5"/>
+  <line x1="36" y1="24" x2="40" y2="24" stroke="#B8975A" stroke-width="0.7" opacity="0.5"/>
+</svg></div>
+      <h4 class="include-title">6 × 1-Hour Mentorship Calls</h4>
+      <p class="include-desc">Six 1-hour mentorship calls over 3 months to experience insight, anchor the shifts, create a plan for your life, and keep the momentum building.</p>
+    </div>
+    <div class="include-item">
+      <div class="include-icon-svg"><svg width="32" height="32" viewBox="0 0 48 48" fill="none">
+  <path d="M30 12 C22 12 15 18 15 26 C15 33 21 39 29 39 C24 37 20 33 20 27 C20 20 25 14 32 13 C31.3 12.3 30.7 12 30 12Z" stroke="#B8975A" stroke-width="0.9" fill="rgba(184,151,90,0.08)"/>
+  <circle cx="36" cy="14" r="2.5" stroke="#B8975A" stroke-width="0.8" fill="rgba(184,151,90,0.15)"/>
+  <path d="M34 10 L36 8 L38 10 L36 12 Z" stroke="#B8975A" stroke-width="0.7" fill="rgba(184,151,90,0.2)"/>
+  <circle cx="24" cy="26" r="1.5" fill="#B8975A" opacity="0.4"/>
+</svg></div>
+      <h4 class="include-title">Personalized Sādhana Practice</h4>
+      <p class="include-desc">We build the perfect practice designed specifically for where you are in your journey — drawing from classical yoga, mantra, meditation, and embodiment practices.</p>
+    </div>
+    <div class="include-item">
+      <div class="include-icon-svg"><svg width="32" height="32" viewBox="0 0 48 48" fill="none">
+  <circle cx="24" cy="24" r="4" fill="#B8975A" opacity="0.5"/>
+  <path d="M17 17 C15 19 14 21 14 24 C14 27 15 29 17 31" stroke="#B8975A" stroke-width="1" stroke-linecap="round" fill="none"/>
+  <path d="M31 17 C33 19 34 21 34 24 C34 27 33 29 31 31" stroke="#B8975A" stroke-width="1" stroke-linecap="round" fill="none"/>
+  <path d="M12 13 C9 16 8 20 8 24 C8 28 9 32 12 35" stroke="#B8975A" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.6"/>
+  <path d="M36 13 C39 16 40 20 40 24 C40 28 39 32 36 35" stroke="#B8975A" stroke-width="0.8" stroke-linecap="round" fill="none" opacity="0.6"/>
+  <circle cx="24" cy="24" r="9" stroke="#B8975A" stroke-width="0.5" stroke-dasharray="2 3" opacity="0.4"/>
+</svg></div>
+      <h4 class="include-title">Full Bespoke Audio Library</h4>
+      <p class="include-desc">Not only do you get the 3 bespoke personalized hypnosis audios created from each one of your sessions — you get lifetime access to my entire hypnosis audio collection which is constantly being updated.</p>
+    </div>
+    <div class="include-item">
+      <div class="include-icon-svg"><svg width="32" height="32" viewBox="0 0 48 48" fill="none">
+  <circle cx="24" cy="30" r="4" stroke="#B8975A" stroke-width="0.9" fill="rgba(184,151,90,0.12)"/>
+  <path d="M18 24 C16 26 15 28 15 30 C15 32 16 34 18 36" stroke="#B8975A" stroke-width="0.9" stroke-linecap="round" fill="none"/>
+  <path d="M30 24 C32 26 33 28 33 30 C33 32 32 34 30 36" stroke="#B8975A" stroke-width="0.9" stroke-linecap="round" fill="none"/>
+  <path d="M13 19 C10 22 8 26 8 30 C8 34 10 38 13 40" stroke="#B8975A" stroke-width="0.7" stroke-linecap="round" fill="none" opacity="0.55"/>
+  <path d="M35 19 C38 22 40 26 40 30 C40 34 38 38 35 40" stroke="#B8975A" stroke-width="0.7" stroke-linecap="round" fill="none" opacity="0.55"/>
+  <line x1="24" y1="10" x2="24" y2="26" stroke="#B8975A" stroke-width="0.8" stroke-linecap="round"/>
+  <circle cx="24" cy="10" r="1.5" fill="#B8975A" opacity="0.6"/>
+</svg></div>
+      <h4 class="include-title">Personalized Voxer Support</h4>
+      <p class="include-desc">Direct access to me between sessions for when a breakthrough hits, when something shifts and needs to be processed and when you need real-time recalibration — I am available to respond within 12 hours, Monday to Friday.</p>
+    </div>
+    <div class="include-item">
+      <div class="include-icon-svg"><svg width="32" height="32" viewBox="0 0 48 48" fill="none">
+  <circle cx="24" cy="24" r="16" stroke="#B8975A" stroke-width="0.8" fill="rgba(184,151,90,0.03)"/>
+  <path d="M24 8 L26.5 21.5 L24 19 L21.5 21.5 Z" stroke="#B8975A" stroke-width="0.7" fill="rgba(184,151,90,0.2)"/>
+  <path d="M24 40 L26.5 26.5 L24 29 L21.5 26.5 Z" stroke="#B8975A" stroke-width="0.7" fill="rgba(184,151,90,0.08)"/>
+  <path d="M8 24 L21.5 26.5 L19 24 L21.5 21.5 Z" stroke="#B8975A" stroke-width="0.7" fill="rgba(184,151,90,0.08)"/>
+  <path d="M40 24 L26.5 26.5 L29 24 L26.5 21.5 Z" stroke="#B8975A" stroke-width="0.7" fill="rgba(184,151,90,0.08)"/>
+  <circle cx="24" cy="24" r="3" stroke="#B8975A" stroke-width="0.8" fill="rgba(184,151,90,0.25)"/>
+  <circle cx="24" cy="24" r="8" stroke="#B8975A" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.4"/>
+</svg></div>
+      <h4 class="include-title">Dharmic Strategy for Your Life Goals</h4>
+      <p class="include-desc">So you want to create a brand, scale your company, grow your social media, launch products, etc — I can teach you all of it. But only once the inner architecture is rebuilt does the outer work truly hold. We do the deep work first, then we take action and build something in the world that lasts.</p>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- INVESTMENT -->
+<section class="section section-alt" id="investment">
+  <p class="section-eyebrow">Investment</p>
+  <h2 class="section-title">The <em>investment</em></h2>
+
+  <div style="max-width: 600px;">
+    <div class="session-card">
+      <p style="font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem;">3-Month Container</p>
+      <h3 class="session-name">Dharmic Identity Shift</h3>
+      <p class="session-desc">The full mentorship immersion — RTT™ hypnotherapy, Vedic astrology, somatic frameworks, and dharmic strategy woven into a single living container built entirely around you.</p>
+
+      <div class="session-includes">
+        <p class="session-include">6 × bi-weekly 1-hour 1:1 mentorship calls</p>
+        <p class="session-include">3 × monthly 2-hour RTT™ hypnotherapy sessions</p>
+        <p class="session-include">3 × bespoke personalised hypnosis audios</p>
+        <p class="session-include">Personalised Voxer support throughout</p>
+        <p class="session-include">Bespoke audio library — yours to keep</p>
+        <p class="session-include">Dharmic strategy — brand, products, business, socials &amp; beyond</p>
+      </div>
+
+      <div class="session-footer">
+        <div class="session-price">
+          $4,500
+          <small>$1,500 / month × 3</small>
+        </div>
+        <div style="display: flex; gap: 0.7rem; flex-wrap: wrap;">
+          <a href="mentorship-application.html" class="btn-gold">Apply Now</a>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 0.8rem; display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1.4rem; border: 0.5px solid var(--border); background: rgba(184,151,90,0.03);">
+      <span style="font-size: 0.95rem; color: var(--muted);">💳</span>
+      <p style="font-size: 0.95rem; color: var(--muted); margin: 0;">Payment plans available at checkout via <strong style="color: var(--deep); font-weight: 400;">Klarna</strong> and <strong style="color: var(--deep); font-weight: 400;">Afterpay</strong> — buy now, pay later.</p>
+    </div>
+  </div>
+</section>
+<div class="testimonial-pull">
+  <p class="pull-quote">"Isis sees you at a level most people never reach — and she holds that vision for you until you can hold it yourself. I became someone I didn't know I was capable of being."</p>
+  <p class="pull-author">Rachel P. — <span>Mentorship Client</span></p>
+</div>
+
+<!-- CTA -->
+<div class="cta-strip">
+  <div class="cta-inner">
+    <h2>Your empire is<br><em>waiting for you.</em></h2>
+    <p>The bridge between who you are now and who you want to be is shorter than you think. Your future self is waiting to thank you ✨</p>
+    <div class="cta-actions">
+      <a href="mentorship-application.html" class="btn-gold">Apply Now</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <a href="index.html" class="footer-logo">Isis <span>Anchalee</span></a>
+  <ul class="footer-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="rtt-hypnotherapy.html">RTT™</a></li>
+    <li><a href="retreats.html">Retreats</a></li>
+    <li><a href="shop.html">Shop</a></li>
+  </ul>
+  <p class="footer-copy">© 2026 Isis Anchalee</p>
+</footer>
+
+<script>
+  function toggleMenu() {
+    const menu = document.getElementById('nav-menu');
+    const btn = document.getElementById('hamburger');
+    const logo = document.getElementById('mobileMenuLogo');
+    const close = document.getElementById('menuClose');
+    if (!menu) return;
+    menu.classList.toggle('open');
+    btn.classList.toggle('open');
+    const isOpen = menu.classList.contains('open');
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+    if (logo) logo.style.display = isOpen ? 'block' : 'none';
+    if (close) close.style.display = isOpen ? 'block' : 'none';
+  }
+
+  // STICKY CTA
+  (function(){
+    var bar=document.getElementById('sticky-cta');
+    if(!bar)return;
+    var dismissed=false;
+    window.addEventListener('scroll',function(){
+      if(dismissed)return;
+      bar.classList.toggle('visible',window.scrollY>window.innerHeight*0.6);
+    });
+    window.dismissStickyCta=function(){dismissed=true;bar.classList.remove('visible');};
+  })();
+  // EMAIL CAPTURE - scroll 70% or exit intent, once per session
+  (function(){
+    if(sessionStorage.getItem('ecShown'))return;
+    var triggered=false;
+    function show(){
+      if(triggered)return;
+      triggered=true;
+      sessionStorage.setItem('ecShown','1');
+      setTimeout(function(){
+        var o=document.getElementById('email-capture-overlay');
+        if(o)o.classList.add('open');
+      },600);
+    }
+    window.addEventListener('scroll',function(){
+      if((window.scrollY+window.innerHeight)/document.body.scrollHeight>0.7)show();
+    });
+    document.addEventListener('mouseleave',function(e){if(e.clientY<10)show();});
+    window.closeEmailCapture=function(){
+      var o=document.getElementById('email-capture-overlay');
+      if(o)o.classList.remove('open');
+    };
+    window.submitEmailCapture=function(e){
+      e.preventDefault();
+      var f=document.getElementById('ecm-form-inner');
+      var s=document.getElementById('ecm-success');
+      if(f)f.style.display='none';
+      if(s)s.style.display='block';
+    };
+  })();
+
+
+  function openWaitlist() {
+    document.getElementById('waitlist-overlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeWaitlist() {
+    document.getElementById('waitlist-overlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function submitWaitlist(e) {
+    e.preventDefault();
+    document.getElementById('wm-form').style.display = 'none';
+    document.getElementById('wm-success').style.display = 'block';
+  }
+
+</script>
+</body>
+</html>

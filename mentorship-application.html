@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mentorship Application — Isis Anchalee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0A0807;
+      --surface: #111009;
+      --gold: #C5A880;
+      --gold-light: #D4BC9A;
+      --cream: #F2EDE6;
+      --muted: rgba(242,237,230,0.45);
+      --border: rgba(197,168,128,0.15);
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans: 'Montserrat', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--cream);
+      font-family: var(--sans);
+      font-weight: 300;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* PROGRESS BAR */
+    .progress-bar {
+      position: fixed; top: 0; left: 0; height: 2px;
+      background: var(--gold); z-index: 100;
+      transition: width 0.5s ease;
+    }
+
+    /* SLIDES */
+    .quiz-wrap {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 4rem 1.5rem;
+    }
+
+    .slide {
+      display: none;
+      max-width: 680px; width: 100%;
+      animation: fadeUp 0.5s ease forwards;
+    }
+    .slide.active { display: block; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* WELCOME */
+    .welcome-symbol {
+      font-size: 1.5rem; color: var(--gold);
+      margin-bottom: 2rem; letter-spacing: 0.3em;
+    }
+    .welcome-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 300; line-height: 1.15;
+      color: var(--cream); margin-bottom: 1.5rem;
+    }
+    .welcome-title em { font-style: italic; color: var(--gold); }
+    .welcome-body {
+      font-size: 1.05rem; line-height: 1.9;
+      color: var(--muted); margin-bottom: 3rem;
+      max-width: 560px;
+    }
+
+    /* QUESTION */
+    .q-num {
+      font-size: 0.7rem; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 1.2rem; display: flex;
+      align-items: center; gap: 0.7rem;
+    }
+    .q-num::before {
+      content: ''; display: block;
+      width: 20px; height: 0.5px; background: var(--gold);
+    }
+    .q-title {
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      font-weight: 300; line-height: 1.25;
+      color: var(--cream); margin-bottom: 0.8rem;
+    }
+    .q-desc {
+      font-size: 0.9rem; color: var(--muted);
+      line-height: 1.75; margin-bottom: 2.2rem;
+    }
+
+    /* STATEMENT */
+    .statement-text {
+      font-family: var(--serif);
+      font-size: clamp(1.3rem, 3vw, 1.9rem);
+      font-weight: 300; font-style: italic;
+      color: var(--gold-light); line-height: 1.6;
+      border-left: 1.5px solid var(--gold);
+      padding-left: 2rem; margin-bottom: 3rem;
+    }
+
+    /* INPUTS */
+    .q-input, .q-textarea {
+      width: 100%; background: transparent;
+      border: none; border-bottom: 0.5px solid rgba(197,168,128,0.3);
+      color: var(--cream); font-family: var(--sans);
+      font-size: 1.15rem; font-weight: 300;
+      padding: 0.8rem 0; outline: none;
+      transition: border-color 0.2s;
+      caret-color: var(--gold);
+    }
+    .q-input:focus, .q-textarea:focus {
+      border-bottom-color: var(--gold);
+    }
+    .q-input::placeholder, .q-textarea::placeholder {
+      color: rgba(242,237,230,0.2);
+    }
+    .q-textarea {
+      resize: none; min-height: 140px;
+      border: 0.5px solid rgba(197,168,128,0.2);
+      padding: 1rem; line-height: 1.8;
+      background: rgba(197,168,128,0.03);
+    }
+    .q-textarea:focus {
+      border-color: rgba(197,168,128,0.5);
+    }
+
+    /* DATE */
+    .date-row {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem; margin-bottom: 0.5rem;
+    }
+    .date-field { display: flex; flex-direction: column; gap: 0.4rem; }
+    .date-label {
+      font-size: 0.65rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--gold);
+    }
+    .date-input {
+      background: transparent; border: none;
+      border-bottom: 0.5px solid rgba(197,168,128,0.3);
+      color: var(--cream); font-family: var(--sans);
+      font-size: 1.1rem; font-weight: 300;
+      padding: 0.6rem 0; outline: none;
+      transition: border-color 0.2s; width: 100%;
+      caret-color: var(--gold);
+    }
+    .date-input:focus { border-bottom-color: var(--gold); }
+    .date-input::placeholder { color: rgba(242,237,230,0.2); }
+
+    /* YES/NO */
+    .yn-row { display: flex; gap: 1rem; margin-bottom: 0.5rem; }
+    .yn-btn {
+      flex: 1; border: 0.5px solid var(--border);
+      background: transparent; color: var(--muted);
+      font-family: var(--sans); font-size: 0.85rem;
+      font-weight: 400; letter-spacing: 0.12em;
+      text-transform: uppercase; padding: 1rem;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .yn-btn:hover { border-color: var(--gold); color: var(--cream); }
+    .yn-btn.selected {
+      background: var(--gold); color: var(--bg);
+      border-color: var(--gold);
+    }
+
+    /* MULTIPLE CHOICE */
+    .mc-options { display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 0.5rem; }
+    .mc-opt {
+      border: 0.5px solid var(--border);
+      background: transparent; color: var(--muted);
+      font-family: var(--sans); font-size: 0.92rem;
+      font-weight: 300; padding: 1.1rem 1.4rem;
+      cursor: pointer; transition: all 0.2s;
+      text-align: left; display: flex; align-items: center; gap: 1rem;
+    }
+    .mc-opt::before {
+      content: ''; display: block; flex-shrink: 0;
+      width: 16px; height: 16px;
+      border: 0.5px solid rgba(197,168,128,0.3);
+      border-radius: 50%; transition: all 0.2s;
+    }
+    .mc-opt:hover { border-color: rgba(197,168,128,0.5); color: var(--cream); }
+    .mc-opt.selected {
+      border-color: var(--gold); color: var(--cream);
+      background: rgba(197,168,128,0.06);
+    }
+    .mc-opt.selected::before {
+      background: var(--gold); border-color: var(--gold);
+    }
+
+    /* BUTTONS */
+    .btn-gold {
+      background: var(--gold); color: var(--bg);
+      border: none; font-family: var(--sans);
+      font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 1.1rem 2.8rem; cursor: pointer;
+      transition: background 0.2s; display: inline-block;
+    }
+    .btn-gold:hover { background: var(--gold-light); }
+    .btn-outline {
+      background: transparent; color: var(--gold);
+      border: 0.5px solid rgba(197,168,128,0.35);
+      font-family: var(--sans); font-size: 0.78rem;
+      font-weight: 400; letter-spacing: 0.14em;
+      text-transform: uppercase; padding: 1rem 2.2rem;
+      cursor: pointer; transition: all 0.2s;
+      display: inline-block; text-decoration: none;
+    }
+    .btn-outline:hover {
+      border-color: var(--gold); color: var(--cream);
+    }
+    .btn-row { display: flex; gap: 1rem; align-items: center; margin-top: 2.5rem; flex-wrap: wrap; }
+    .btn-back {
+      background: none; border: none; color: var(--muted);
+      font-family: var(--sans); font-size: 0.78rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer; transition: color 0.2s; padding: 0;
+    }
+    .btn-back:hover { color: var(--cream); }
+
+    /* ENDING */
+    .ending-symbol {
+      font-family: var(--serif); font-size: 3rem;
+      color: var(--gold); margin-bottom: 2rem;
+    }
+    .ending-title {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 300; color: var(--cream);
+      margin-bottom: 1.5rem; line-height: 1.2;
+    }
+    .ending-body {
+      font-size: 1rem; color: var(--muted);
+      line-height: 1.9; margin-bottom: 3rem;
+      max-width: 520px;
+    }
+
+    /* FOOTER */
+    .quiz-footer {
+      position: fixed; bottom: 2rem; right: 2rem;
+      font-size: 0.65rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: rgba(242,237,230,0.15);
+    }
+
+    /* ERROR */
+    .field-error {
+      font-size: 0.78rem; color: #e07070;
+      margin-top: 0.5rem; display: none;
+    }
+
+    @media (max-width: 600px) {
+      .quiz-wrap { padding: 3rem 1.2rem; }
+      .date-row { grid-template-columns: 1fr; gap: 1.2rem; }
+      .yn-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<div class="quiz-wrap">
+
+  <!-- SLIDE 0: WELCOME -->
+  <div class="slide active" id="slide-0">
+    <div class="welcome-symbol">✦ ✦ ✦</div>
+    <h1 class="welcome-title">Step Into Your<br><em>Dharmic Identity</em></h1>
+    <p class="welcome-body">You are on the threshold of your highest evolution. This 1:1 mentorship is a sacred container designed to completely shift your inner operating system, aligning your subconscious reality with the most self-aware, kind, and loving version of yourself. Please share your current truth and your highest vision below.</p>
+    <button class="btn-gold" onclick="nextSlide()">Begin the Shift →</button>
+  </div>
+
+  <!-- SLIDE 1: NAME -->
+  <div class="slide" id="slide-1">
+    <p class="q-num">Question 1 of 12</p>
+    <h2 class="q-title">What is the name you are currently known by?</h2>
+    <p class="q-desc">Please provide the exact name you resonate with and use daily, as this holds your active numerical vibration.</p>
+    <input type="text" class="q-input" id="f-name" placeholder="Your name" autocomplete="off" />
+    <p class="field-error" id="err-name">Please enter your name to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-name', 'err-name')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: EMAIL -->
+  <div class="slide" id="slide-2">
+    <p class="q-num">Question 2 of 12</p>
+    <h2 class="q-title">Where shall we send your communications?</h2>
+    <p class="q-desc">Enter your primary email address.</p>
+    <input type="email" class="q-input" id="f-email" placeholder="your@email.com" autocomplete="off" />
+    <p class="field-error" id="err-email">Please enter a valid email address.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateEmail()">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: STATEMENT -->
+  <div class="slide" id="slide-3">
+    <p class="q-num">Your Cosmic Blueprint</p>
+    <p class="statement-text">"To fully understand your unique energetic signature and cosmic blueprint, please share your precise birth details below."</p>
+    <button class="btn-gold" onclick="nextSlide()">Continue →</button>
+  </div>
+
+  <!-- SLIDE 4: DATE OF BIRTH -->
+  <div class="slide" id="slide-4">
+    <p class="q-num">Question 3 of 12</p>
+    <h2 class="q-title">What is your date of birth?</h2>
+    <div class="date-row">
+      <div class="date-field">
+        <label class="date-label">Day</label>
+        <input type="number" class="date-input" id="f-dob-day" placeholder="15" min="1" max="31" />
+      </div>
+      <div class="date-field">
+        <label class="date-label">Month</label>
+        <input type="number" class="date-input" id="f-dob-month" placeholder="9" min="1" max="12" />
+      </div>
+      <div class="date-field">
+        <label class="date-label">Year</label>
+        <input type="number" class="date-input" id="f-dob-year" placeholder="1992" min="1900" max="2010" />
+      </div>
+    </div>
+    <p class="field-error" id="err-dob">Please enter your complete date of birth.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateDOB()">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: BIRTH TIME -->
+  <div class="slide" id="slide-5">
+    <p class="q-num">Question 4 of 12</p>
+    <h2 class="q-title">What is your exact time of birth?</h2>
+    <p class="q-desc">Example: 4:32 PM. If your exact birth time remains unknown, simply write "Unknown" — though an exact time provides the clearest blueprint for our work together.</p>
+    <input type="text" class="q-input" id="f-birth-time" placeholder="e.g. 4:32 PM or Unknown" autocomplete="off" />
+    <p class="field-error" id="err-birth-time">Please enter your birth time or write "Unknown".</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-birth-time', 'err-birth-time')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: BIRTH PLACE -->
+  <div class="slide" id="slide-6">
+    <p class="q-num">Question 5 of 12</p>
+    <h2 class="q-title">Where were you born?</h2>
+    <p class="q-desc">Please list the City, State/Province, and Country.</p>
+    <input type="text" class="q-input" id="f-birth-place" placeholder="e.g. London, England, UK" autocomplete="off" />
+    <p class="field-error" id="err-birth-place">Please enter your place of birth.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-birth-place', 'err-birth-place')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: CURRENT REALITY -->
+  <div class="slide" id="slide-7">
+    <p class="q-num">Question 6 of 12</p>
+    <h2 class="q-title">The Current Operating System.<br>Describe your present reality.</h2>
+    <p class="q-desc">Where are you starting from today? Speak to the patterns, loops, or current timelines you observe running in your life right now.</p>
+    <textarea class="q-textarea" id="f-current-reality" placeholder="Share openly and honestly..." rows="6"></textarea>
+    <p class="field-error" id="err-current-reality">Please share your current reality to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-current-reality', 'err-current-reality')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: DHARMIC VISION -->
+  <div class="slide" id="slide-8">
+    <p class="q-num">Question 7 of 12</p>
+    <h2 class="q-title">The Dharmic Vision.<br>Describe the ultimate, most evolved version of yourself.</h2>
+    <p class="q-desc">When you are operating entirely from love, purpose, and self-awareness, what does your daily life look and feel like? How do you move through the world?</p>
+    <textarea class="q-textarea" id="f-dharmic-vision" placeholder="Let yourself dream fully here..." rows="6"></textarea>
+    <p class="field-error" id="err-dharmic-vision">Please share your Dharmic vision to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-dharmic-vision', 'err-dharmic-vision')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 8b: INNER WORK -->
+  <div class="slide" id="slide-9">
+    <p class="q-num">Question 8 of 12</p>
+    <h2 class="q-title">What type of inner work have you tried in the past?</h2>
+    <p class="q-desc">e.g. coaching, therapy, plant medicine, breathwork, hypnotherapy, energy healing, etc. What has worked, and what hasn't?</p>
+    <textarea class="q-textarea" id="f-inner-work" placeholder="Share your journey so far..." rows="5"></textarea>
+    <p class="field-error" id="err-inner-work">Please share your experience to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-inner-work', 'err-inner-work')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: CALLING IN -->
+  <div class="slide" id="slide-10">
+    <p class="q-num">Question 10 of 12</p>
+    <h2 class="q-title">What specific shifts are you calling in through this work?</h2>
+    <p class="q-desc">Share the transformation, identity shifts, and outcomes you are ready to step into.</p>
+    <textarea class="q-textarea" id="f-hopes" placeholder="Share what you are calling in..." rows="5"></textarea>
+    <p class="field-error" id="err-hopes">Please share what you're calling in to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-hopes', 'err-hopes')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 11: SPIRITUAL PRACTICE YES/NO -->
+  <div class="slide" id="slide-11">
+    <p class="q-num">Question 9 of 12</p>
+    <h2 class="q-title">Do you currently maintain a dedicated spiritual, meditative, or somatic practice?</h2>
+    <div class="yn-row">
+      <button class="yn-btn" id="yn-yes" onclick="selectYN('Yes')">Yes</button>
+      <button class="yn-btn" id="yn-no" onclick="selectYN('No')">No</button>
+    </div>
+    <p class="field-error" id="err-yn">Please select an answer to continue.</p>
+    <div class="btn-row" style="margin-top: 1.5rem;">
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: SPIRITUAL PRACTICE DETAILS (conditional) -->
+  <div class="slide" id="slide-12">
+    <p class="q-num">Question 9b of 12</p>
+    <h2 class="q-title">Beautiful. Please share the details of your current practices.</h2>
+    <p class="q-desc">What modalities, teachings, or daily rituals keep your nervous system regulated and your spirit anchored?</p>
+    <textarea class="q-textarea" id="f-practice-details" placeholder="Share your practices..." rows="5"></textarea>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="nextSlide()">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 11: READINESS -->
+  <div class="slide" id="slide-13">
+    <p class="q-num">Question 11 of 12</p>
+    <h2 class="q-title">On a scale of devotion, how ready are you to shift your timeline?</h2>
+    <div class="mc-options" id="mc-readiness">
+      <button class="mc-opt" onclick="selectMC('mc-readiness', this, 'f-readiness')">I am entirely ready and fully committed to the deep inner work required.</button>
+      <button class="mc-opt" onclick="selectMC('mc-readiness', this, 'f-readiness')">I am highly committed and eager to receive the exact framework to make this shift.</button>
+      <button class="mc-opt" onclick="selectMC('mc-readiness', this, 'f-readiness')">I am interested, and I am exploring if this is the right season for my expansion.</button>
+    </div>
+    <input type="hidden" id="f-readiness" />
+    <p class="field-error" id="err-readiness">Please select an option to continue.</p>
+    <div class="btn-row">
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 12: INVESTMENT -->
+  <div class="slide" id="slide-14">
+    <p class="q-num">Question 12 of 12</p>
+    <h2 class="q-title">Are you prepared to invest in this profound transformation?</h2>
+    <p class="q-desc">High-level 1:1 mentorship requires a significant investment of energy, time, and financial resources.</p>
+    <div class="mc-options" id="mc-investment">
+      <button class="mc-opt" onclick="selectMC('mc-investment', this, 'f-investment')">Yes, I am fully resourced and ready to invest in myself.</button>
+      <button class="mc-opt" onclick="selectMC('mc-investment', this, 'f-investment')">I have the resources and I am ready to review the investment details.</button>
+      <button class="mc-opt" onclick="selectMC('mc-investment', this, 'f-investment')">I require a payment plan to make this level of investment a reality.</button>
+    </div>
+    <input type="hidden" id="f-investment" />
+    <p class="field-error" id="err-investment">Please select an option to continue.</p>
+    <div class="btn-row">
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 13: ENDING -->
+  <div class="slide" id="slide-15">
+    <div class="ending-symbol">✦</div>
+    <h2 class="ending-title">Your Application<br>is Received.</h2>
+    <p class="ending-body">Thank you for sharing your energy and your vision. My team and I will review your application closely to ensure our energies align for this profound work. Expect a response via email within 48 hours.</p>
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+      <a href="mentorship.html" class="btn-gold">Return to Mentorship →</a>
+      <a href="index.html" class="btn-outline">Return to Website</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="quiz-footer">Isis Anchalee · Mentorship Application</div>
+
+<script>
+  const TOTAL_SLIDES = 14;
+  let current = 0;
+  let ynAnswer = '';
+
+  // Slide order — Q10 conditional
+  function getNextSlide(from) {
+    if (from === 11) {
+      return ynAnswer === 'Yes' ? 12 : 13;
+    }
+    if (from === 12) return 13;
+    return from + 1;
+  }
+
+  function getPrevSlide(from) {
+    if (from === 13 && ynAnswer === 'No') return 11;
+    if (from === 13 && ynAnswer === 'Yes') return 12;
+    return from - 1;
+  }
+
+  function updateProgress() {
+    const pct = (current / 15) * 100;
+    document.getElementById('progressBar').style.width = pct + '%';
+  }
+
+  function showSlide(n) {
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+    const el = document.getElementById('slide-' + n);
+    if (el) { el.classList.add('active'); current = n; updateProgress(); }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function nextSlide() { showSlide(getNextSlide(current)); }
+  function prevSlide() { showSlide(getPrevSlide(current)); }
+
+  function validateAndNext(fieldId, errId) {
+    const val = document.getElementById(fieldId).value.trim();
+    const err = document.getElementById(errId);
+    if (!val) { err.style.display = 'block'; return; }
+    err.style.display = 'none';
+    nextSlide();
+  }
+
+  function validateEmail() {
+    const val = document.getElementById('f-email').value.trim();
+    const err = document.getElementById('err-email');
+    if (!val || !val.includes('@') || !val.includes('.')) {
+      err.style.display = 'block'; return;
+    }
+    err.style.display = 'none';
+    nextSlide();
+  }
+
+  function validateDOB() {
+    const day = document.getElementById('f-dob-day').value;
+    const month = document.getElementById('f-dob-month').value;
+    const year = document.getElementById('f-dob-year').value;
+    const err = document.getElementById('err-dob');
+    if (!day || !month || !year) { err.style.display = 'block'; return; }
+    err.style.display = 'none';
+    nextSlide();
+  }
+
+  function selectYN(val) {
+    ynAnswer = val;
+    document.getElementById('yn-yes').classList.toggle('selected', val === 'Yes');
+    document.getElementById('yn-no').classList.toggle('selected', val === 'No');
+    document.getElementById('err-yn').style.display = 'none';
+    setTimeout(() => nextSlide(), 350);
+  }
+
+  function selectMC(groupId, btn, hiddenId) {
+    document.querySelectorAll('#' + groupId + ' .mc-opt').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    document.getElementById(hiddenId).value = btn.textContent.trim();
+    const errMap = { 'f-readiness': 'err-readiness', 'f-investment': 'err-investment' };
+    if (errMap[hiddenId]) document.getElementById(errMap[hiddenId]).style.display = 'none';
+    // Auto-advance after short delay
+    if (hiddenId === 'f-readiness') setTimeout(() => nextSlide(), 400);
+    if (hiddenId === 'f-investment') setTimeout(() => submitForm(), 400);
+  }
+
+  async function submitForm() {
+    // POST to backend — handles Google Forms forwarding + confirmation email
+    try {
+      await fetch('/api/mentorship-application', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name:           document.getElementById('f-name').value.trim(),
+          email:          document.getElementById('f-email').value.trim(),
+          dobYear:        document.getElementById('f-dob-year').value,
+          dobMonth:       document.getElementById('f-dob-month').value,
+          dobDay:         document.getElementById('f-dob-day').value,
+          birthTime:      document.getElementById('f-birth-time').value.trim(),
+          birthPlace:     document.getElementById('f-birth-place').value.trim(),
+          currentReality: document.getElementById('f-current-reality').value.trim(),
+          dharmicVision:  document.getElementById('f-dharmic-vision').value.trim(),
+          innerWork:      document.getElementById('f-inner-work').value.trim(),
+          hopes:          document.getElementById('f-hopes').value.trim(),
+          practiceYN:     ynAnswer,
+          practiceDetails:document.getElementById('f-practice-details').value.trim(),
+          readiness:      document.getElementById('f-readiness').value,
+          investment:     document.getElementById('f-investment').value,
+        }),
+      });
+    } catch(e) {
+      console.error('Submission error:', e);
+    }
+
+    showSlide(15);
+  }
+
+  // Enter key advances
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+      const btn = document.querySelector('#slide-' + current + ' .btn-gold');
+      if (btn) btn.click();
+    }
+  });
+
+  updateProgress();
+</script>
+</body>
+</html>

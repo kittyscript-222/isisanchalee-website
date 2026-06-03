@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Session Confirmed — Isis Anchalee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --deep: #0A0807;
+      --cream: #F2EDE6;
+      --gold: #C5A880;
+      --gold-light: #D4BC9A;
+      --muted: rgba(242,237,230,0.5);
+      --border: rgba(197,168,128,0.18);
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans: 'Lato', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--deep); color: var(--cream); font-family: var(--sans); font-weight: 300; min-height: 100vh; overflow-x: hidden; }
+
+    /* ── PROGRESS BAR ── */
+    .progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: var(--gold); z-index: 100; transition: width 0.6s ease; width: 0%; }
+
+    /* ── PAGE WRAPPER ── */
+    .page { max-width: 720px; margin: 0 auto; padding: 5rem 2rem 6rem; }
+
+    /* ── CONFIRMATION HEADER ── */
+    .confirm-header { text-align: center; margin-bottom: 5rem; }
+    .confirm-symbol { font-size: 1.8rem; color: var(--gold); margin-bottom: 2rem; letter-spacing: 0.3em; }
+    .confirm-steps { display: flex; align-items: center; justify-content: center; margin-bottom: 3.5rem; }
+    .step { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+    .step-dot {
+      width: 30px; height: 30px; border-radius: 50%;
+      border: 0.5px solid rgba(197,168,128,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem; color: var(--muted); transition: all 0.4s;
+    }
+    .step-dot.done { background: rgba(197,168,128,0.12); border-color: var(--gold); color: var(--gold); }
+    .step-dot.active { background: var(--gold); border-color: var(--gold); color: var(--deep); font-weight: 400; }
+    .step-label { font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+    .step-label.active { color: var(--gold); }
+    .step-line { width: 56px; height: 0.5px; background: var(--border); margin-bottom: 1.3rem; }
+    .confirm-title { font-family: var(--serif); font-size: clamp(2rem, 5vw, 3rem); font-weight: 300; line-height: 1.15; margin-bottom: 1rem; }
+    .confirm-title em { font-style: italic; color: var(--gold); }
+    .confirm-sub { font-size: 0.95rem; color: var(--muted); line-height: 1.8; max-width: 480px; margin: 0 auto; }
+
+    /* ── FORM INTRO ── */
+    .form-intro { margin-bottom: 4rem; padding-bottom: 3rem; border-bottom: 0.5px solid var(--border); }
+    .form-intro-eyebrow {
+      font-size: 0.65rem; letter-spacing: 0.26em; text-transform: uppercase;
+      color: var(--gold); display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.4rem;
+    }
+    .form-intro-eyebrow::before { content: ''; width: 24px; height: 0.5px; background: var(--gold); display: block; }
+    .form-intro-title { font-family: var(--serif); font-size: clamp(1.5rem, 3.5vw, 2.2rem); font-weight: 300; line-height: 1.2; margin-bottom: 1rem; }
+    .form-intro-title em { font-style: italic; color: var(--gold-light); }
+    .form-intro-body { font-size: 0.92rem; color: var(--muted); line-height: 1.9; }
+
+    /* ── FORM SECTION ── */
+    .form-section { margin-bottom: 3.5rem; }
+    .section-label {
+      font-size: 0.6rem; letter-spacing: 0.26em; text-transform: uppercase;
+      color: var(--gold); display: flex; align-items: center; gap: 0.7rem;
+      margin-bottom: 2.5rem;
+    }
+    .section-label::before { content: ''; flex: 1; height: 0.5px; background: var(--border); display: block; }
+    .section-label::after  { content: ''; flex: 1; height: 0.5px; background: var(--border); display: block; }
+
+    /* ── QUESTION FIELD ── */
+    .q-field { margin-bottom: 3rem; }
+    .q-num {
+      font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(197,168,128,0.4); margin-bottom: 0.6rem;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .q-num::before { content: ''; width: 16px; height: 0.5px; background: rgba(197,168,128,0.3); display: block; }
+    .q-title {
+      font-family: var(--serif); font-size: clamp(1.1rem, 2.5vw, 1.45rem);
+      font-weight: 300; line-height: 1.3; color: var(--cream); margin-bottom: 0.5rem;
+    }
+    .q-title em { font-style: italic; color: var(--gold-light); }
+    .q-desc { font-size: 0.84rem; color: var(--muted); line-height: 1.8; margin-bottom: 1.1rem; }
+
+    .q-input {
+      width: 100%; background: transparent;
+      border: none; border-bottom: 0.5px solid rgba(197,168,128,0.22);
+      color: var(--cream); font-family: var(--sans); font-size: 1rem; font-weight: 300;
+      padding: 0.75rem 0; outline: none; transition: border-color 0.2s;
+      caret-color: var(--gold);
+    }
+    .q-input:focus { border-bottom-color: var(--gold); }
+    .q-input::placeholder { color: rgba(242,237,230,0.16); }
+
+    .q-textarea {
+      width: 100%; resize: vertical; min-height: 100px;
+      border: 0.5px solid rgba(197,168,128,0.15);
+      padding: 1rem; line-height: 1.85;
+      background: rgba(197,168,128,0.025);
+      color: var(--cream); font-family: var(--sans); font-size: 0.95rem; font-weight: 300;
+      outline: none; transition: border-color 0.2s; caret-color: var(--gold);
+    }
+    .q-textarea:focus { border-color: rgba(197,168,128,0.4); }
+    .q-textarea::placeholder { color: rgba(242,237,230,0.16); }
+
+    .yn-row { display: flex; gap: 0.75rem; }
+    .yn-btn {
+      flex: 1; border: 0.5px solid rgba(197,168,128,0.2);
+      background: transparent; color: var(--muted);
+      font-family: var(--sans); font-size: 0.7rem;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      padding: 0.9rem; cursor: pointer; transition: all 0.2s;
+    }
+    .yn-btn:hover { border-color: var(--gold); color: var(--cream); }
+    .yn-btn.selected { background: var(--gold); color: var(--deep); border-color: var(--gold); }
+
+    .field-error { font-size: 0.73rem; color: #e07070; margin-top: 0.4rem; display: none; }
+
+    /* ── SUBMIT ── */
+    .form-submit-row { padding-top: 1rem; border-top: 0.5px solid var(--border); margin-top: 1rem; display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
+    .btn-submit {
+      background: var(--gold); color: var(--deep);
+      border: none; font-family: var(--sans); font-size: 0.72rem;
+      font-weight: 400; letter-spacing: 0.2em; text-transform: uppercase;
+      padding: 1.1rem 3rem; cursor: pointer; transition: background 0.2s;
+    }
+    .btn-submit:hover { background: var(--gold-light); }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+    .submit-note { font-size: 0.78rem; color: rgba(197,168,128,0.4); line-height: 1.6; }
+
+    /* ── BOOKING PANEL ── */
+    #booking-panel { display: none; }
+    #booking-panel.visible { display: block; }
+    .booking-wrap { text-align: center; padding: 4rem 0; }
+    .booking-symbol { font-size: 2rem; color: var(--gold); margin-bottom: 2rem; letter-spacing: 0.3em; }
+    .booking-title { font-family: var(--serif); font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 300; line-height: 1.2; margin-bottom: 1rem; }
+    .booking-title em { font-style: italic; color: var(--gold); }
+    .booking-body { font-size: 0.92rem; color: var(--muted); line-height: 1.8; max-width: 420px; margin: 0 auto 2.5rem; }
+    .btn-book {
+      display: inline-block; font-size: 0.72rem; letter-spacing: 0.2em;
+      text-transform: uppercase; text-decoration: none;
+      background: var(--gold); color: var(--deep);
+      padding: 1.1rem 3rem; transition: background 0.2s;
+    }
+    .btn-book:hover { background: var(--gold-light); }
+
+    .page-footer { text-align: center; margin-top: 5rem; padding-top: 2rem; border-top: 0.5px solid var(--border); }
+    .back-link { font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(197,168,128,0.45); text-decoration: none; transition: color 0.2s; }
+    .back-link:hover { color: var(--gold); }
+
+    @media (max-width: 560px) {
+      .page { padding: 3.5rem 1.3rem 5rem; }
+      .step-line { width: 28px; }
+      .yn-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+<div class="progress-bar" id="progressBar"></div>
+<div class="page">
+
+  <!-- CONFIRMATION HEADER -->
+  <div class="confirm-header">
+    <div class="confirm-symbol">✦</div>
+    <div class="confirm-steps">
+      <div class="step">
+        <div class="step-dot done" id="dot-1">✓</div>
+        <span class="step-label">Payment</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step">
+        <div class="step-dot active" id="dot-2">2</div>
+        <span class="step-label active" id="label-2">Intake Form</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step">
+        <div class="step-dot" id="dot-3">3</div>
+        <span class="step-label" id="label-3">Book Your Session</span>
+      </div>
+    </div>
+    <h1 class="confirm-title">Payment <em>confirmed.</em></h1>
+    <p class="confirm-sub">Please complete the intake form below before booking your session. Your answers are entirely confidential.</p>
+  </div>
+
+  <!-- INTAKE FORM -->
+  <div id="form-panel">
+
+    <div class="form-intro">
+      <p class="form-intro-eyebrow">Before We Begin</p>
+      <h2 class="form-intro-title">Your <em>intake form</em></h2>
+      <p class="form-intro-body">This takes about 10 minutes. The more honestly and specifically you answer, the more precisely I can work with you — and the more powerful your session will be. A copy will be emailed to you for your records.</p>
+    </div>
+
+    <!-- SECTION: CONTACT -->
+    <div class="form-section">
+      <p class="section-label">Contact Details</p>
+
+      <div class="q-field">
+        <p class="q-num">01</p>
+        <h3 class="q-title">Full name</h3>
+        <input type="text" class="q-input" id="f-name" placeholder="Your full name" autocomplete="off" />
+        <p class="field-error" id="err-name">Please enter your name.</p>
+      </div>
+
+      <div class="q-field">
+        <p class="q-num">02</p>
+        <h3 class="q-title">Email address</h3>
+        <p class="q-desc">Where should I send your intake form copy and session confirmation?</p>
+        <input type="email" class="q-input" id="f-email" placeholder="your@email.com" autocomplete="off" />
+        <p class="field-error" id="err-email">Please enter a valid email address.</p>
+      </div>
+
+      <div class="q-field">
+        <p class="q-num">03</p>
+        <h3 class="q-title">Phone number</h3>
+        <p class="q-desc">Please include your country code.</p>
+        <input type="tel" class="q-input" id="f-phone" placeholder="+1 555 000 0000" autocomplete="off" />
+        <p class="field-error" id="err-phone">Please enter your phone number.</p>
+      </div>
+    </div>
+
+    <!-- SECTION: THE WORK -->
+    <div class="form-section">
+      <p class="section-label">The Work</p>
+
+      <div class="q-field">
+        <p class="q-num">04</p>
+        <h3 class="q-title">What is the main pattern, block, or issue you want to <em>shift</em> in our session?</h3>
+        <p class="q-desc">Be as specific as you can. The more clearly you can name it, the more precisely we can work with it.</p>
+        <textarea class="q-textarea" id="f-focus" placeholder="Share openly..." rows="4"></textarea>
+        <p class="field-error" id="err-focus">Please share what you want to work on.</p>
+      </div>
+
+      <div class="q-field">
+        <p class="q-num">05</p>
+        <h3 class="q-title">How does this show up in your life?</h3>
+        <p class="q-desc">What does it look like in practice? What triggers it to arise? Describe specific behaviors, emotions, physical sensations, and how frequently it shows up.</p>
+        <textarea class="q-textarea" id="f-manifestation" placeholder="e.g. I freeze when I need to speak up, feel a tightness in my chest, it happens most in professional settings..." rows="4"></textarea>
+        <p class="field-error" id="err-manifestation">Please describe how this shows up for you.</p>
+      </div>
+
+      <div class="q-field">
+        <p class="q-num">06</p>
+        <h3 class="q-title">How long have you been experiencing this, and when do you first remember it showing up?</h3>
+        <textarea class="q-textarea" id="f-duration" placeholder="e.g. Since childhood / about 3 years / as long as I can remember..." rows="3"></textarea>
+        <p class="field-error" id="err-duration">Please share how long you've been experiencing this.</p>
+      </div>
+
+      <div class="q-field">
+        <p class="q-num">07</p>
+        <h3 class="q-title">Briefly describe your childhood environment, key relationships, or any significant events from your younger years that feel relevant.</h3>
+        <p class="q-desc">This helps me understand the deeper roots of what we'll be working with. Share only what you feel comfortable sharing.</p>
+        <textarea class="q-textarea" id="f-childhood" placeholder="e.g. Family dynamics, significant losses, formative experiences, the emotional tone of your upbringing..." rows="5"></textarea>
+        <p class="field-error" id="err-childhood">Please share something here, even if brief.</p>
+      </div>
+
+      <div class="q-field">
+        <p class="q-num">08</p>
+        <h3 class="q-title">What does your life look and <em>feel</em> like once this is fully resolved?</h3>
+        <p class="q-desc">Describe it as vividly as you can — the more sensory and specific, the more powerful the session.</p>
+        <textarea class="q-textarea" id="f-outcome" placeholder="Paint the picture of that new reality..." rows="4"></textarea>
+        <p class="field-error" id="err-outcome">Please describe your desired outcome.</p>
+      </div>
+
+      <div class="q-field">
+        <p class="q-num">09</p>
+        <h3 class="q-title">What have you already tried to address this?</h3>
+        <p class="q-desc">Therapy, coaching, plant medicine, breathwork, other modalities — what has helped, and what hasn't?</p>
+        <textarea class="q-textarea" id="f-previous" placeholder="Share your journey so far..." rows="3"></textarea>
+        <p class="field-error" id="err-previous">Please share what you've tried before.</p>
+      </div>
+    </div>
+
+    <!-- SECTION: BACKGROUND -->
+    <div class="form-section">
+      <p class="section-label">Background</p>
+
+      <div class="q-field">
+        <p class="q-num">10</p>
+        <h3 class="q-title">Any medical conditions, medications, or mental health history I should be aware of?</h3>
+        <p class="q-desc">Diagnosed conditions, current prescriptions, significant trauma history. If nothing applies, write "None."</p>
+        <textarea class="q-textarea" id="f-medical" placeholder="Share anything relevant, or write None..." rows="3"></textarea>
+        <p class="field-error" id="err-medical">Please respond to this question.</p>
+      </div>
+
+      <div class="q-field">
+        <p class="q-num">11</p>
+        <h3 class="q-title">Have you experienced hypnotherapy before?</h3>
+        <div class="yn-row" style="margin-top: 0.8rem; margin-bottom: 1rem;">
+          <button class="yn-btn" id="yn-yes" onclick="selectHypnoYN('Yes')">Yes</button>
+          <button class="yn-btn" id="yn-no" onclick="selectHypnoYN('No')">No</button>
+        </div>
+        <p class="field-error" id="err-hypno">Please select an answer.</p>
+      </div>
+
+      <div class="q-field" style="margin-bottom: 0;">
+        <p class="q-num">Optional</p>
+        <h3 class="q-title">Anything else you'd like me to know before we begin?</h3>
+        <textarea class="q-textarea" id="f-extra" placeholder="Share anything else on your mind..." rows="3"></textarea>
+      </div>
+    </div>
+
+    <div class="form-submit-row">
+      <button class="btn-submit" id="submit-btn" onclick="fSubmit()">Submit Intake Form →</button>
+      <p class="submit-note">A copy will be sent<br>to your email.</p>
+    </div>
+
+  </div>
+
+  <!-- BOOKING PANEL -->
+  <div id="booking-panel">
+    <div class="booking-wrap">
+      <div class="booking-symbol">✦ &nbsp;✦ &nbsp;✦</div>
+      <h2 class="booking-title">Now let's <em>book</em><br>your session.</h2>
+      <p class="booking-body">Your intake form has been received. Choose a time that works for you — you'll receive a calendar invitation and confirmation once booked.</p>
+      <a href="https://calendar.app.google/ccjGnyGvVzSyL6vQ9" target="_blank" class="btn-book">Choose Your Session Time →</a>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <a href="shop.html" class="back-link">← Return to shop</a>
+  </div>
+
+</div>
+
+<script>
+  const sessionId = new URLSearchParams(window.location.search).get('session_id');
+
+  // Fire confirmation email only once per session_id — guards against re-firing on page refresh
+  const confirmedKey = 'confirmed_' + sessionId;
+  if (sessionId && !sessionStorage.getItem(confirmedKey)) {
+    sessionStorage.setItem(confirmedKey, '1');
+    fetch('/api/session-confirm', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId }),
+    }).catch(() => {});
+  }
+
+  // Progress bar: fill as user scrolls through the form
+  function updateProgress() {
+    const panel = document.getElementById('form-panel');
+    if (!panel || panel.style.display === 'none') return;
+    const rect = panel.getBoundingClientRect();
+    const total = panel.offsetHeight;
+    const scrolled = Math.max(0, -rect.top + window.innerHeight * 0.3);
+    const pct = Math.min(95, (scrolled / total) * 100);
+    document.getElementById('progressBar').style.width = pct + '%';
+  }
+  window.addEventListener('scroll', updateProgress, { passive: true });
+
+  let hypnoAnswer = '';
+
+  function selectHypnoYN(val) {
+    hypnoAnswer = val;
+    document.getElementById('yn-yes').classList.toggle('selected', val === 'Yes');
+    document.getElementById('yn-no').classList.toggle('selected', val === 'No');
+    document.getElementById('err-hypno').style.display = 'none';
+  }
+
+  async function fSubmit() {
+    let valid = true;
+    function check(id, errId, isEmail) {
+      const val = document.getElementById(id).value.trim();
+      const err = document.getElementById(errId);
+      const fail = isEmail ? (!val || !val.includes('@') || !val.includes('.')) : !val;
+      err.style.display = fail ? 'block' : 'none';
+      if (fail) valid = false;
+    }
+    check('f-name',          'err-name');
+    check('f-email',         'err-email', true);
+    check('f-phone',         'err-phone');
+    check('f-focus',         'err-focus');
+    check('f-manifestation', 'err-manifestation');
+    check('f-duration',      'err-duration');
+    check('f-childhood',     'err-childhood');
+    check('f-outcome',       'err-outcome');
+    check('f-previous',      'err-previous');
+    check('f-medical',       'err-medical');
+    if (!hypnoAnswer) {
+      document.getElementById('err-hypno').style.display = 'block';
+      valid = false;
+    }
+    if (!valid) {
+      const firstErr = document.querySelector('.field-error[style*="block"]');
+      if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    const btn = document.getElementById('submit-btn');
+    btn.textContent = 'Submitting...';
+    btn.disabled = true;
+
+    try {
+      await fetch('/api/intake', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionId,
+          name:          document.getElementById('f-name').value.trim(),
+          email:         document.getElementById('f-email').value.trim(),
+          phone:         document.getElementById('f-phone').value.trim(),
+          focus:         document.getElementById('f-focus').value.trim(),
+          manifestation: document.getElementById('f-manifestation').value.trim(),
+          duration:      document.getElementById('f-duration').value.trim(),
+          childhood:     document.getElementById('f-childhood').value.trim(),
+          outcome:       document.getElementById('f-outcome').value.trim(),
+          previous:      document.getElementById('f-previous').value.trim(),
+          medical:       document.getElementById('f-medical').value.trim(),
+          hypno:         hypnoAnswer,
+          extra:         document.getElementById('f-extra').value.trim(),
+        }),
+      });
+    } catch(e) { console.error('Intake submission error:', e); }
+
+    // Update step indicators
+    document.getElementById('dot-2').textContent = '✓';
+    document.getElementById('dot-2').classList.remove('active');
+    document.getElementById('dot-2').classList.add('done');
+    document.getElementById('label-2').classList.remove('active');
+    document.getElementById('dot-3').classList.add('active');
+    document.getElementById('label-3').classList.add('active');
+    document.getElementById('progressBar').style.width = '100%';
+
+    // Swap panels
+    document.getElementById('form-panel').style.display = 'none';
+    const bp = document.getElementById('booking-panel');
+    bp.classList.add('visible');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>

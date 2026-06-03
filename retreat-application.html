@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Desert Rose Retreat Application — Isis Anchalee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0A0807;
+      --gold: #C5A880;
+      --gold-light: #D4BC9A;
+      --cream: #F2EDE6;
+      --muted: rgba(242,237,230,0.45);
+      --border: rgba(197,168,128,0.15);
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans: 'Montserrat', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: var(--bg); color: var(--cream); font-family: var(--sans); font-weight: 300; min-height: 100vh; overflow-x: hidden; }
+
+    .progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: var(--gold); z-index: 100; transition: width 0.5s ease; }
+
+    .quiz-wrap { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 5rem 1.5rem; }
+
+    .slide { display: none; max-width: 700px; width: 100%; animation: fadeUp 0.5s ease forwards; }
+    .slide.active { display: block; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* WELCOME */
+    .welcome-eyebrow { font-size: 0.68rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.8rem; }
+    .welcome-eyebrow::before { content:''; display:block; width:28px; height:0.5px; background:var(--gold); }
+    .welcome-title { font-family: var(--serif); font-size: clamp(2.2rem, 5vw, 3.5rem); font-weight: 300; line-height: 1.1; color: var(--cream); margin-bottom: 2rem; }
+    .welcome-title em { font-style: italic; color: var(--gold); }
+    .welcome-divider { width: 40px; height: 0.5px; background: rgba(197,168,128,0.3); margin: 2rem 0; }
+    .welcome-body { font-size: 1rem; line-height: 1.95; color: var(--muted); margin-bottom: 0.8rem; }
+
+    /* QUESTION */
+    .q-num { font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.7rem; }
+    .q-num::before { content:''; display:block; width:20px; height:0.5px; background:var(--gold); }
+    .q-title { font-family: var(--serif); font-size: clamp(1.4rem, 3.5vw, 2rem); font-weight: 300; line-height: 1.25; color: var(--cream); margin-bottom: 0.8rem; }
+    .q-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.8; margin-bottom: 2rem; }
+
+    /* INPUTS */
+    .q-input, .q-textarea {
+      width: 100%; background: transparent; border: none;
+      border-bottom: 0.5px solid rgba(197,168,128,0.3);
+      color: var(--cream); font-family: var(--sans); font-size: 1.1rem; font-weight: 300;
+      padding: 0.8rem 0; outline: none; transition: border-color 0.2s; caret-color: var(--gold);
+    }
+    .q-input:focus, .q-textarea:focus { border-bottom-color: var(--gold); }
+    .q-input::placeholder, .q-textarea::placeholder { color: rgba(242,237,230,0.2); }
+    .q-textarea { resize: none; min-height: 120px; border: 0.5px solid rgba(197,168,128,0.2); padding: 1rem; line-height: 1.8; background: rgba(197,168,128,0.03); }
+    .q-textarea:focus { border-color: rgba(197,168,128,0.5); }
+
+    /* BIRTH FIELDS */
+    .birth-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; margin-bottom: 0.5rem; }
+    .birth-field { display: flex; flex-direction: column; gap: 0.5rem; }
+    .birth-label { font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); }
+
+    /* MULTIPLE CHOICE */
+    .mc-options { display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 1.5rem; }
+    .mc-opt { border: 0.5px solid var(--border); background: transparent; color: var(--muted); font-family: var(--sans); font-size: 0.9rem; font-weight: 300; padding: 1rem 1.4rem; cursor: pointer; transition: all 0.2s; text-align: left; display: flex; align-items: center; gap: 1rem; }
+    .mc-opt::before { content:''; display:block; flex-shrink:0; width:15px; height:15px; border: 0.5px solid rgba(197,168,128,0.3); border-radius:50%; transition: all 0.2s; }
+    .mc-opt:hover { border-color: rgba(197,168,128,0.4); color: var(--cream); }
+    .mc-opt.selected { border-color: var(--gold); color: var(--cream); background: rgba(197,168,128,0.06); }
+    .mc-opt.selected::before { background: var(--gold); border-color: var(--gold); }
+
+    /* BUTTONS */
+    .btn-gold { background: var(--gold); color: var(--bg); border: none; font-family: var(--sans); font-size: 0.75rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; padding: 1.1rem 2.8rem; cursor: pointer; transition: background 0.2s; display: inline-block; }
+    .btn-gold:hover { background: var(--gold-light); }
+    .btn-outline { background: transparent; color: var(--gold); border: 0.5px solid rgba(197,168,128,0.35); font-family: var(--sans); font-size: 0.75rem; font-weight: 400; letter-spacing: 0.14em; text-transform: uppercase; padding: 1rem 2.2rem; cursor: pointer; transition: all 0.2s; display: inline-block; text-decoration: none; }
+    .btn-outline:hover { border-color: var(--gold); color: var(--cream); }
+    .btn-row { display: flex; gap: 1rem; align-items: center; margin-top: 2.5rem; flex-wrap: wrap; }
+    .btn-back { background: none; border: none; color: var(--muted); font-family: var(--sans); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: color 0.2s; padding: 0; }
+    .btn-back:hover { color: var(--cream); }
+
+    /* FIELD ERROR */
+    .field-error { font-size: 0.78rem; color: #e07070; margin-top: 0.5rem; display: none; }
+
+    /* CONDITIONAL */
+    .conditional-field { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 0.5px solid var(--border); display: none; }
+    .conditional-field.visible { display: block; }
+    .conditional-label { font-size: 0.78rem; color: var(--muted); margin-bottom: 0.8rem; font-style: italic; }
+
+    /* ENDING */
+    .ending-symbol { font-family: var(--serif); font-size: 3rem; color: var(--gold); margin-bottom: 2rem; }
+    .ending-title { font-family: var(--serif); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 300; color: var(--cream); margin-bottom: 1.5rem; line-height: 1.2; }
+    .ending-body { font-size: 1rem; color: var(--muted); line-height: 1.9; margin-bottom: 2.5rem; max-width: 520px; }
+
+    /* DISCLAIMER */
+    .disclaimer { font-size: 0.82rem; color: rgba(242,237,230,0.3); line-height: 1.8; border-top: 0.5px solid var(--border); padding-top: 1.5rem; margin-top: 1.5rem; }
+
+    .quiz-footer { position: fixed; bottom: 2rem; right: 2rem; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(242,237,230,0.15); }
+
+    @media (max-width: 600px) {
+      .quiz-wrap { padding: 3.5rem 1.2rem; }
+      .birth-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+    }
+  
+  @media (max-width: 480px) {
+    .quiz-wrap { padding: 3rem 1rem !important; }
+    .page { padding: 3rem 1rem 4rem !important; }
+    .mc-grid { grid-template-columns: 1fr !important; }
+    .birth-grid, .date-row { grid-template-columns: 1fr !important; gap: 1rem !important; }
+    .q-title { font-size: clamp(1.4rem, 7vw, 2rem) !important; }
+    body { padding: 2rem 1rem !important; }
+  }
+
+  </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<div class="quiz-wrap">
+
+  <!-- SLIDE 0: WELCOME -->
+  <div class="slide active" id="slide-0">
+    <p class="welcome-eyebrow">Desert Rose · Mahashivaratri Retreat 2027</p>
+    <h1 class="welcome-title">Welcome.<br><em>Take your time.</em></h1>
+    <div class="welcome-divider"></div>
+    <p class="welcome-body">This retreat is not a holiday. It is an immersion into living Vedic tradition — held during one of the most potent nights in the Vedic calendar, in the land where these practices were born.</p>
+    <p class="welcome-body">Space is limited and intentionally so. This application helps us ensure the retreat is the right fit for you, and you for it.</p>
+    <p class="welcome-body" style="color: rgba(242,237,230,0.6); font-style: italic; margin-top: 1rem;">Take your time. Answer honestly.</p>
+    <div class="btn-row" style="margin-top: 2.5rem;">
+      <button class="btn-gold" onclick="nextSlide()">Begin Application →</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 1: FULL NAME -->
+  <div class="slide" id="slide-1">
+    <p class="q-num">01 / 11</p>
+    <h2 class="q-title">Full Name</h2>
+    <p class="q-desc">Your full legal name.</p>
+    <input type="text" class="q-input" id="f-name" placeholder="Your full name" autocomplete="off" />
+    <p class="field-error" id="err-name">Please enter your name to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-name', 'err-name')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: DATE TIME PLACE OF BIRTH -->
+  <div class="slide" id="slide-2">
+    <p class="q-num">02 / 11</p>
+    <h2 class="q-title">Date, Time & Place of Birth</h2>
+    <p class="q-desc">As accurately as you know them. If you're unsure of your birth time, include your best estimate and note that it's approximate.</p>
+    <div class="birth-grid">
+      <div class="birth-field">
+        <label class="birth-label">Birth Date</label>
+        <input type="text" class="q-input" id="f-dob" placeholder="e.g. 15 Sep 1992" autocomplete="off" />
+      </div>
+      <div class="birth-field">
+        <label class="birth-label">Birth Time</label>
+        <input type="text" class="q-input" id="f-time" placeholder="e.g. 9:05 PM" autocomplete="off" />
+      </div>
+      <div class="birth-field">
+        <label class="birth-label">Birth Location</label>
+        <input type="text" class="q-input" id="f-birth-loc" placeholder="City, Country" autocomplete="off" />
+      </div>
+    </div>
+    <p class="field-error" id="err-birth">Please fill in all birth details.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateBirth()">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: WHERE BASED -->
+  <div class="slide" id="slide-3">
+    <p class="q-num">03 / 11</p>
+    <h2 class="q-title">Where are you based right now?</h2>
+    <p class="q-desc">City and country.</p>
+    <input type="text" class="q-input" id="f-location" placeholder="e.g. London, UK" autocomplete="off" />
+    <p class="field-error" id="err-location">Please enter your current location.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-location', 'err-location')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: INDIA TRAVEL -->
+  <div class="slide" id="slide-4">
+    <p class="q-num">04 / 11</p>
+    <h2 class="q-title">Have you traveled to India before?</h2>
+    <div class="mc-options" id="mc-india">
+      <button class="mc-opt" onclick="selectMC('mc-india', this, 'f-india')">Yes, multiple times</button>
+      <button class="mc-opt" onclick="selectMC('mc-india', this, 'f-india')">Yes, once</button>
+      <button class="mc-opt" onclick="selectMC('mc-india', this, 'f-india')">No — this would be my first time</button>
+    </div>
+    <input type="hidden" id="f-india" />
+    <div class="conditional-field" id="india-details-wrap">
+      <p class="conditional-label">If yes — briefly share where you went and what brought you there.</p>
+      <textarea class="q-textarea" id="f-india-details" placeholder="Share your experience of India..." rows="3"></textarea>
+    </div>
+    <p class="field-error" id="err-india">Please select an option to continue.</p>
+    <div class="btn-row" style="margin-top: 1.5rem;">
+      <button class="btn-gold" id="india-continue" style="display:none;" onclick="nextSlide()">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: SPIRITUAL PRACTICE -->
+  <div class="slide" id="slide-5">
+    <p class="q-num">05 / 11</p>
+    <h2 class="q-title">Describe your current spiritual practice.</h2>
+    <p class="q-desc">What does your practice actually look like, day to day? Be specific. We're not looking for credentials — we're looking for honesty about where you are.</p>
+    <textarea class="q-textarea" id="f-practice" placeholder="Share your practice honestly..." rows="6"></textarea>
+    <p class="field-error" id="err-practice">Please share your practice to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-practice', 'err-practice')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: FULL IMMERSION -->
+  <div class="slide" id="slide-6">
+    <p class="q-num">06 / 11</p>
+    <h2 class="q-title">How do you feel about full immersion practice?</h2>
+    <p class="q-desc">This retreat includes two-hour morning sadhanas, Vedic fire rituals, chanting, and ceremonial observances. Some of this will be unfamiliar. Some of it will be physically and energetically demanding. How open are you — really?</p>
+    <div class="mc-options" id="mc-immersion">
+      <button class="mc-opt" onclick="selectMC('mc-immersion', this, 'f-immersion')">Completely open. I'm here for the depth.</button>
+      <button class="mc-opt" onclick="selectMC('mc-immersion', this, 'f-immersion')">Mostly open, with some reservations I'd like to share.</button>
+      <button class="mc-opt" onclick="selectMC('mc-immersion', this, 'f-immersion')">I'm new to this but genuinely willing.</button>
+      <button class="mc-opt" onclick="selectMC('mc-immersion', this, 'f-immersion')">I have questions before I can answer this fully.</button>
+    </div>
+    <input type="hidden" id="f-immersion" />
+    <div class="conditional-field visible" id="immersion-details-wrap">
+      <p class="conditional-label">Space to elaborate — please do.</p>
+      <textarea class="q-textarea" id="f-immersion-details" placeholder="Share any thoughts, reservations, or questions..." rows="4"></textarea>
+    </div>
+    <p class="field-error" id="err-immersion">Please select an option to continue.</p>
+    <div class="btn-row" style="margin-top: 1.5rem;">
+      <button class="btn-gold" id="immersion-continue" style="display:none;" onclick="nextSlide()">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: CALLING -->
+  <div class="slide" id="slide-7">
+    <p class="q-num">07 / 11</p>
+    <h2 class="q-title">What is calling you to this retreat, at this moment in your life?</h2>
+    <p class="q-desc">Not what sounds good. What's actually true.</p>
+    <textarea class="q-textarea" id="f-calling" placeholder="Speak your truth here..." rows="6"></textarea>
+    <p class="field-error" id="err-calling">Please share what is calling you to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-calling', 'err-calling')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: MEDICAL -->
+  <div class="slide" id="slide-8">
+    <p class="q-num">08 / 11</p>
+    <h2 class="q-title">Medical & Health Considerations</h2>
+    <p class="q-desc">Please share anything relevant — physical conditions, medications, injuries, mental health history, or anything we should be aware of to support you safely. This information is held in complete confidence.</p>
+    <textarea class="q-textarea" id="f-medical" placeholder="Share anything relevant, or write 'None'..." rows="5"></textarea>
+    <p class="field-error" id="err-medical">Please complete this field (write "None" if not applicable).</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-medical', 'err-medical')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: DIETARY -->
+  <div class="slide" id="slide-9">
+    <p class="q-num">09 / 11</p>
+    <h2 class="q-title">Dietary requirements or food allergies</h2>
+    <p class="q-desc">Please list any.</p>
+    <textarea class="q-textarea" id="f-dietary" placeholder="List any requirements or write 'None'..." rows="3"></textarea>
+    <p class="field-error" id="err-dietary">Please complete this field (write "None" if not applicable).</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-dietary', 'err-dietary')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: SPECIAL REQUIREMENTS -->
+  <div class="slide" id="slide-10">
+    <p class="q-num">10 / 11</p>
+    <h2 class="q-title">Any other special requirements or considerations?</h2>
+    <p class="q-desc">Accessibility needs, travel support questions, anything else.</p>
+    <textarea class="q-textarea" id="f-special" placeholder="Share anything else, or write 'None'..." rows="3"></textarea>
+    <p class="field-error" id="err-special">Please complete this field (write "None" if not applicable).</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-special', 'err-special')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 11: HOW DID YOU FIND OUT -->
+  <div class="slide" id="slide-11">
+    <p class="q-num">11 / 11</p>
+    <h2 class="q-title">How did you find out about this retreat?</h2>
+    <textarea class="q-textarea" id="f-source" placeholder="Instagram, a friend, search, etc..." rows="3"></textarea>
+    <p class="field-error" id="err-source">Please complete this field.</p>
+    <div class="disclaimer">
+      Almost done. By submitting this application, you understand that an application is not a confirmation of a place. You'll hear from us within a few days. If selected, a deposit will be required to secure your spot.
+    </div>
+    <div class="btn-row">
+      <button class="btn-gold" id="submit-btn" onclick="submitForm()">Submit Application →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 12: ENDING -->
+  <div class="slide" id="slide-12">
+    <div class="ending-symbol">✦</div>
+    <h2 class="ending-title">Your application<br>has been received.</h2>
+    <p class="ending-body">Thank you for sharing your energy and your truth. We will review your application carefully and be in touch within a few days. Until then — keep up your practice.</p>
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+      <a href="retreats.html" class="btn-gold">Return to Retreat Page →</a>
+      <a href="index.html" class="btn-outline">Return to Website</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="quiz-footer">Desert Rose · Mahashivaratri 2027 · Pushkar</div>
+
+<script>
+  const FORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSdicjpPLAvWa6U1gMmS-bZIdavdSqCQkDt_iUV4Op4eB2YG-g/formResponse';
+  let current = 0;
+  let indiaAnswer = '';
+
+  function updateProgress() {
+    document.getElementById('progressBar').style.width = (current / 12) * 100 + '%';
+  }
+
+  function showSlide(n) {
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+    const el = document.getElementById('slide-' + n);
+    if (el) { el.classList.add('active'); current = n; updateProgress(); }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function nextSlide() { showSlide(current + 1); }
+  function prevSlide() { showSlide(current - 1); }
+
+  function validateAndNext(fieldId, errId) {
+    const val = document.getElementById(fieldId).value.trim();
+    if (!val) { document.getElementById(errId).style.display = 'block'; return; }
+    document.getElementById(errId).style.display = 'none';
+    nextSlide();
+  }
+
+  function validateBirth() {
+    const dob = document.getElementById('f-dob').value.trim();
+    const time = document.getElementById('f-time').value.trim();
+    const loc = document.getElementById('f-birth-loc').value.trim();
+    const err = document.getElementById('err-birth');
+    if (!dob || !time || !loc) { err.style.display = 'block'; return; }
+    err.style.display = 'none';
+    nextSlide();
+  }
+
+  function selectMC(groupId, btn, hiddenId) {
+    document.querySelectorAll('#' + groupId + ' .mc-opt').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    const val = btn.textContent.trim();
+    document.getElementById(hiddenId).value = val;
+
+    if (hiddenId === 'f-india') {
+      indiaAnswer = val;
+      const wrap = document.getElementById('india-details-wrap');
+      wrap.classList.toggle('visible', val !== 'No — this would be my first time');
+      document.getElementById('err-india').style.display = 'none';
+      document.getElementById('india-continue').style.display = 'inline-block';
+    }
+    if (hiddenId === 'f-immersion') {
+      document.getElementById('err-immersion').style.display = 'none';
+      // Don't auto-advance — let them fill in the elaboration field first
+      document.getElementById('immersion-continue').style.display = 'inline-block';
+    }
+  }
+
+  async function submitForm() {
+    const source = document.getElementById('f-source').value.trim();
+    if (!source) { document.getElementById('err-source').style.display = 'block'; return; }
+    document.getElementById('err-source').style.display = 'none';
+
+    const btn = document.getElementById('submit-btn');
+    btn.textContent = 'Submitting...';
+    btn.disabled = true;
+
+    const data = new FormData();
+    data.append('entry.467126863', document.getElementById('f-name').value.trim());
+    data.append('entry.1923092233', document.getElementById('f-dob').value.trim() + ' | ' + document.getElementById('f-time').value.trim() + ' | ' + document.getElementById('f-birth-loc').value.trim());
+    data.append('entry.577050016', document.getElementById('f-location').value.trim());
+    data.append('entry.7417314', document.getElementById('f-india-details').value.trim());
+    data.append('entry.663335609', document.getElementById('f-practice').value.trim());
+    data.append('entry.424057658', document.getElementById('f-immersion-details').value.trim());
+    data.append('entry.1034054693', document.getElementById('f-calling').value.trim());
+    data.append('entry.442893854', document.getElementById('f-medical').value.trim());
+    data.append('entry.1676529280', document.getElementById('f-dietary').value.trim());
+    data.append('entry.1940245890', document.getElementById('f-special').value.trim());
+    data.append('entry.1515890510', document.getElementById('f-source').value.trim());
+    data.append('entry.1196969014', document.getElementById('f-india').value);
+    data.append('entry.833566313', document.getElementById('f-immersion').value);
+
+    try {
+      await fetch(FORM_ACTION, { method: 'POST', body: data, mode: 'no-cors' });
+    } catch(e) { /* no-cors expected */ }
+
+    showSlide(12);
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+      const btn = document.querySelector('#slide-' + current + ' .btn-gold');
+      if (btn) btn.click();
+    }
+  });
+
+  updateProgress();
+</script>
+</body>
+</html>
