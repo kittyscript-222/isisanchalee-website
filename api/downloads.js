@@ -2,8 +2,8 @@
 const Stripe = require('stripe');
 const { PRODUCTS, AUDIO_BY_NAME } = require('../lib/products');
 const { getDownloadUrls } = require('../lib/drive');
-const { sendAudioConfirmation } = require('../lib/email');
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const { sendAudioConfirmation, notifyAudioPurchaseReceived } = require('../lib/email');
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', process.env.SITE_URL || '*');
@@ -17,7 +17,7 @@ module.exports = async function handler(req, res) {
 
   try {
     const session = await stripe.checkout.sessions.retrieve(session_id, {
-      expand: ['customer_details'],
+      expand: ['customer_details', 'line_items'],
     });
     if (session.payment_status !== 'paid') {
       return res.status(402).json({ error: 'Payment not completed' });
@@ -51,12 +51,37 @@ module.exports = async function handler(req, res) {
           });
         } catch (emailErr) {
           console.error('Email send error:', emailErr);
-          // Don't fail the request if email fails
+        }
+
+        // Internal notification to Isis
+        try {
+          await notifyAudioPurchaseReceived({
+            name: session.customer_details?.name,
+            email: session.customer_details?.email,
+            audioNames,
+            productName,
+            amount: session.amount_total != null ? session.amount_total / 100 : null,
+            currency: session.currency || 'usd',
+          });
+        } catch (notifyErr) {
+          console.error('Internal notification error:', notifyErr);
         }
       }
     }
 
-    return res.status(200).json({ productName, files });
+    return res.status(200).json({
+      productName,
+      files,
+      transaction: {
+        id: session.id,
+        value: session.amount_total / 100,
+        currency: (session.currency || 'usd').toUpperCase(),
+        items: audioNames.map(name => ({
+          item_name: name,
+          quantity: 1,
+        })),
+      },
+    });
 
   } catch (err) {
     console.error('Downloads error:', err);

@@ -2,8 +2,48 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SXJ4N0LHMV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-SXJ4N0LHMV");
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About — Isis Anchalee</title>
+<title>About Isis Anchalee | RTT™ Hypnotherapist & Vedic Astrologer</title>
+<meta name="description" content="From software engineer to circus performer to certified RTT™ hypnotherapist — 6,000+ hours of meditation, four years immersed in Vedic philosophy, and a career built on lived experience of transformation.">
+<meta name="keywords" content="Isis Anchalee, RTT hypnotherapist, Vedic astrologer, consciousness coach, hypnotherapy practitioner, spiritual teacher, spiritual guide, spirituality, spiritual expansion, mindset coaching, self-awareness, identity shifting">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://isisanchalee.com/about.html">
+<meta name="author" content="Isis Anchalee">
+
+<!-- Open Graph -->
+<meta property="og:type" content="profile">
+<meta property="og:title" content="About Isis Anchalee | RTT™ Hypnotherapist & Vedic Astrologer">
+<meta property="og:description" content="From software engineer to circus performer to certified RTT™ hypnotherapist — a career built on lived experience of transformation.">
+<meta property="og:url" content="https://isisanchalee.com/about.html">
+<meta property="og:site_name" content="Isis Anchalee">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="About Isis Anchalee | RTT™ Hypnotherapist & Vedic Astrologer">
+<meta name="twitter:description" content="From software engineer to circus performer to certified RTT™ hypnotherapist — a career built on lived experience of transformation.">
+
+<!-- Schema.org -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Isis Anchalee",
+  "url": "https://isisanchalee.com/about.html",
+  "jobTitle": "RTT™ Hypnotherapist & Vedic Astrologer",
+  "description": "Certified RTT™ hypnotherapist and Vedic astrologer with 6,000+ hours of meditation and study, four years immersed in non-dual Shaiva Tantra and Vedic philosophy.",
+  "alumniOf": "Software Engineering",
+  "knowsAbout": ["Rapid Transformational Therapy", "Hypnotherapy", "Vedic Astrology", "Non-Dual Shaiva Tantra", "Sri Vidya", "Dzogchen", "Manifestation", "Spirituality", "Spiritual Coaching", "Self-Awareness", "Subconscious Reprogramming"]
+}
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
@@ -404,7 +444,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 2.4rem 1.8rem;
-      font-size: 0.72rem !important;
+      font-size: 1.05rem !important;
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: #1C1811 !important;
@@ -940,6 +980,7 @@
 
     /* Retreat hero */
     .hero { padding: 5rem 1rem 3rem !important; }
+    section.hero { padding: 0 !important; }
 
     /* Programme */
     .programme-grid { grid-template-columns: 1fr !important; }
@@ -1030,6 +1071,7 @@
 
     /* Retreat hero */
     .hero { padding: 5rem 1rem 3rem !important; }
+    section.hero { padding: 0 !important; }
 
     /* Programme */
     .programme-grid { grid-template-columns: 1fr !important; }
@@ -1060,7 +1102,78 @@
     .free-audio-content { padding: 3rem 1rem !important; }
   }
 
-  </style>
+  
+  /* ============================================================
+     MOBILE PATCH — auto-appended, covers all pages
+     ============================================================ */
+  @media (max-width: 768px) {
+    .section, .shop-section { padding-left: 1.8rem !important; padding-right: 1.8rem !important; }
+    footer { padding-left: 1.8rem !important; padding-right: 1.8rem !important; flex-direction: column; gap: 1.5rem; text-align: center; }
+    .hero-left, .page-hero-left { padding: 7rem 1.8rem 3rem !important; }
+    .hero-title { font-size: clamp(2.4rem, 7vw, 3.8rem) !important; }
+    .page-hero { padding: 7rem 1.8rem 4rem !important; }
+    .about-hero { padding: 0 !important; }
+    .about-hero .hero-left { padding: 8rem 1.8rem 3rem !important; }
+    section.hero { padding: 0 !important; }
+    .bio-inner, .speaking-photo-strip { grid-template-columns: 1fr !important; }
+    .phil-grid { grid-template-columns: 1fr 1fr !important; }
+    .phil-item { border-right: none !important; border-bottom: 0.5px solid rgba(184,151,90,0.12) !important; }
+    .process-steps, .facts-grid { grid-template-columns: 1fr 1fr !important; }
+    .audio-grid { grid-template-columns: 1fr 1fr !important; }
+    .shop-section { padding: 2.5rem 1.8rem !important; }
+    .section { padding: 5rem 1.8rem !important; }
+    .pricing-cards, .investment-cards { flex-direction: column !important; }
+    .inv-card, .price-card { width: 100% !important; }
+    .page-hero-left::before { font-size: 5rem !important; }
+    .shiva-feature::before { font-size: 8rem !important; }
+    .start-paths { grid-template-columns: 1fr !important; }
+    .mission-section { padding: 4rem 1.8rem !important; }
+  }
+  @media (max-width: 480px) {
+    * { box-sizing: border-box; }
+    h1, .hero-title, .confirm-title { font-size: clamp(2rem, 9vw, 2.8rem) !important; }
+    h2, .section-title, .form-intro-title { font-size: clamp(1.5rem, 7vw, 2rem) !important; }
+    h3 { font-size: clamp(1.1rem, 5vw, 1.4rem) !important; }
+    p, li, .q-desc, .audio-desc, .consent-text { font-size: 0.92rem !important; line-height: 1.75 !important; }
+    .page-hero-left::before, .shiva-feature::before, .section-bg-num { display: none !important; }
+    .section, .shop-section, .mission-section, .start-here,
+    .cta-strip, .page-hero,
+    .inner-testimonials { padding: 3.5rem 1rem !important; }
+    .about-hero { padding: 0 !important; }
+    .hero-left { padding: 5.5rem 1rem 2.5rem !important; }
+    .hero-subtitle { font-size: 0.92rem !important; line-height: 1.8 !important; }
+    footer { padding: 2rem 1rem !important; flex-direction: column; gap: 1.5rem; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; gap: 1rem !important; }
+    .audio-grid, .sessions-grid, .shop-grid,
+    .process-steps, .facts-grid, .phil-grid,
+    .bio-inner, .speaking-photo-strip,
+    .investment-cards, .pricing-cards,
+    .start-paths, .inner-testi-grid { grid-template-columns: 1fr !important; }
+    .phil-item { border-right: none !important; border-bottom: 0.5px solid rgba(184,151,90,0.12) !important; }
+    .inv-card, .price-card, .audio-item,
+    .session-card, .offering-card { width: 100% !important; padding: 1.5rem 1rem !important; }
+    .btn-gold, .btn-outline, .btn-primary, .btn-submit,
+    .btn-outline-dark { width: 100% !important; text-align: center !important; display: block !important; box-sizing: border-box !important; }
+    .cta-actions, .hero-actions { flex-direction: column !important; gap: 0.8rem !important; }
+    .consent-box { max-height: 300px !important; padding: 1.2rem !important; }
+    .q-input, .q-textarea { font-size: 16px !important; }
+    .yn-row { flex-direction: column !important; gap: 0.5rem !important; }
+    .yn-btn { width: 100% !important; text-align: center !important; }
+    .audio-bar { flex-direction: column !important; align-items: stretch !important; gap: 0.8rem !important; padding: 1rem !important; }
+    .btn-add-cart { width: 100% !important; }
+    .cart-sidebar { width: 100vw !important; }
+    .speaking-photo-img { min-height: 65vw !important; }
+    .investment-grid { grid-template-columns: 1fr !important; }
+    .file-card { flex-direction: column !important; align-items: flex-start !important; gap: 0.8rem !important; }
+    .btn-download { width: 100% !important; text-align: center !important; }
+    .confirm-steps { flex-wrap: wrap !important; gap: 0.5rem !important; }
+    .step-line { display: none !important; }
+    .email-capture-modal { padding: 2rem 1rem !important; }
+    .step-item { flex-direction: column !important; }
+    span[style*="font-size: 7rem"], span[style*="font-size:7rem"] { font-size: 3rem !important; }
+  }
+
+</style>
 </head>
 <body>
 
@@ -1069,11 +1182,13 @@
   <ul class="nav-links" id="nav-menu">
     <li><a href="about.html" class="active">About</a></li>
     <li><a href="rtt-hypnotherapy.html">RTT™ Hypnotherapy</a></li>
+    <!-- NAV MENTORSHIP + RETREATS — hidden, toggle back when ready
     <li><a href="mentorship.html">Mentorship</a></li>
     <li><a href="retreats.html">Retreats</a></li>
+    END NAV -->
     <li><a href="shop.html">Shop</a></li>
   </ul>
-  <a href="https://calendar.app.google/MkEMYwd699nCQyea9" target="_blank" class="nav-book">Work With Me</a>
+  <a href="rtt-hypnotherapy.html#investment" class="nav-book">Work With Me</a>
   <a href="index.html" class="mobile-menu-logo" id="mobileMenuLogo">Isis <span>Anchalee</span></a>
   <button class="mobile-menu-close" id="menuClose" onclick="toggleMenu()" aria-label="Close menu">✕</button>
   <button class="hamburger" id="hamburger" aria-label="Open menu" onclick="toggleMenu()">
@@ -1182,7 +1297,7 @@
   <div class="speaking-photo-text">
     <p class="speaking-photo-eyebrow">On Stage</p>
     <h2 class="speaking-photo-headline">Speaking at the<br><em>Grace Hopper Celebration</em></h2>
-    <p class="speaking-photo-caption">One of the largest gatherings of women technologists in the world — Isis has taken the stage at GHC, the Clinton Foundation, NASA, Google, and SXSW, bringing a rigorous and deeply personal perspective on human potential.</p>
+    <p class="speaking-photo-caption">A clip from one of the largest gatherings of women technologists in the world — I have spoken on stage at GHC, the Clinton Foundation, NASA, TechCrunch Disrupt, Google, and SXSW.</p>
     <span class="speaking-photo-tag">Anita Borg Institute · 10,000+ Attendees</span>
   </div>
 </section>
@@ -1240,7 +1355,7 @@
     <h2>I can take you deeper<br><em>than you can take yourself</em></h2>
     <p>You've already tried doing it alone. This is what can take you to your next quantum level-up.</p>
     <div class="cta-actions">
-      <a href="https://calendar.app.google/MkEMYwd699nCQyea9" target="_blank" class="btn-gold">Book a Discovery Call</a>
+      <a href="rtt-hypnotherapy.html#investment" class="btn-gold">Book a Session</a>
       <a href="index.html" class="btn-outline">Explore Offerings</a>
     </div>
   </div>
@@ -1251,9 +1366,12 @@
   <ul class="footer-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="rtt-hypnotherapy.html">RTT™</a></li>
+    <!-- NAV MENTORSHIP + RETREATS — hidden, toggle back when ready
     <li><a href="mentorship.html">Mentorship</a></li>
     <li><a href="retreats.html">Retreats</a></li>
+    END NAV -->
     <li><a href="shop.html">Shop</a></li>
+    <li><a href="https://www.instagram.com/isisanchalee" target="_blank" rel="noopener">Instagram</a></li>
   </ul>
   <p class="footer-copy">© 2026 Isis Anchalee</p>
 </footer>

@@ -2,6 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SXJ4N0LHMV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-SXJ4N0LHMV");
+</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mentorship Application — Isis Anchalee</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -488,6 +496,7 @@
 <div class="quiz-footer">Isis Anchalee · Mentorship Application</div>
 
 <script>
+  const FORM_ACTION = 'https://docs.google.com/forms/d/e/1FAIpQLSfAeiChFW0UQD50aj9p5PnhZVhSTOU_DvzLFQwQcVVxSottGg/formResponse';
   const TOTAL_SLIDES = 14;
   let current = 0;
   let ynAnswer = '';
@@ -570,31 +579,29 @@
   }
 
   async function submitForm() {
-    // POST to backend — handles Google Forms forwarding + confirmation email
+    const data = new FormData();
+    data.append('entry.1603839335', document.getElementById('f-name').value.trim());
+    data.append('entry.1464286298', document.getElementById('f-email').value.trim());
+    data.append('entry.707093164', document.getElementById('f-birth-time').value.trim());
+    data.append('entry.2005852651', document.getElementById('f-birth-place').value.trim());
+    data.append('entry.1223968588', document.getElementById('f-current-reality').value.trim());
+    data.append('entry.1693068142', document.getElementById('f-dharmic-vision').value.trim());
+    data.append('entry.1167018557', document.getElementById('f-inner-work').value.trim());
+    data.append('entry.1721812146', document.getElementById('f-hopes').value.trim());
+    data.append('entry.1098829276', ynAnswer);
+    data.append('entry.449233744', document.getElementById('f-practice-details').value.trim());
+    data.append('entry.972745171_year', document.getElementById('f-dob-year').value);
+    data.append('entry.972745171_month', document.getElementById('f-dob-month').value);
+    data.append('entry.972745171_day', document.getElementById('f-dob-day').value);
+    data.append('entry.1713707066', document.getElementById('f-readiness').value);
+    data.append('entry.1299244343', document.getElementById('f-investment').value);
+
     try {
-      await fetch('/api/mentorship-application', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name:           document.getElementById('f-name').value.trim(),
-          email:          document.getElementById('f-email').value.trim(),
-          dobYear:        document.getElementById('f-dob-year').value,
-          dobMonth:       document.getElementById('f-dob-month').value,
-          dobDay:         document.getElementById('f-dob-day').value,
-          birthTime:      document.getElementById('f-birth-time').value.trim(),
-          birthPlace:     document.getElementById('f-birth-place').value.trim(),
-          currentReality: document.getElementById('f-current-reality').value.trim(),
-          dharmicVision:  document.getElementById('f-dharmic-vision').value.trim(),
-          innerWork:      document.getElementById('f-inner-work').value.trim(),
-          hopes:          document.getElementById('f-hopes').value.trim(),
-          practiceYN:     ynAnswer,
-          practiceDetails:document.getElementById('f-practice-details').value.trim(),
-          readiness:      document.getElementById('f-readiness').value,
-          investment:     document.getElementById('f-investment').value,
-        }),
+      await fetch(FORM_ACTION, {
+        method: 'POST', body: data, mode: 'no-cors'
       });
     } catch(e) {
-      console.error('Submission error:', e);
+      // no-cors will throw — that's expected, form still submits
     }
 
     showSlide(15);

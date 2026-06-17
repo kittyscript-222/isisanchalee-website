@@ -6,7 +6,7 @@
 
 const Stripe = require('stripe');
 const { sendPaymentConfirmation } = require('../lib/email');
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', process.env.SITE_URL || '*');

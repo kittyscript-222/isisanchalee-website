@@ -1,13 +1,11 @@
 {
   "version": 2,
+  "cleanUrls": true,
+  "trailingSlash": false,
   "functions": {
     "api/**/*.js": {
       "memory": 256,
       "maxDuration": 10
-    },
-    "api/deliver-audio.js": {
-      "memory": 1024,
-      "maxDuration": 60
     }
   }
 }

@@ -2,8 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SXJ4N0LHMV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-SXJ4N0LHMV");
+</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Session Confirmed — Isis Anchalee</title>
+  <meta name="robots" content="noindex, nofollow" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet" />
   <style>
@@ -116,6 +125,31 @@
 
     .field-error { font-size: 0.73rem; color: #e07070; margin-top: 0.4rem; display: none; }
 
+    /* ── CONSENT FORM ── */
+    .consent-box {
+      border: 0.5px solid var(--border); background: rgba(197,168,128,0.025);
+      padding: 1.8rem; border-radius: 2px; max-height: 420px; overflow-y: auto;
+    }
+    .consent-text { font-size: 0.88rem; line-height: 1.9; color: var(--muted); margin-bottom: 1.2rem; }
+    .consent-text:last-child { margin-bottom: 0; }
+    .consent-text strong { color: var(--cream); font-weight: 400; }
+    .consent-checkbox-row {
+      display: flex; align-items: flex-start; gap: 0.9rem; cursor: pointer;
+    }
+    .consent-checkbox {
+      appearance: none; width: 20px; height: 20px; flex-shrink: 0; margin-top: 0.15rem;
+      border: 0.5px solid rgba(197,168,128,0.35); background: transparent;
+      border-radius: 2px; cursor: pointer; position: relative; transition: all 0.2s;
+    }
+    .consent-checkbox:checked { background: var(--gold); border-color: var(--gold); }
+    .consent-checkbox:checked::after {
+      content: '✓'; position: absolute; inset: 0; display: flex;
+      align-items: center; justify-content: center; font-size: 0.75rem; color: var(--deep);
+    }
+    .consent-checkbox-label { font-size: 0.9rem; line-height: 1.8; color: var(--cream); }
+    #consent-panel { display: block; }
+    #consent-panel.hidden { display: none; }
+
     /* ── SUBMIT ── */
     .form-submit-row { padding-top: 1rem; border-top: 0.5px solid var(--border); margin-top: 1rem; display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
     .btn-submit {
@@ -153,7 +187,75 @@
       .step-line { width: 28px; }
       .yn-row { flex-direction: column; }
     }
-  </style>
+  
+  /* ============================================================
+     MOBILE PATCH — auto-appended, covers all pages
+     ============================================================ */
+  @media (max-width: 768px) {
+    .section, .shop-section { padding-left: 1.8rem !important; padding-right: 1.8rem !important; }
+    footer { padding-left: 1.8rem !important; padding-right: 1.8rem !important; flex-direction: column; gap: 1.5rem; text-align: center; }
+    .hero-left, .page-hero-left { padding: 7rem 1.8rem 3rem !important; }
+    .hero-title { font-size: clamp(2.4rem, 7vw, 3.8rem) !important; }
+    .page-hero { padding: 7rem 1.8rem 4rem !important; }
+    .about-hero { padding: 8rem 1.8rem 4rem !important; }
+    .bio-inner, .speaking-photo-strip { grid-template-columns: 1fr !important; }
+    .phil-grid { grid-template-columns: 1fr 1fr !important; }
+    .phil-item { border-right: none !important; border-bottom: 0.5px solid rgba(184,151,90,0.12) !important; }
+    .process-steps, .facts-grid { grid-template-columns: 1fr 1fr !important; }
+    .audio-grid { grid-template-columns: 1fr 1fr !important; }
+    .shop-section { padding: 2.5rem 1.8rem !important; }
+    .section { padding: 5rem 1.8rem !important; }
+    .pricing-cards, .investment-cards { flex-direction: column !important; }
+    .inv-card, .price-card { width: 100% !important; }
+    .page-hero-left::before { font-size: 5rem !important; }
+    .shiva-feature::before { font-size: 8rem !important; }
+    .start-paths { grid-template-columns: 1fr !important; }
+    .mission-section { padding: 4rem 1.8rem !important; }
+  }
+  @media (max-width: 480px) {
+    * { box-sizing: border-box; }
+    h1, .hero-title, .confirm-title { font-size: clamp(2rem, 9vw, 2.8rem) !important; }
+    h2, .section-title, .form-intro-title { font-size: clamp(1.5rem, 7vw, 2rem) !important; }
+    h3 { font-size: clamp(1.1rem, 5vw, 1.4rem) !important; }
+    p, li, .q-desc, .audio-desc, .consent-text { font-size: 0.92rem !important; line-height: 1.75 !important; }
+    .page-hero-left::before, .shiva-feature::before, .section-bg-num { display: none !important; }
+    .section, .shop-section, .mission-section, .start-here,
+    .cta-strip, .page-hero, .about-hero,
+    .inner-testimonials { padding: 3.5rem 1rem !important; }
+    .hero-left { padding: 5.5rem 1rem 2.5rem !important; }
+    .hero-subtitle { font-size: 0.92rem !important; line-height: 1.8 !important; }
+    footer { padding: 2rem 1rem !important; flex-direction: column; gap: 1.5rem; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; gap: 1rem !important; }
+    .audio-grid, .sessions-grid, .shop-grid,
+    .process-steps, .facts-grid, .phil-grid,
+    .bio-inner, .speaking-photo-strip,
+    .investment-cards, .pricing-cards,
+    .start-paths, .inner-testi-grid { grid-template-columns: 1fr !important; }
+    .phil-item { border-right: none !important; border-bottom: 0.5px solid rgba(184,151,90,0.12) !important; }
+    .inv-card, .price-card, .audio-item,
+    .session-card, .offering-card { width: 100% !important; padding: 1.5rem 1rem !important; }
+    .btn-gold, .btn-outline, .btn-primary, .btn-submit,
+    .btn-outline-dark { width: 100% !important; text-align: center !important; display: block !important; box-sizing: border-box !important; }
+    .cta-actions, .hero-actions { flex-direction: column !important; gap: 0.8rem !important; }
+    .consent-box { max-height: 300px !important; padding: 1.2rem !important; }
+    .q-input, .q-textarea { font-size: 16px !important; }
+    .yn-row { flex-direction: column !important; gap: 0.5rem !important; }
+    .yn-btn { width: 100% !important; text-align: center !important; }
+    .audio-bar { flex-direction: column !important; align-items: stretch !important; gap: 0.8rem !important; padding: 1rem !important; }
+    .btn-add-cart { width: 100% !important; }
+    .cart-sidebar { width: 100vw !important; }
+    .speaking-photo-img { min-height: 65vw !important; }
+    .investment-grid { grid-template-columns: 1fr !important; }
+    .file-card { flex-direction: column !important; align-items: flex-start !important; gap: 0.8rem !important; }
+    .btn-download { width: 100% !important; text-align: center !important; }
+    .confirm-steps { flex-wrap: wrap !important; gap: 0.5rem !important; }
+    .step-line { display: none !important; }
+    .email-capture-modal { padding: 2rem 1rem !important; }
+    .step-item { flex-direction: column !important; }
+    span[style*="font-size: 7rem"], span[style*="font-size:7rem"] { font-size: 3rem !important; }
+  }
+
+</style>
 </head>
 <body>
 <div class="progress-bar" id="progressBar"></div>
@@ -170,23 +272,89 @@
       <div class="step-line"></div>
       <div class="step">
         <div class="step-dot active" id="dot-2">2</div>
-        <span class="step-label active" id="label-2">Intake Form</span>
+        <span class="step-label active" id="label-2">Consent</span>
       </div>
       <div class="step-line"></div>
       <div class="step">
         <div class="step-dot" id="dot-3">3</div>
-        <span class="step-label" id="label-3">Book Your Session</span>
+        <span class="step-label" id="label-3">Intake Form</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step">
+        <div class="step-dot" id="dot-4">4</div>
+        <span class="step-label" id="label-4">Book Your Session</span>
       </div>
     </div>
     <h1 class="confirm-title">Payment <em>confirmed.</em></h1>
-    <p class="confirm-sub">Please complete the intake form below before booking your session. Your answers are entirely confidential.</p>
+    <p class="confirm-sub" id="confirm-sub">Before your intake form, please review and sign the consent below.</p>
   </div>
 
-  <!-- INTAKE FORM -->
-  <div id="form-panel">
+  <!-- CONSENT FORM -->
+  <div id="consent-panel">
 
     <div class="form-intro">
       <p class="form-intro-eyebrow">Before We Begin</p>
+      <h2 class="form-intro-title">Informed <em>consent</em></h2>
+      <p class="form-intro-body">Please take a moment to read through the following before your session. This ensures you understand the nature of RTT™ hypnotherapy and feel fully informed and comfortable moving forward.</p>
+    </div>
+
+    <div class="form-section">
+      <p class="section-label">Please Read & Acknowledge</p>
+
+      <div class="consent-box">
+        <p class="consent-text"><strong>Nature of the work.</strong> RTT™ (Rapid Transformational Therapy) combines hypnotherapy, neuroscience, and psychotherapeutic techniques to help identify and address the subconscious roots of patterns, beliefs, and behaviours. Sessions involve a guided relaxation/hypnosis state in which we explore relevant memories and beliefs, followed by a personalised recording for you to listen to afterward.</p>
+
+        <p class="consent-text"><strong>Not a substitute for medical or psychiatric care.</strong> RTT™ hypnotherapy is a complementary modality intended to support personal growth and is not a substitute for medical, psychiatric, or psychological treatment. It is not a diagnosis, treatment, or cure for any medical or mental health condition. If you are currently under the care of a doctor, therapist, or psychiatrist, please consult them before beginning this work, and continue any prescribed treatment.</p>
+
+        <p class="consent-text"><strong>Hypnosis is a natural, safe state.</strong> Hypnosis is simply a deeply relaxed, focused state of attention — similar to daydreaming or the moments just before sleep. You remain in control throughout and can hear, speak, and end the session at any time.</p>
+
+        <p class="consent-text"><strong>Results vary.</strong> Every individual responds differently, and results are not guaranteed. The depth of transformation depends on many factors including your openness, willingness to engage with the process, and consistency in listening to your personalised recording afterward.</p>
+
+        <p class="consent-text"><strong>Confidentiality.</strong> Everything shared during your intake and session is held in strict confidence. Information will not be shared with any third party except where required by law, or where there is a risk of harm to yourself or others.</p>
+
+        <p class="consent-text"><strong>Recording.</strong> Your session itself is not recorded. A personalised 15-minute hypnosis audio is recorded separately for you, based on your session, for your continued use afterward. This audio is for your personal use only and will be stored securely.</p>
+
+        <p class="consent-text"><strong>Voluntary participation.</strong> Your participation in this session is entirely voluntary. You may pause, stop, or withdraw consent at any point before or during the session.</p>
+
+        <p class="consent-text"><strong>Emotional responses.</strong> Exploring memories, beliefs, and subconscious patterns can surface a range of emotional responses, including feelings that may be uncomfortable or unexpected. This is a normal part of the process and does not indicate that anything has gone wrong. If you have a history of trauma, significant mental health concerns, or are uncertain whether this work is appropriate for you, please consult a licensed medical or mental health professional before proceeding.</p>
+
+        <p class="consent-text"><strong>Limitation of liability.</strong> By proceeding, you acknowledge that you are participating in this session entirely of your own free will and at your own discretion. Isis Anchalee, in her capacity as an RTT™ practitioner, shall not be held liable for any emotional, psychological, physical, or other outcome — including any feelings of distress or trauma — that may arise during or after this session or from use of your personalised audio. You assume full responsibility for your own wellbeing and for seeking appropriate professional support where needed.</p>
+      </div>
+
+      <div class="q-field" style="margin-top: 2rem;">
+        <label class="consent-checkbox-row" for="consent-check">
+          <input type="checkbox" id="consent-check" class="consent-checkbox" onchange="document.getElementById('err-consent').style.display='none'">
+          <span class="consent-checkbox-label">I have read and understood the above, and I consent to proceed with my RTT™ hypnotherapy session under these terms.</span>
+        </label>
+        <p class="field-error" id="err-consent">Please confirm you have read and agree to the consent terms.</p>
+      </div>
+
+      <div class="q-field">
+        <p class="q-num">Signature</p>
+        <h3 class="q-title">Please type your full <em>legal name</em> as your signature</h3>
+        <p class="q-desc">This serves as your digital signature confirming the above.</p>
+        <input type="text" class="q-input" id="f-signature" placeholder="Type your full name">
+        <p class="field-error" id="err-signature">Please type your full name to sign.</p>
+      </div>
+
+      <div class="q-field" style="margin-bottom: 0;">
+        <p class="q-num">Date</p>
+        <h3 class="q-title" id="consent-date" style="font-size: 1rem; color: var(--muted); font-family: var(--sans); font-weight: 300;"></h3>
+      </div>
+    </div>
+
+    <div class="form-submit-row">
+      <button class="btn-submit" id="consent-btn" onclick="cSubmit()">Agree & Continue →</button>
+      <p class="submit-note">You'll move on to your<br>intake form next.</p>
+    </div>
+
+  </div>
+
+  <!-- INTAKE FORM -->
+  <div id="form-panel" style="display: none;">
+
+    <div class="form-intro">
+      <p class="form-intro-eyebrow">Step 3 of 4</p>
       <h2 class="form-intro-title">Your <em>intake form</em></h2>
       <p class="form-intro-body">This takes about 10 minutes. The more honestly and specifically you answer, the more precisely I can work with you — and the more powerful your session will be. A copy will be emailed to you for your records.</p>
     </div>
@@ -225,7 +393,7 @@
 
       <div class="q-field">
         <p class="q-num">04</p>
-        <h3 class="q-title">What is the main pattern, block, or issue you want to <em>shift</em> in our session?</h3>
+        <h3 class="q-title">What is the ONE main pattern, block, or issue you want to <em>shift</em> in our session?</h3>
         <p class="q-desc">Be as specific as you can. The more clearly you can name it, the more precisely we can work with it.</p>
         <textarea class="q-textarea" id="f-focus" placeholder="Share openly..." rows="4"></textarea>
         <p class="field-error" id="err-focus">Please share what you want to work on.</p>
@@ -339,8 +507,8 @@
 
   // Progress bar: fill as user scrolls through the form
   function updateProgress() {
-    const panel = document.getElementById('form-panel');
-    if (!panel || panel.style.display === 'none') return;
+    const panel = document.querySelector('#consent-panel:not(.hidden), #form-panel:not([style*="display: none"])');
+    if (!panel) return;
     const rect = panel.getBoundingClientRect();
     const total = panel.offsetHeight;
     const scrolled = Math.max(0, -rect.top + window.innerHeight * 0.3);
@@ -348,6 +516,58 @@
     document.getElementById('progressBar').style.width = pct + '%';
   }
   window.addEventListener('scroll', updateProgress, { passive: true });
+
+  // Set today's date on the consent form
+  document.getElementById('consent-date').textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+  async function cSubmit() {
+    let valid = true;
+
+    const checked = document.getElementById('consent-check').checked;
+    document.getElementById('err-consent').style.display = checked ? 'none' : 'block';
+    if (!checked) valid = false;
+
+    const sig = document.getElementById('f-signature').value.trim();
+    document.getElementById('err-signature').style.display = sig ? 'none' : 'block';
+    if (!sig) valid = false;
+
+    if (!valid) {
+      const firstErr = document.querySelector('#consent-panel .field-error[style*="block"]');
+      if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    // Log consent record immediately
+    try {
+      const consentRes = await fetch('/api/consent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name:             document.getElementById('f-name')?.value.trim() || '',
+          consentSignature: sig,
+          consentDate:      document.getElementById('consent-date').textContent,
+          sessionId:        new URLSearchParams(window.location.search).get('session_id') || '',
+        }),
+      });
+      const consentData = await consentRes.json();
+      console.log('Consent log response:', consentRes.status, consentData);
+    } catch (e) { console.error('Consent log error:', e); }
+
+    // Update step indicators: consent done, intake active
+    document.getElementById('dot-2').textContent = '✓';
+    document.getElementById('dot-2').classList.remove('active');
+    document.getElementById('dot-2').classList.add('done');
+    document.getElementById('label-2').classList.remove('active');
+    document.getElementById('dot-3').classList.add('active');
+    document.getElementById('label-3').classList.add('active');
+
+    document.getElementById('confirm-sub').textContent = 'Please complete the intake form below before booking your session. Your answers are entirely confidential.';
+
+    // Swap panels
+    document.getElementById('consent-panel').classList.add('hidden');
+    document.getElementById('form-panel').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
 
   let hypnoAnswer = '';
 
@@ -409,17 +629,19 @@
           medical:       document.getElementById('f-medical').value.trim(),
           hypno:         hypnoAnswer,
           extra:         document.getElementById('f-extra').value.trim(),
+          consentSignature: document.getElementById('f-signature').value.trim(),
+          consentDate:      document.getElementById('consent-date').textContent,
         }),
       });
     } catch(e) { console.error('Intake submission error:', e); }
 
     // Update step indicators
-    document.getElementById('dot-2').textContent = '✓';
-    document.getElementById('dot-2').classList.remove('active');
-    document.getElementById('dot-2').classList.add('done');
-    document.getElementById('label-2').classList.remove('active');
-    document.getElementById('dot-3').classList.add('active');
-    document.getElementById('label-3').classList.add('active');
+    document.getElementById('dot-3').textContent = '✓';
+    document.getElementById('dot-3').classList.remove('active');
+    document.getElementById('dot-3').classList.add('done');
+    document.getElementById('label-3').classList.remove('active');
+    document.getElementById('dot-4').classList.add('active');
+    document.getElementById('label-4').classList.add('active');
     document.getElementById('progressBar').style.width = '100%';
 
     // Swap panels

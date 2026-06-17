@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /success.html
+Disallow: /session-success.html
+
+Sitemap: https://isisanchalee.com/sitemap.xml

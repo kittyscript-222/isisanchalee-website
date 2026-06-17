@@ -6,7 +6,8 @@
 const Stripe = require('stripe');
 const https = require('https');
 const { sendSessionConfirmation, notifyIntakeReceived } = require('../lib/email');
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const { logConsentRecord } = require('../lib/sheets');
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 // Node-native HTTP POST — works on all Node versions without fetch
 function httpsPost(url, body) {
@@ -57,7 +58,7 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { sessionId, name, email, phone, focus, manifestation, duration, childhood, outcome, previous, medical, hypno, extra } = req.body;
+  const { sessionId, name, email, phone, focus, manifestation, duration, childhood, outcome, previous, medical, hypno, extra, consentSignature, consentDate } = req.body;
 
   // ── 1. Resolve client email ───────────────────────────────────────────────
   // Use the email from the form if provided; fall back to the Stripe session.
@@ -102,7 +103,17 @@ module.exports = async function handler(req, res) {
     // Non-fatal — still send the email
   }
 
-  // ── 3. Send confirmation + intake copy email ──────────────────────────────
+  // ── 3. Log consent record to Google Sheets ────────────────────────────────
+  if (consentSignature) {
+    try {
+      await logConsentRecord({ name, email: clientEmail, phone, consentSignature, consentDate, sessionId });
+    } catch (err) {
+      console.error('Consent log error:', err);
+      // Non-fatal — still send confirmations
+    }
+  }
+
+  // ── 4. Send confirmation + intake copy email ──────────────────────────────
   if (clientEmail) {
     try {
       await sendSessionConfirmation(clientEmail, { name, phone, focus, manifestation, duration, childhood, outcome, previous, medical, hypno, extra });
@@ -111,9 +122,9 @@ module.exports = async function handler(req, res) {
     }
   }
 
-  // ── 4. Send internal notification to Isis ────────────────────────────────
+  // ── 5. Send internal notification to Isis ────────────────────────────────
   try {
-    await notifyIntakeReceived({ name, email: clientEmail, phone, focus, manifestation, duration, childhood, outcome, previous, medical, hypno, extra });
+    await notifyIntakeReceived({ name, email: clientEmail, phone, focus, manifestation, duration, childhood, outcome, previous, medical, hypno, extra, consentSignature, consentDate });
   } catch (err) {
     console.error('Internal notification error:', err);
   }

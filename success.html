@@ -2,8 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SXJ4N0LHMV"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag("js", new Date());
+  gtag("config", "G-SXJ4N0LHMV");
+</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Your Downloads — Isis Anchalee</title>
+  <meta name="robots" content="noindex, nofollow" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet" />
   <style>
@@ -37,7 +46,7 @@
     .email-notice {
       display: flex; align-items: flex-start; gap: 0.8rem;
       background: rgba(184,151,90,0.06); border: 0.5px solid var(--border);
-      padding: 1rem 1.2rem; margin-bottom: 2rem;
+      padding: 1rem 1.2rem; margin-bottom: 1.5rem;
       font-size: 0.88rem; color: var(--muted); line-height: 1.65; text-align: left;
     }
     .email-notice::before { content: '✉'; color: var(--gold); font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
@@ -57,13 +66,81 @@
       .file-card { flex-direction: column; align-items: flex-start; }
       .btn-download { width: 100%; text-align: center; }
     }
-  </style>
+  
+  /* ============================================================
+     MOBILE PATCH — auto-appended, covers all pages
+     ============================================================ */
+  @media (max-width: 768px) {
+    .section, .shop-section { padding-left: 1.8rem !important; padding-right: 1.8rem !important; }
+    footer { padding-left: 1.8rem !important; padding-right: 1.8rem !important; flex-direction: column; gap: 1.5rem; text-align: center; }
+    .hero-left, .page-hero-left { padding: 7rem 1.8rem 3rem !important; }
+    .hero-title { font-size: clamp(2.4rem, 7vw, 3.8rem) !important; }
+    .page-hero { padding: 7rem 1.8rem 4rem !important; }
+    .about-hero { padding: 8rem 1.8rem 4rem !important; }
+    .bio-inner, .speaking-photo-strip { grid-template-columns: 1fr !important; }
+    .phil-grid { grid-template-columns: 1fr 1fr !important; }
+    .phil-item { border-right: none !important; border-bottom: 0.5px solid rgba(184,151,90,0.12) !important; }
+    .process-steps, .facts-grid { grid-template-columns: 1fr 1fr !important; }
+    .audio-grid { grid-template-columns: 1fr 1fr !important; }
+    .shop-section { padding: 2.5rem 1.8rem !important; }
+    .section { padding: 5rem 1.8rem !important; }
+    .pricing-cards, .investment-cards { flex-direction: column !important; }
+    .inv-card, .price-card { width: 100% !important; }
+    .page-hero-left::before { font-size: 5rem !important; }
+    .shiva-feature::before { font-size: 8rem !important; }
+    .start-paths { grid-template-columns: 1fr !important; }
+    .mission-section { padding: 4rem 1.8rem !important; }
+  }
+  @media (max-width: 480px) {
+    * { box-sizing: border-box; }
+    h1, .hero-title, .confirm-title { font-size: clamp(2rem, 9vw, 2.8rem) !important; }
+    h2, .section-title, .form-intro-title { font-size: clamp(1.5rem, 7vw, 2rem) !important; }
+    h3 { font-size: clamp(1.1rem, 5vw, 1.4rem) !important; }
+    p, li, .q-desc, .audio-desc, .consent-text { font-size: 0.92rem !important; line-height: 1.75 !important; }
+    .page-hero-left::before, .shiva-feature::before, .section-bg-num { display: none !important; }
+    .section, .shop-section, .mission-section, .start-here,
+    .cta-strip, .page-hero, .about-hero,
+    .inner-testimonials { padding: 3.5rem 1rem !important; }
+    .hero-left { padding: 5.5rem 1rem 2.5rem !important; }
+    .hero-subtitle { font-size: 0.92rem !important; line-height: 1.8 !important; }
+    footer { padding: 2rem 1rem !important; flex-direction: column; gap: 1.5rem; text-align: center; }
+    .footer-links { flex-wrap: wrap; justify-content: center; gap: 1rem !important; }
+    .audio-grid, .sessions-grid, .shop-grid,
+    .process-steps, .facts-grid, .phil-grid,
+    .bio-inner, .speaking-photo-strip,
+    .investment-cards, .pricing-cards,
+    .start-paths, .inner-testi-grid { grid-template-columns: 1fr !important; }
+    .phil-item { border-right: none !important; border-bottom: 0.5px solid rgba(184,151,90,0.12) !important; }
+    .inv-card, .price-card, .audio-item,
+    .session-card, .offering-card { width: 100% !important; padding: 1.5rem 1rem !important; }
+    .btn-gold, .btn-outline, .btn-primary, .btn-submit,
+    .btn-outline-dark { width: 100% !important; text-align: center !important; display: block !important; box-sizing: border-box !important; }
+    .cta-actions, .hero-actions { flex-direction: column !important; gap: 0.8rem !important; }
+    .consent-box { max-height: 300px !important; padding: 1.2rem !important; }
+    .q-input, .q-textarea { font-size: 16px !important; }
+    .yn-row { flex-direction: column !important; gap: 0.5rem !important; }
+    .yn-btn { width: 100% !important; text-align: center !important; }
+    .audio-bar { flex-direction: column !important; align-items: stretch !important; gap: 0.8rem !important; padding: 1rem !important; }
+    .btn-add-cart { width: 100% !important; }
+    .cart-sidebar { width: 100vw !important; }
+    .speaking-photo-img { min-height: 65vw !important; }
+    .investment-grid { grid-template-columns: 1fr !important; }
+    .file-card { flex-direction: column !important; align-items: flex-start !important; gap: 0.8rem !important; }
+    .btn-download { width: 100% !important; text-align: center !important; }
+    .confirm-steps { flex-wrap: wrap !important; gap: 0.5rem !important; }
+    .step-line { display: none !important; }
+    .email-capture-modal { padding: 2rem 1rem !important; }
+    .step-item { flex-direction: column !important; }
+    span[style*="font-size: 7rem"], span[style*="font-size:7rem"] { font-size: 3rem !important; }
+  }
+
+</style>
 </head>
 <body>
   <div class="container">
     <div class="symbol">✦</div>
     <h1>Your purchase is <em>confirmed</em></h1>
-    <p class="subtitle">Thank you. Your downloads are ready below — save them to your device and return to them whenever you need.</p>
+    <p class="subtitle">Thank you. Your audios have been sent to your email with full instructions — but if you don't want to wait you can also download them directly below 🫶🏼</p>
 
     <div id="content">
       <div class="loading">
@@ -92,19 +169,39 @@
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Something went wrong");
 
-        const filesHtml = data.files.map(f => `
-          <div class="file-card">
-            <span class="file-name">${f.name}</span>
-            <a class="btn-download" href="${f.url}" download target="_blank">Download</a>
-          </div>
-        `).join("");
+        const isCustomAudio = data.productName === 'Custom Hypnosis Audio' || (!data.files || data.files.length === 0);
 
-        content.innerHTML = `
-          <div class="email-notice">
-            A copy of your downloads has been sent to your email address. Check your spam folder if you don't see it within a few minutes.
-          </div>
-          <div class="files">${filesHtml}</div>
-        `;
+        if (isCustomAudio) {
+          content.innerHTML = `
+            <div class="email-notice">Your order has been received. Please complete the brief on the next screen so I can begin crafting your personalised audio — delivery within 3 working days.</div>
+          `;
+        } else {
+          const filesHtml = data.files.map(f => `
+            <div class="file-card">
+              <span class="file-name">${f.name}</span>
+              <a class="btn-download" href="${f.url}" download target="_blank">Download</a>
+            </div>
+          `).join("");
+
+          content.innerHTML = `
+            <div class="email-notice">Check your spam or promotions tab if the email doesn't arrive within a few minutes.</div>
+            <div class="files">${filesHtml}</div>
+          `;
+        }
+
+        // Fire GA4 purchase event once per transaction (deduped via sessionStorage)
+        if (data.transaction && typeof gtag === "function") {
+          const trackedKey = "ga4_purchase_tracked_" + data.transaction.id;
+          if (!sessionStorage.getItem(trackedKey)) {
+            gtag("event", "purchase", {
+              transaction_id: data.transaction.id,
+              value: data.transaction.value,
+              currency: data.transaction.currency,
+              items: data.transaction.items,
+            });
+            sessionStorage.setItem(trackedKey, "1");
+          }
+        }
       } catch (err) {
         content.innerHTML = `
           <p class="error-msg">
