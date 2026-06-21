@@ -268,6 +268,121 @@
     padding: 0.5rem 0 0.8rem;
   }
 
+  .audio-instructions {
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: rgba(245,240,232,0.45);
+    margin-bottom: 0.8rem;
+  }
+  .audio-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    margin-bottom: 0.9rem;
+  }
+  .audio-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    width: 100%;
+    text-decoration: none;
+    background: rgba(245,240,232,0.03);
+    border: 0.5px solid rgba(184,151,90,0.15);
+    padding: 0.75rem 0.9rem;
+    cursor: pointer;
+    font-family: var(--sans);
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .audio-row:hover {
+    background: rgba(184,151,90,0.07);
+    border-color: rgba(184,151,90,0.35);
+  }
+  .audio-row.selected {
+    background: rgba(184,151,90,0.12);
+    border-color: rgba(184,151,90,0.5);
+  }
+  .audio-row-name {
+    font-family: var(--serif);
+    font-size: 0.92rem;
+    color: var(--cream);
+    line-height: 1.3;
+    text-align: left;
+  }
+  .audio-row-right {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-shrink: 0;
+  }
+  .audio-row-price {
+    font-family: var(--serif);
+    font-size: 0.92rem;
+    color: var(--gold);
+  }
+  .audio-row-check {
+    width: 17px;
+    height: 17px;
+    border-radius: 50%;
+    border: 0.5px solid rgba(184,151,90,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.62rem;
+    color: transparent;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+  }
+  .audio-row.selected .audio-row-check {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--deep);
+  }
+  .audio-checkout-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.9rem;
+    padding: 0.9rem 1rem;
+    margin-bottom: 0.8rem;
+    background: rgba(184,151,90,0.07);
+    border: 0.5px solid rgba(184,151,90,0.25);
+  }
+  .audio-checkout-info { display: flex; flex-direction: column; gap: 0.1rem; }
+  .audio-checkout-count {
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.4);
+  }
+  .audio-checkout-price {
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    color: var(--cream);
+    line-height: 1.2;
+  }
+  .audio-checkout-saving {
+    font-size: 0.72rem;
+    color: var(--gold);
+    min-height: 1em;
+  }
+  .audio-checkout-btn {
+    background: var(--gold);
+    border: none;
+    color: var(--deep);
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.85rem 1.2rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.25s, opacity 0.25s;
+  }
+  .audio-checkout-btn:hover { background: var(--gold-light); }
+  .audio-checkout-btn.inactive { opacity: 0.4; pointer-events: none; }
+  .audio-checkout-btn:disabled { opacity: 0.6; cursor: default; }
+  #audio-accordion.open #audio-panel { max-height: 1100px; padding: 0 1.3rem 1.2rem; }
+
   .free-audio-card {
     cursor: default;
     align-items: flex-start;
@@ -370,6 +485,81 @@
       <span class="link-arrow">→</span>
     </a>
 
+    <div class="link-card substack-accordion" id="audio-accordion">
+      <button class="substack-accordion-trigger" onclick="toggleAudioAccordion()" type="button">
+        <div class="link-icon">
+          <svg viewBox="0 0 80 80" fill="none">
+            <circle cx="40" cy="40" r="30" stroke="#B8975A" stroke-width="1.5"/>
+            <path d="M34 28 L34 52 L54 40 Z" stroke="#B8975A" stroke-width="1.5" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="link-text">
+          <p class="link-title">Hypnosis Audio Library</p>
+          <p class="link-sub">15-minute studio recorded professional-grade binaural-beat hypnosis audios for rapid subconscious rewiring — $33 each, bundle &amp; save 🔥</p>
+        </div>
+        <span class="link-arrow substack-chevron" id="audio-chevron">⌄</span>
+      </button>
+
+      <div class="substack-panel" id="audio-panel">
+        <p class="audio-instructions">Tap to select — any 3 for $77, any 5 for $111. Price updates automatically.</p>
+        <div class="audio-list">
+          <button type="button" class="audio-row" onclick="toggleLinksAudio(this, 'Wired for Miracles')">
+            <span class="audio-row-name">Wired for Miracles</span>
+            <span class="audio-row-right">
+              <span class="audio-row-price">$33</span>
+              <span class="audio-row-check">✓</span>
+            </span>
+          </button>
+          <button type="button" class="audio-row" onclick="toggleLinksAudio(this, 'Prosperity Consciousness')">
+            <span class="audio-row-name">Prosperity Consciousness</span>
+            <span class="audio-row-right">
+              <span class="audio-row-price">$33</span>
+              <span class="audio-row-check">✓</span>
+            </span>
+          </button>
+          <button type="button" class="audio-row" onclick="toggleLinksAudio(this, 'Nervous System Regulation')">
+            <span class="audio-row-name">Nervous System Regulation</span>
+            <span class="audio-row-right">
+              <span class="audio-row-price">$33</span>
+              <span class="audio-row-check">✓</span>
+            </span>
+          </button>
+          <button type="button" class="audio-row" onclick="toggleLinksAudio(this, 'Manifest Love')">
+            <span class="audio-row-name">Manifest Love</span>
+            <span class="audio-row-right">
+              <span class="audio-row-price">$33</span>
+              <span class="audio-row-check">✓</span>
+            </span>
+          </button>
+          <button type="button" class="audio-row" onclick="toggleLinksAudio(this, 'Unwavering Self-Confidence')">
+            <span class="audio-row-name">Unwavering Self-Confidence</span>
+            <span class="audio-row-right">
+              <span class="audio-row-price">$33</span>
+              <span class="audio-row-check">✓</span>
+            </span>
+          </button>
+          <button type="button" class="audio-row" onclick="toggleLinksAudio(this, 'Living Your Dream Life')">
+            <span class="audio-row-name">Living Your Dream Life</span>
+            <span class="audio-row-right">
+              <span class="audio-row-price">$33</span>
+              <span class="audio-row-check">✓</span>
+            </span>
+          </button>
+        </div>
+
+        <div class="audio-checkout-bar">
+          <div class="audio-checkout-info">
+            <p class="audio-checkout-count" id="links-audio-count">0 selected</p>
+            <p class="audio-checkout-price" id="links-audio-price">$0</p>
+            <p class="audio-checkout-saving" id="links-audio-saving"></p>
+          </div>
+          <button type="button" class="audio-checkout-btn inactive" id="links-audio-checkout-btn" onclick="checkoutLinksAudios()">Checkout →</button>
+        </div>
+
+        <a href="https://isisanchalee.com/shop.html#audios" class="substack-view-all" onclick="trackLinkClick('audio_view_all')">View Full Descriptions ↗</a>
+      </div>
+    </div>
+
     <div class="link-card substack-accordion" id="substack-accordion">
       <button class="substack-accordion-trigger" onclick="toggleSubstackAccordion()" type="button">
         <div class="link-icon">
@@ -426,7 +616,7 @@
           <button type="submit" class="free-audio-inline-submit">Send Me The Free Audio →</button>
         </form>
 
-        <p class="free-audio-inline-success" id="free-audio-inline-success">✦ You're in. Check your inbox for the audio.</p>
+        <p class="free-audio-inline-success" id="free-audio-inline-success">✦ Check your inbox — we sent you a confirmation email. Click the link inside to lock in your subscription and receive your hypnosis audio gift. (Don't see it? Check your Promotions tab or Spam folder.)</p>
       </div>
     </div>
 
@@ -447,6 +637,97 @@
         ...(label ? { item_label: label } : {})
       });
     }
+
+    function toggleAudioAccordion() {
+      const accordion = document.getElementById('audio-accordion');
+      const isOpen = accordion.classList.contains('open');
+      accordion.classList.toggle('open');
+
+      if (typeof gtag === 'function' && !isOpen) {
+        gtag('event', 'select_content', { content_type: 'audio_accordion', item_id: 'links_page' });
+      }
+    }
+
+    let selectedLinksAudios = [];
+
+    function calcLinksAudioTotal(n) {
+      if (n === 0) return 0;
+      if (n < 3) return n * 33;
+      let remaining = n, total = 0;
+      while (remaining >= 5) { total += 111; remaining -= 5; }
+      while (remaining >= 3) { total += 77; remaining -= 3; }
+      total += remaining * 33;
+      return total;
+    }
+
+    function toggleLinksAudio(el, name) {
+      const idx = selectedLinksAudios.findIndex(a => a.name === name);
+      if (idx > -1) {
+        selectedLinksAudios.splice(idx, 1);
+        el.classList.remove('selected');
+      } else {
+        selectedLinksAudios.push({ name });
+        el.classList.add('selected');
+      }
+      updateLinksAudioBar();
+    }
+
+    function updateLinksAudioBar() {
+      const n = selectedLinksAudios.length;
+      const total = calcLinksAudioTotal(n);
+      const saved = (n * 33) - total;
+
+      document.getElementById('links-audio-count').textContent = n + ' selected';
+      document.getElementById('links-audio-price').textContent = '$' + total;
+      document.getElementById('links-audio-saving').textContent = saved > 0 ? 'You save $' + saved : '';
+
+      document.getElementById('links-audio-checkout-btn').classList.toggle('inactive', n === 0);
+    }
+
+    async function checkoutLinksAudios() {
+      if (selectedLinksAudios.length === 0) return;
+
+      const btn = document.getElementById('links-audio-checkout-btn');
+      const orig = btn.textContent;
+      btn.textContent = 'Redirecting...';
+      btn.disabled = true;
+
+      const audioNames = selectedLinksAudios.map(a => a.name);
+
+      if (typeof gtag === 'function') {
+        gtag('event', 'begin_checkout', {
+          content_type: 'audio_accordion_links_page',
+          value: calcLinksAudioTotal(audioNames.length),
+          currency: 'USD'
+        });
+      }
+
+      try {
+        const res = await fetch('/api/checkout', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ audioNames })
+        });
+        if (!res.ok) throw new Error('Checkout failed');
+        const { url } = await res.json();
+        window.location.href = url;
+      } catch (err) {
+        console.error(err);
+        btn.textContent = orig;
+        btn.disabled = false;
+        alert('Something went wrong. Please try again or email hello@isisanchalee.com');
+      }
+    }
+
+    window.addEventListener('pageshow', function(e) {
+      if (e.persisted || performance.getEntriesByType('navigation')[0]?.type === 'back_forward') {
+        const btn = document.getElementById('links-audio-checkout-btn');
+        if (btn && btn.disabled) {
+          btn.disabled = false;
+          btn.textContent = 'Checkout →';
+        }
+      }
+    });
 
     function toggleSubstackAccordion() {
       const accordion = document.getElementById('substack-accordion');

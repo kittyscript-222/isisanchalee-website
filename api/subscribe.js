@@ -3,6 +3,8 @@
 // Body: { email: "user@example.com", firstName?: "Name" }
 // Kit v4 API: create subscriber first, then add to form
 
+const { logFreeAudioLead } = require('../lib/sheets');
+
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', process.env.SITE_URL || '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -58,6 +60,18 @@ module.exports = async function handler(req, res) {
       fetch(substackEndpoint, { method: 'GET' }).catch((err) => {
         console.error('Substack subscribe error:', err);
       });
+    }
+
+    // Step 4: Log to Google Sheet
+    // Awaited (not fire-and-forget) — in serverless environments, the function's
+    // execution context can be torn down the instant the response is sent,
+    // which kills any in-flight background promises before they get a chance
+    // to actually make their network call. Awaiting guarantees this completes
+    // (or fails loudly) before we respond.
+    try {
+      await logFreeAudioLead({ name: firstName, email });
+    } catch (err) {
+      console.error('Google Sheets log error:', err);
     }
 
     return res.status(200).json({ success: true });

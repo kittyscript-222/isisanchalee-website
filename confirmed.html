@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You're Confirmed | Isis Anchalee</title>
+<meta name="robots" content="noindex, nofollow">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cream: #F5F0E8;
+    --warm-white: #FAF8F4;
+    --gold: #B8975A;
+    --gold-light: #D4AF71;
+    --deep: #1C1814;
+    --muted: #6B5E4E;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'Lato', sans-serif;
+  }
+
+  html, body { margin: 0; padding: 0; width: 100%; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--deep);
+    color: var(--cream);
+    font-weight: 300;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+  }
+
+  .confirm-box {
+    max-width: 480px;
+    text-align: center;
+  }
+
+  .confirm-mark {
+    font-family: var(--serif);
+    font-size: 3rem;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+    line-height: 1;
+  }
+
+  .confirm-title {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 5vw, 2.4rem);
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 1rem;
+    line-height: 1.25;
+  }
+  .confirm-title em { font-style: italic; color: var(--gold-light); }
+
+  .confirm-desc {
+    font-size: 1.02rem;
+    line-height: 1.8;
+    color: rgba(245,240,232,0.6);
+    margin-bottom: 2.2rem;
+    font-weight: 300;
+  }
+
+  .confirm-perks {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 2.4rem;
+    text-align: left;
+    max-width: 360px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .confirm-perk {
+    font-size: 0.88rem;
+    color: rgba(245,240,232,0.45);
+    display: flex;
+    gap: 0.6rem;
+  }
+  .confirm-perk::before { content: '✓'; color: var(--gold); flex-shrink: 0; }
+
+  .confirm-cta {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--deep);
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 1rem 2.2rem;
+    transition: background 0.25s;
+  }
+  .confirm-cta:hover { background: var(--gold-light); }
+
+  .confirm-footer {
+    margin-top: 3rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.25);
+  }
+
+  @media (max-width: 480px) {
+    .confirm-title { font-size: 1.6rem; }
+    .confirm-desc { font-size: 0.92rem; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="confirm-box">
+    <p class="confirm-mark">✦</p>
+    <h1 class="confirm-title">You're confirmed.<br><em>Your audio is on its way.</em></h1>
+    <p class="confirm-desc">Your free Nervous System Regulation hypnosis audio is heading straight to your inbox — give it a few minutes to arrive.</p>
+
+    <div class="confirm-perks">
+      <p class="confirm-perk">Check your Promotions tab or Spam folder if you don't see it in a few minutes — and drag it to Primary so future emails land there too</p>
+      <p class="confirm-perk">A 5-part welcome series, then updates whenever meaningful — with new offers, illuminating wisdom, and astrological forecasts ✨</p>
+      <p class="confirm-perk">Unsubscribe anytime, no hard feelings</p>
+    </div>
+
+    <a href="https://isisanchalee.com" class="confirm-cta">Explore the Site →</a>
+
+    <p class="confirm-footer">Isis Anchalee</p>
+  </div>
+
+</body>
+</html>
