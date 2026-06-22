@@ -60,6 +60,8 @@ module.exports = async function handler(req, res) {
 
   const { sessionId, name, email, phone, focus, manifestation, duration, childhood, outcome, previous, medical, hypno, extra, consentSignature, consentDate } = req.body;
 
+  console.log('intake submission:', JSON.stringify({ sessionId, name, email, phone, focus, manifestation, duration, childhood, outcome, previous, medical, hypno, extra, consentSignature, consentDate }, null, 2));
+
   // ── 1. Resolve client email ───────────────────────────────────────────────
   // Use the email from the form if provided; fall back to the Stripe session.
   let clientEmail = email?.trim();

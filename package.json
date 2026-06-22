@@ -1,12 +1,15 @@
 {
-  "name": "isisanchalee-website",
+  "name": "test-project",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
   "scripts": {
     "test": "npm run test:jest && npm run test:node",
     "test:jest": "jest",
-    "test:node": "node --test tests/email.test.js tests/webhook.test.js tests/products.test.js tests/stripe-init.test.js"
+    "test:node": "node --test tests/email.test.js tests/webhook.test.js tests/products.test.js tests/stripe-init.test.js tests/deps.test.js"
   },
   "keywords": [],
   "author": "",
@@ -17,7 +20,8 @@
       "email\\.test\\.js$",
       "webhook\\.test\\.js$",
       "products\\.test\\.js$",
-      "stripe-init\\.test\\.js$"
+      "stripe-init\\.test\\.js$",
+      "deps\\.test\\.js$"
     ]
   },
   "devDependencies": {
