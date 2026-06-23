@@ -69,6 +69,8 @@ module.exports = async function handler(req, res) {
 
   if (!email) return res.status(400).json({ error: 'Email is required' });
 
+  console.log('mentorship submission:', JSON.stringify({ name, email, dobYear, dobMonth, dobDay, birthPlace, readiness, investment }));
+
   // ── 1. Forward to Google Forms ────────────────────────────────────────────
   try {
     const formData = new URLSearchParams();
