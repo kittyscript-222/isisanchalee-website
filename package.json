@@ -9,7 +9,7 @@
   "scripts": {
     "test": "npm run test:jest && npm run test:node",
     "test:jest": "jest",
-    "test:node": "node --test tests/email.test.js tests/webhook.test.js tests/products.test.js tests/stripe-init.test.js tests/deps.test.js tests/deliver.test.js"
+    "test:node": "node --test tests/email.test.js tests/webhook.test.js tests/products.test.js tests/stripe-init.test.js tests/deps.test.js tests/deliver.test.js tests/intake.test.js tests/mentorship.test.js"
   },
   "keywords": [],
   "author": "",

@@ -120,5 +120,30 @@ module.exports = async function handler(req, res) {
     console.error('Internal notification error:', err);
   }
 
+  // ── 4. Sync client record to admin portal ────────────────────────────────
+  if (process.env.ADMIN_PORTAL_URL) {
+    try {
+      await fetch(`${process.env.ADMIN_PORTAL_URL}/api/client-intake`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-webhook-secret': process.env.WEBHOOK_SECRET || '',
+        },
+        body: JSON.stringify({
+          formType: 'mentorship',
+          name, email,
+          dobYear, dobMonth, dobDay,
+          birthTime, birthPlace,
+          currentReality, dharmicVision, innerWork, hopes,
+          practiceYN, practiceDetails,
+          readiness, investment,
+        }),
+      });
+    } catch (err) {
+      console.error('Admin portal sync error:', err);
+      // Non-fatal
+    }
+  }
+
   return res.status(200).json({ success: true });
 };
