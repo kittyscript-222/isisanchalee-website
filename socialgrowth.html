@@ -1027,14 +1027,16 @@
       questions.innerHTML = 'If you have any questions, or run into a timezone scheduling issue, please email <a href="mailto:hello@isisanchalee.com" style="color:#B8975A;text-decoration:none;">hello@isisanchalee.com</a> and we will be happy to help.';
     }
 
-    // GA4 purchase event
+    // GA4 purchase event — fire once per session_id to prevent double-counting on refresh
     try {
-      if (typeof gtag === 'function') {
+      const gaKey = `ga_fired_${sessionId}`;
+      if (typeof gtag === 'function' && !localStorage.getItem(gaKey)) {
         gtag('event', 'purchase', {
           transaction_id: sessionId,
           currency: 'USD',
           value: isAudit ? 495 : 37,
         });
+        localStorage.setItem(gaKey, '1');
       }
     } catch(e) { /* never let analytics block the flow */ }
 
