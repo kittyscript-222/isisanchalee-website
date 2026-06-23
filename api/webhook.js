@@ -23,6 +23,7 @@ const {
   notifyCustomAudioPaymentReceived,
   notifyAudioPurchaseReceived,
   notifyRTTSessionBooked,
+  sendAudioConfirmation,
 } = require('../lib/email');
 
 const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
@@ -83,6 +84,76 @@ module.exports = async function handler(req, res) {
     const amount = fullSession.amount_total != null ? fullSession.amount_total / 100 : null;
     const currency = fullSession.currency || 'usd';
 
+    // ── Instagram guide / audio / audit products ──────────────────────────────
+    // Handled separately from both the RTT session and audio-cart paths.
+    // Digital products (guide, audio, bundles) send the customer a confirmation
+    // email with their files. Audit products (session-based) just notify Isis.
+    const instagramDigitalIds = new Set(['instagram_guide', 'instagram_guide_bundle', 'magnetic_growth_audio']);
+    const instagramAuditIds   = new Set(['instagram_guide_audit', 'instagram_guide_audio_audit', 'instagram_audit_session']);
+    const instagramIds        = new Set([...instagramDigitalIds, ...instagramAuditIds]);
+
+    const instagramProducts = products.filter(p => instagramIds.has(p.id));
+    const alreadyNotifiedInstagram = fullSession.metadata?.instagramNotified === 'true';
+
+    if (instagramProducts.length && !alreadyNotifiedInstagram) {
+      // Build file list across all instagram products in this purchase
+      const allFiles = instagramProducts.flatMap(p =>
+        (p.files || []).map(f => ({
+          name: f.name,
+          url: `https://drive.google.com/uc?export=download&id=${f.driveFileId}`,
+        }))
+      );
+
+      const productName = instagramProducts.length === 1
+        ? instagramProducts[0].name
+        : instagramProducts.map(p => p.name).join(' + ');
+
+      const isAudit = instagramProducts.some(p => instagramAuditIds.has(p.id));
+
+      // Send customer confirmation email with download links (digital products only)
+      if (allFiles.length && email) {
+        try {
+          await sendAudioConfirmation(email, { productName, files: allFiles, isInstagram: true, isAudit });
+        } catch (err) {
+          console.error('Instagram sendAudioConfirmation error:', err);
+        }
+      }
+
+      const hasGuide = instagramProducts.some(p => p.id.includes('guide'));
+      const hasAudio = instagramProducts.some(p => p.id === 'magnetic_growth_audio' || p.id.includes('audio'));
+      const hasSession = instagramProducts.some(p => instagramAuditIds.has(p.id));
+      const purchaseLabel = hasGuide && hasAudio && hasSession ? 'Guide + Audio + Strategy Session'
+        : hasGuide && hasSession ? 'Guide + Strategy Session'
+        : hasGuide && hasAudio ? 'Guide + Audio Purchase'
+        : hasGuide ? 'Guide Purchase'
+        : hasAudio ? 'Audio Purchase'
+        : 'Instagram Purchase';
+
+      // Internal notification to Isis
+      try {
+        await notifyAudioPurchaseReceived({
+          name,
+          email,
+          audioNames: instagramProducts.map(p => p.name),
+          productName,
+          amount,
+          currency,
+          purchaseLabel,
+        });
+      } catch (err) {
+        console.error('Instagram notifyAudioPurchaseReceived error:', err);
+      }
+
+      // Deduplicate so Stripe retries don't double-notify
+      try {
+        await stripe.checkout.sessions.update(session.id, {
+          metadata: { ...fullSession.metadata, instagramNotified: 'true' },
+        });
+      } catch (err) {
+        console.error('Failed to set instagramNotified metadata:', err);
+      }
+    }
+
     // ── Custom Audio: notify Isis immediately, before any brief is submitted ──
     const hasCustomAudio = products.some((p) => p.id === 'custom_audio');
     if (hasCustomAudio) {
@@ -100,7 +171,7 @@ module.exports = async function handler(req, res) {
     }
 
     // ── RTT™ Session bookings: notify Isis the moment payment clears ──
-    const sessionProducts = products.filter((p) => p.isSession && p.id !== 'custom_audio');
+    const sessionProducts = products.filter((p) => p.isSession && p.id !== 'custom_audio' && !instagramAuditIds.has(p.id));
     const alreadyNotifiedSession = fullSession.metadata?.sessionWebhookNotified === 'true';
 
     if (sessionProducts.length && !alreadyNotifiedSession) {
@@ -135,7 +206,7 @@ module.exports = async function handler(req, res) {
     // when they land on success.html — this webhook adds the same internal
     // notification as a guaranteed fallback, deduped via Stripe metadata so
     // Isis isn't emailed twice for the same order.)
-    const hasAudioProduct = products.some((p) => !p.isSession && !p.isBundle || p.isBundle);
+    const hasAudioProduct = products.some((p) => (!p.isSession && !p.isBundle || p.isBundle) && !instagramIds.has(p.id));
     const alreadyNotified = fullSession.metadata?.webhookNotified === 'true';
 
     if (hasAudioProduct && !hasCustomAudio && !alreadyNotified) {

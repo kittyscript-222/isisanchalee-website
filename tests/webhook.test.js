@@ -365,3 +365,199 @@ test('does not double-notify an RTT session booking if sessionWebhookNotified me
   assert.equal(sentNotifications.length, 0, 'should not send a duplicate session-booked notification');
   clearMocks();
 });
+
+// ── NEW: Instagram guide / audio / audit webhook handler ──────────────────────
+
+test('instagram digital product (magnetic_growth_audio) fires sendAudioConfirmation — not notifyRTTSessionBooked', async () => {
+  sentNotifications = [];
+  updatedMetadata = [];
+
+  setMocks({
+    stripe: makeFakeStripe({ sessionOverrides: {
+      priceId: 'price_1TkiLzC38S5O6HWPouVNCLAh', // magnetic_growth_audio
+      amount_total: 3300,
+    }}),
+    resend: { Resend: class { emails = { send: async (p) => { sentNotifications.push(p); return {}; } } } },
+  });
+  delete require.cache[require.resolve('../api/webhook.js')];
+  const handler = require('../api/webhook.js');
+
+  global._fakeEvent = {
+    type: 'checkout.session.completed',
+    data: { object: { id: 'cs_test_ig_audio' } },
+  };
+
+  const req = makeFakeReq();
+  const res = makeFakeRes();
+  await handler(req, res);
+
+  assert.equal(res.statusCode, 200);
+  // Should send exactly 2 emails: sendAudioConfirmation (customer) + notifyAudioPurchaseReceived (internal)
+  assert.equal(sentNotifications.length, 2, 'should send customer confirmation + internal notification');
+  // Neither should be a session-booked notification
+  const subjects = sentNotifications.map(n => n.subject || '');
+  assert.ok(!subjects.some(s => /session booked/i.test(s)), 'should not fire RTT session-booked email for Instagram audio');
+  // instagramNotified metadata should be set to prevent double-notification
+  assert.equal(updatedMetadata.length, 1);
+  assert.equal(updatedMetadata[0].payload.metadata.instagramNotified, 'true');
+  clearMocks();
+});
+
+test('instagram guide bundle fires sendAudioConfirmation with both PDF and audio files', async () => {
+  sentNotifications = [];
+  updatedMetadata = [];
+
+  setMocks({
+    stripe: makeFakeStripe({ sessionOverrides: {
+      priceId: 'price_1TkiK7C38S5O6HWPG2fLMCD6', // instagram_guide_bundle
+      amount_total: 6000,
+    }}),
+    resend: { Resend: class { emails = { send: async (p) => { sentNotifications.push(p); return {}; } } } },
+  });
+  delete require.cache[require.resolve('../api/webhook.js')];
+  const handler = require('../api/webhook.js');
+
+  global._fakeEvent = {
+    type: 'checkout.session.completed',
+    data: { object: { id: 'cs_test_ig_bundle' } },
+  };
+
+  const req = makeFakeReq();
+  const res = makeFakeRes();
+  await handler(req, res);
+
+  assert.equal(res.statusCode, 200);
+  assert.equal(sentNotifications.length, 2);
+  clearMocks();
+});
+
+test('instagram_guide_audio_audit fires sendAudioConfirmation — not notifyRTTSessionBooked', async () => {
+  sentNotifications = [];
+  updatedMetadata = [];
+
+  setMocks({
+    stripe: makeFakeStripe({ sessionOverrides: {
+      priceId: 'price_1Tl6oSC38S5O6HWPJ6Rjkzdz', // instagram_guide_audio_audit $495
+      amount_total: 49500,
+    }}),
+    resend: { Resend: class { emails = { send: async (p) => { sentNotifications.push(p); return {}; } } } },
+  });
+  delete require.cache[require.resolve('../api/webhook.js')];
+  const handler = require('../api/webhook.js');
+
+  global._fakeEvent = {
+    type: 'checkout.session.completed',
+    data: { object: { id: 'cs_test_ig_full_bundle' } },
+  };
+
+  const req = makeFakeReq();
+  const res = makeFakeRes();
+  await handler(req, res);
+
+  assert.equal(res.statusCode, 200);
+  const subjects = sentNotifications.map(n => n.subject || '');
+  assert.ok(!subjects.some(s => /RTT/i.test(s)), 'should not fire RTT email for Instagram audit bundle');
+  assert.equal(updatedMetadata[0]?.payload?.metadata?.instagramNotified, 'true');
+  clearMocks();
+});
+
+test('does not double-notify Instagram purchase if instagramNotified is already set', async () => {
+  sentNotifications = [];
+  updatedMetadata = [];
+
+  const factory = () => ({
+    webhooks: { constructEvent: () => global._fakeEvent },
+    checkout: {
+      sessions: {
+        retrieve: async (sessionId) => ({
+          id: sessionId,
+          customer_details: { name: 'Halo', email: 'halo@example.com' },
+          amount_total: 3300,
+          currency: 'usd',
+          metadata: { instagramNotified: 'true' }, // already notified
+          line_items: { data: [{ price: { id: 'price_1TkiLzC38S5O6HWPouVNCLAh' } }] },
+        }),
+        update: async (sessionId, payload) => { updatedMetadata.push({ sessionId, payload }); return {}; },
+      },
+    },
+  });
+
+  setMocks({
+    stripe: () => factory(),
+    resend: { Resend: class { emails = { send: async (p) => { sentNotifications.push(p); return {}; } } } },
+  });
+  delete require.cache[require.resolve('../api/webhook.js')];
+  const handler = require('../api/webhook.js');
+
+  global._fakeEvent = {
+    type: 'checkout.session.completed',
+    data: { object: { id: 'cs_test_ig_already_notified' } },
+  };
+
+  const req = makeFakeReq();
+  const res = makeFakeRes();
+  await handler(req, res);
+
+  assert.equal(res.statusCode, 200);
+  assert.equal(sentNotifications.length, 0, 'should not send duplicate notification');
+  clearMocks();
+});
+
+test('Instagram audit products do not trigger notifyRTTSessionBooked', async () => {
+  sentNotifications = [];
+
+  setMocks({
+    stripe: makeFakeStripe({ sessionOverrides: {
+      priceId: 'price_1Tl6oSC38S5O6HWPJ6Rjkzdz', // instagram_guide_audio_audit
+      amount_total: 49500,
+    }}),
+    resend: { Resend: class { emails = { send: async (p) => { sentNotifications.push(p); return {}; } } } },
+  });
+  delete require.cache[require.resolve('../api/webhook.js')];
+  const handler = require('../api/webhook.js');
+
+  global._fakeEvent = {
+    type: 'checkout.session.completed',
+    data: { object: { id: 'cs_test_ig_no_rtt' } },
+  };
+
+  const req = makeFakeReq();
+  const res = makeFakeRes();
+  await handler(req, res);
+
+  const subjects = sentNotifications.map(n => n.subject || '');
+  assert.ok(
+    !subjects.some(s => /session booked/i.test(s)),
+    'Instagram audit must not fire the RTT session-booked email'
+  );
+  clearMocks();
+});
+
+test('regular RTT session still fires notifyRTTSessionBooked after Instagram handler was added', async () => {
+  sentNotifications = [];
+  updatedMetadata = [];
+
+  setMocks({
+    stripe: makeFakeStripe({ sessionOverrides: {
+      priceId: 'price_1TZsO1C38S5O6HWP0ixwGJf7', // rtt_single_standard
+      amount_total: 50000,
+    }}),
+    resend: { Resend: class { emails = { send: async (p) => { sentNotifications.push(p); return {}; } } } },
+  });
+  delete require.cache[require.resolve('../api/webhook.js')];
+  const handler = require('../api/webhook.js');
+
+  global._fakeEvent = {
+    type: 'checkout.session.completed',
+    data: { object: { id: 'cs_test_rtt_regression' } },
+  };
+
+  const req = makeFakeReq();
+  const res = makeFakeRes();
+  await handler(req, res);
+
+  assert.equal(res.statusCode, 200);
+  const subjects = sentNotifications.map(n => n.subject || '');
+  assert.ok(subjects.some(s => /session booked/i.test(s)), 'RTT session should still fire session-booked email');
+  clearMocks();
+});

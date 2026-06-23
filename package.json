@@ -9,7 +9,7 @@
   "scripts": {
     "test": "npm run test:jest && npm run test:node",
     "test:jest": "jest",
-    "test:node": "node --test tests/email.test.js tests/webhook.test.js tests/products.test.js tests/stripe-init.test.js tests/deps.test.js"
+    "test:node": "node --test tests/email.test.js tests/webhook.test.js tests/products.test.js tests/stripe-init.test.js tests/deps.test.js tests/deliver.test.js"
   },
   "keywords": [],
   "author": "",
@@ -21,14 +21,16 @@
       "webhook\\.test\\.js$",
       "products\\.test\\.js$",
       "stripe-init\\.test\\.js$",
-      "deps\\.test\\.js$"
+      "deps\\.test\\.js$",
+      "deliver\\.test\\.js$"
     ]
   },
   "devDependencies": {
     "jest": "^30.4.2"
   },
   "dependencies": {
-    "googleapis": "^173.0.0",
+    "@vercel/postgres": "^0.10.0",
+    "googleapis": "^144.0.0",
     "resend": "^6.14.0",
     "stripe": "^22.2.2"
   }

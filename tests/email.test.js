@@ -210,6 +210,47 @@ test('notifyAudioPurchaseReceived handles an empty audioNames array gracefully',
   clearMocks();
 });
 
+test('notifyAudioPurchaseReceived uses purchaseLabel in subject when provided — catches parameter shadowing bug', async () => {
+  // This test exists because a parameter named "label" shadowed the label()
+  // HTML helper function inside notifyAudioPurchaseReceived, causing
+  // "TypeError: label is not a function" in production when webhook.js
+  // passed a custom label. This test would have caught that immediately.
+  const email = freshEmailModule();
+  await assert.doesNotReject(
+    email.notifyAudioPurchaseReceived({
+      name: 'Halo',
+      email: 'client@example.com',
+      audioNames: ['How to Master the Game of Instagram'],
+      productName: 'How to Master the Game of Instagram',
+      amount: 37,
+      currency: 'usd',
+      purchaseLabel: 'Guide Purchase',
+    })
+  );
+  assert.equal(sentEmails.length, 1);
+  assert.match(sentEmails[0].subject, /Guide Purchase/i, 'subject should use the custom purchaseLabel');
+  assert.match(sentEmails[0].subject, /\$37/);
+  clearMocks();
+});
+
+test('notifyAudioPurchaseReceived defaults to "Audio Purchase" when no purchaseLabel is provided', async () => {
+  const email = freshEmailModule();
+  await assert.doesNotReject(
+    email.notifyAudioPurchaseReceived({
+      name: 'Halo',
+      email: 'client@example.com',
+      audioNames: ['Wired for Miracles'],
+      productName: 'Wired for Miracles',
+      amount: 33,
+      currency: 'usd',
+      // no purchaseLabel — should default
+    })
+  );
+  assert.equal(sentEmails.length, 1);
+  assert.match(sentEmails[0].subject, /audio purchase/i);
+  clearMocks();
+});
+
 test('notifyRTTSessionBooked sends an internal notification with the dollar amount in the subject', async () => {
   const email = freshEmailModule();
   await assert.doesNotReject(
