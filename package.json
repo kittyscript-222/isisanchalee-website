@@ -22,7 +22,9 @@
       "products\\.test\\.js$",
       "stripe-init\\.test\\.js$",
       "deps\\.test\\.js$",
-      "deliver\\.test\\.js$"
+      "deliver\\.test\\.js$",
+      "intake\\.test\\.js$",
+      "mentorship\\.test\\.js$"
     ]
   },
   "devDependencies": {
