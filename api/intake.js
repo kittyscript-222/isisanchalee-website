@@ -58,7 +58,7 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { sessionId, name, email, phone, focus, manifestation, duration, childhood, outcome, previous, medical, hypno, extra, consentSignature, consentDate } = req.body;
+  const { sessionId, name, email, phone, age, location, focus, manifestation, duration, childhood, outcome, previous, medical, hypno, extra, consentSignature, consentDate } = req.body;
 
   console.log('intake submission:', JSON.stringify({ sessionId, name, email, phone, focus, manifestation, duration, childhood, outcome, previous, medical, hypno, extra, consentSignature, consentDate }, null, 2));
 
@@ -142,7 +142,7 @@ module.exports = async function handler(req, res) {
         },
         body: JSON.stringify({
           formType: 'rtt_intake',
-          name, email: clientEmail, phone,
+          name, email: clientEmail, phone, age, location,
           focus, manifestation, duration, childhood,
           outcome, previous, medical, hypno, extra,
         }),

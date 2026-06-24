@@ -385,6 +385,19 @@
         <input type="tel" class="q-input" id="f-phone" placeholder="+1 555 000 0000" autocomplete="off" />
         <p class="field-error" id="err-phone">Please enter your phone number.</p>
       </div>
+
+      <div class="q-field">
+        <p class="q-num">04</p>
+        <h3 class="q-title">Age</h3>
+        <input type="number" class="q-input" id="f-age" placeholder="e.g. 34" autocomplete="off" min="0" />
+      </div>
+
+      <div class="q-field">
+        <p class="q-num">05</p>
+        <h3 class="q-title">Location</h3>
+        <p class="q-desc">City &amp; country — helps me understand your context and time zone.</p>
+        <input type="text" class="q-input" id="f-location" placeholder="e.g. Lisbon, Portugal" autocomplete="off" />
+      </div>
     </div>
 
     <!-- SECTION: THE WORK -->
@@ -392,7 +405,7 @@
       <p class="section-label">The Work</p>
 
       <div class="q-field">
-        <p class="q-num">04</p>
+        <p class="q-num">06</p>
         <h3 class="q-title">What is the ONE main pattern, block, or issue you want to <em>shift</em> in our session?</h3>
         <p class="q-desc">Be as specific as you can. The more clearly you can name it, the more precisely we can work with it.</p>
         <textarea class="q-textarea" id="f-focus" placeholder="Share openly..." rows="4"></textarea>
@@ -400,7 +413,7 @@
       </div>
 
       <div class="q-field">
-        <p class="q-num">05</p>
+        <p class="q-num">07</p>
         <h3 class="q-title">How does this show up in your life?</h3>
         <p class="q-desc">What does it look like in practice? What triggers it to arise? Describe specific behaviors, emotions, physical sensations, and how frequently it shows up.</p>
         <textarea class="q-textarea" id="f-manifestation" placeholder="e.g. I freeze when I need to speak up, feel a tightness in my chest, it happens most in professional settings..." rows="4"></textarea>
@@ -408,14 +421,14 @@
       </div>
 
       <div class="q-field">
-        <p class="q-num">06</p>
+        <p class="q-num">08</p>
         <h3 class="q-title">How long have you been experiencing this, and when do you first remember it showing up?</h3>
         <textarea class="q-textarea" id="f-duration" placeholder="e.g. Since childhood / about 3 years / as long as I can remember..." rows="3"></textarea>
         <p class="field-error" id="err-duration">Please share how long you've been experiencing this.</p>
       </div>
 
       <div class="q-field">
-        <p class="q-num">07</p>
+        <p class="q-num">09</p>
         <h3 class="q-title">Briefly describe your childhood environment, key relationships, or any significant events from your younger years that feel relevant.</h3>
         <p class="q-desc">This helps me understand the deeper roots of what we'll be working with. Share only what you feel comfortable sharing.</p>
         <textarea class="q-textarea" id="f-childhood" placeholder="e.g. Family dynamics, significant losses, formative experiences, the emotional tone of your upbringing..." rows="5"></textarea>
@@ -423,7 +436,7 @@
       </div>
 
       <div class="q-field">
-        <p class="q-num">08</p>
+        <p class="q-num">10</p>
         <h3 class="q-title">What does your life look and <em>feel</em> like once this is fully resolved?</h3>
         <p class="q-desc">Describe it as vividly as you can — the more sensory and specific, the more powerful the session.</p>
         <textarea class="q-textarea" id="f-outcome" placeholder="Paint the picture of that new reality..." rows="4"></textarea>
@@ -431,7 +444,7 @@
       </div>
 
       <div class="q-field">
-        <p class="q-num">09</p>
+        <p class="q-num">11</p>
         <h3 class="q-title">What have you already tried to address this?</h3>
         <p class="q-desc">Therapy, coaching, plant medicine, breathwork, other modalities — what has helped, and what hasn't?</p>
         <textarea class="q-textarea" id="f-previous" placeholder="Share your journey so far..." rows="3"></textarea>
@@ -444,7 +457,7 @@
       <p class="section-label">Background</p>
 
       <div class="q-field">
-        <p class="q-num">10</p>
+        <p class="q-num">12</p>
         <h3 class="q-title">Any medical conditions, medications, or mental health history I should be aware of?</h3>
         <p class="q-desc">Diagnosed conditions, current prescriptions, significant trauma history. If nothing applies, write "None."</p>
         <textarea class="q-textarea" id="f-medical" placeholder="Share anything relevant, or write None..." rows="3"></textarea>
@@ -452,7 +465,7 @@
       </div>
 
       <div class="q-field">
-        <p class="q-num">11</p>
+        <p class="q-num">13</p>
         <h3 class="q-title">Have you experienced hypnotherapy before?</h3>
         <div class="yn-row" style="margin-top: 0.8rem; margin-bottom: 1rem;">
           <button class="yn-btn" id="yn-yes" onclick="selectHypnoYN('Yes')">Yes</button>
@@ -620,6 +633,8 @@
           name:          document.getElementById('f-name').value.trim(),
           email:         document.getElementById('f-email').value.trim(),
           phone:         document.getElementById('f-phone').value.trim(),
+          age:           document.getElementById('f-age').value.trim(),
+          location:      document.getElementById('f-location').value.trim(),
           focus:         document.getElementById('f-focus').value.trim(),
           manifestation: document.getElementById('f-manifestation').value.trim(),
           duration:      document.getElementById('f-duration').value.trim(),
