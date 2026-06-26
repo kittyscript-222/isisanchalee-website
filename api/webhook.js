@@ -139,6 +139,7 @@ module.exports = async function handler(req, res) {
           amount,
           currency,
           purchaseLabel,
+          isSession: isAudit,
         });
       } catch (err) {
         console.error('Instagram notifyAudioPurchaseReceived error:', err);
