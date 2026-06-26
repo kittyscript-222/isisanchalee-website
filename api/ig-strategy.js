@@ -42,5 +42,26 @@ module.exports = async function handler(req, res) {
     console.error('Internal notification error:', err);
   }
 
+  // ── 3. Sync to admin portal ───────────────────────────────────────────────
+  if (process.env.ADMIN_PORTAL_URL) {
+    try {
+      await fetch(`${process.env.ADMIN_PORTAL_URL}/api/client-intake`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-webhook-secret': process.env.WEBHOOK_SECRET || '',
+        },
+        body: JSON.stringify({
+          formType: 'ig_strategy',
+          name, email,
+          q1, q2, q3, q4, q5, q6, q7, q8, q9, q10,
+          q11, q12, q13, q14, q15, q16, q17, q18,
+        }),
+      });
+    } catch (err) {
+      console.error('Admin portal sync error:', err);
+    }
+  }
+
   return res.status(200).json({ success: true });
 };
