@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SXJ4N0LHMV"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-SXJ4N0LHMV");
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Instagram Strategy Session — Pre-Session Questionnaire</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0A0807;
+      --surface: #111009;
+      --gold: #C5A880;
+      --gold-light: #D4BC9A;
+      --cream: #F2EDE6;
+      --muted: rgba(242,237,230,0.45);
+      --border: rgba(197,168,128,0.15);
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans: 'Montserrat', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--cream);
+      font-family: var(--sans);
+      font-weight: 300;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .progress-bar {
+      position: fixed; top: 0; left: 0; height: 2px;
+      background: var(--gold); z-index: 100;
+      transition: width 0.5s ease;
+    }
+
+    .quiz-wrap {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 4rem 1.5rem;
+    }
+
+    .slide {
+      display: none;
+      max-width: 680px; width: 100%;
+      animation: fadeUp 0.5s ease forwards;
+    }
+    .slide.active { display: block; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* WELCOME */
+    .welcome-symbol {
+      font-size: 1.5rem; color: var(--gold);
+      margin-bottom: 2rem; letter-spacing: 0.3em;
+    }
+    .welcome-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 300; line-height: 1.15;
+      color: var(--cream); margin-bottom: 1.5rem;
+    }
+    .welcome-title em { font-style: italic; color: var(--gold); }
+    .welcome-body {
+      font-size: 1.05rem; line-height: 1.9;
+      color: var(--muted); margin-bottom: 3rem;
+      max-width: 560px;
+    }
+
+    /* SECTION DIVIDER */
+    .section-label {
+      font-size: 0.65rem; letter-spacing: 0.28em;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 1rem;
+    }
+    .section-statement {
+      font-family: var(--serif);
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      font-weight: 300; font-style: italic;
+      color: var(--gold-light); line-height: 1.6;
+      border-left: 1.5px solid var(--gold);
+      padding-left: 2rem; margin-bottom: 3rem;
+    }
+
+    /* QUESTION */
+    .q-num {
+      font-size: 0.7rem; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 1.2rem; display: flex;
+      align-items: center; gap: 0.7rem;
+    }
+    .q-num::before {
+      content: ''; display: block;
+      width: 20px; height: 0.5px; background: var(--gold);
+    }
+    .q-title {
+      font-family: var(--serif);
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      font-weight: 300; line-height: 1.3;
+      color: var(--cream); margin-bottom: 0.8rem;
+    }
+    .q-desc {
+      font-size: 0.9rem; color: var(--muted);
+      line-height: 1.75; margin-bottom: 2.2rem;
+    }
+
+    /* INPUTS */
+    .q-input, .q-textarea {
+      width: 100%; background: transparent;
+      border: none; border-bottom: 0.5px solid rgba(197,168,128,0.3);
+      color: var(--cream); font-family: var(--sans);
+      font-size: 1.1rem; font-weight: 300;
+      padding: 0.8rem 0; outline: none;
+      transition: border-color 0.2s;
+      caret-color: var(--gold);
+    }
+    .q-input:focus, .q-textarea:focus {
+      border-bottom-color: var(--gold);
+    }
+    .q-input::placeholder, .q-textarea::placeholder {
+      color: rgba(242,237,230,0.2);
+    }
+    .q-textarea {
+      resize: none; min-height: 140px;
+      border: 0.5px solid rgba(197,168,128,0.2);
+      padding: 1rem; line-height: 1.8;
+      background: rgba(197,168,128,0.03);
+    }
+    .q-textarea:focus {
+      border-color: rgba(197,168,128,0.5);
+    }
+
+    /* BUTTONS */
+    .btn-gold {
+      background: var(--gold); color: var(--bg);
+      border: none; font-family: var(--sans);
+      font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 1.1rem 2.8rem; cursor: pointer;
+      transition: background 0.2s; display: inline-block;
+    }
+    .btn-gold:hover { background: var(--gold-light); }
+    .btn-gold:disabled {
+      opacity: 0.5; cursor: not-allowed;
+    }
+    .btn-outline {
+      background: transparent; color: var(--gold);
+      border: 0.5px solid rgba(197,168,128,0.35);
+      font-family: var(--sans); font-size: 0.78rem;
+      font-weight: 400; letter-spacing: 0.14em;
+      text-transform: uppercase; padding: 1rem 2.2rem;
+      cursor: pointer; transition: all 0.2s;
+      display: inline-block; text-decoration: none;
+    }
+    .btn-outline:hover {
+      border-color: var(--gold); color: var(--cream);
+    }
+    .btn-row { display: flex; gap: 1rem; align-items: center; margin-top: 2.5rem; flex-wrap: wrap; }
+    .btn-back {
+      background: none; border: none; color: var(--muted);
+      font-family: var(--sans); font-size: 0.78rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer; transition: color 0.2s; padding: 0;
+    }
+    .btn-back:hover { color: var(--cream); }
+
+    /* ENDING */
+    .ending-symbol {
+      font-family: var(--serif); font-size: 3rem;
+      color: var(--gold); margin-bottom: 2rem;
+    }
+    .ending-title {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 300; color: var(--cream);
+      margin-bottom: 1.5rem; line-height: 1.2;
+    }
+    .ending-body {
+      font-size: 1rem; color: var(--muted);
+      line-height: 1.9; margin-bottom: 3rem;
+      max-width: 520px;
+    }
+
+    /* FOOTER */
+    .quiz-footer {
+      position: fixed; bottom: 2rem; right: 2rem;
+      font-size: 0.65rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: rgba(242,237,230,0.15);
+    }
+
+    /* ERROR */
+    .field-error {
+      font-size: 0.78rem; color: #e07070;
+      margin-top: 0.5rem; display: none;
+    }
+
+    /* SUBMIT ERROR */
+    .submit-error {
+      font-size: 0.85rem; color: #e07070;
+      margin-top: 1rem; display: none; line-height: 1.6;
+    }
+
+    @media (max-width: 600px) {
+      .quiz-wrap { padding: 3rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<div class="quiz-wrap">
+
+  <!-- SLIDE 0: WELCOME -->
+  <div class="slide active" id="slide-0">
+    <div class="welcome-symbol">✦ ✦ ✦</div>
+    <h1 class="welcome-title">Instagram Strategy<br><em>Pre-Session Questionnaire</em></h1>
+    <p class="welcome-body">Take your time with these. There are no wrong answers — the more honest and specific you are, the more value we'll get from our session together. Your responses go directly to me, so speak freely.</p>
+    <button class="btn-gold" onclick="nextSlide()">Begin →</button>
+  </div>
+
+  <!-- SLIDE 1: NAME -->
+  <div class="slide" id="slide-1">
+    <p class="q-num">First, a little about you</p>
+    <h2 class="q-title">What's your name?</h2>
+    <input type="text" class="q-input" id="f-name" placeholder="Your name" autocomplete="off" />
+    <p class="field-error" id="err-name">Please enter your name to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-name', 'err-name')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: EMAIL -->
+  <div class="slide" id="slide-2">
+    <p class="q-num">Contact</p>
+    <h2 class="q-title">What's your email address?</h2>
+    <p class="q-desc">So I can send you a copy of your responses for reference.</p>
+    <input type="email" class="q-input" id="f-email" placeholder="your@email.com" autocomplete="off" />
+    <p class="field-error" id="err-email">Please enter a valid email address.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateEmail()">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: YOUR PROFILE SECTION -->
+  <div class="slide" id="slide-3">
+    <p class="section-label">Section 1 of 6</p>
+    <p class="section-statement">"Let's start with where you are — your account, your audience, and who this is all for."</p>
+    <button class="btn-gold" onclick="nextSlide()">Continue →</button>
+    <div class="btn-row" style="margin-top: 1.5rem;">
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: Q1 — HANDLE + DESCRIPTION -->
+  <div class="slide" id="slide-4">
+    <p class="q-num">Question 1 of 18 · Your Profile</p>
+    <h2 class="q-title">What's your Instagram handle, and how would you describe what your account is about in one sentence?</h2>
+    <textarea class="q-textarea" id="f-q1" placeholder="e.g. @yourhandle — I help X do Y through Z." rows="4"></textarea>
+    <p class="field-error" id="err-q1">Please answer this question to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-q1', 'err-q1')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Q2 — FOLLOWER COUNT + DURATION -->
+  <div class="slide" id="slide-5">
+    <p class="q-num">Question 2 of 18 · Your Profile</p>
+    <h2 class="q-title">What's your current follower count, and how long have you been actively posting?</h2>
+    <textarea class="q-textarea" id="f-q2" placeholder="e.g. 4,200 followers — actively posting for about 18 months." rows="4"></textarea>
+    <p class="field-error" id="err-q2">Please answer this question to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-q2', 'err-q2')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: Q3 — IDEAL FOLLOWER -->
+  <div class="slide" id="slide-6">
+    <p class="q-num">Question 3 of 18 · Your Profile</p>
+    <h2 class="q-title">Who is your account for?</h2>
+    <p class="q-desc">Describe your ideal follower — not just their demographics, but what they're thinking about, struggling with, and hungry for.</p>
+    <textarea class="q-textarea" id="f-q3" placeholder="Go beyond age and gender — what's keeping them up at night? What do they want desperately?" rows="6"></textarea>
+    <p class="field-error" id="err-q3">Please answer this question to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-q3', 'err-q3')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: YOUR BUSINESS SECTION -->
+  <div class="slide" id="slide-7">
+    <p class="section-label">Section 2 of 6</p>
+    <p class="section-statement">"Now let's look at the business side — what you're selling, and what Instagram is actually doing for it."</p>
+    <button class="btn-gold" onclick="nextSlide()">Continue →</button>
+    <div class="btn-row" style="margin-top: 1.5rem;">
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: Q4 — OFFERS + PRICE POINTS -->
+  <div class="slide" id="slide-8">
+    <p class="q-num">Question 4 of 18 · Your Business</p>
+    <h2 class="q-title">What do you sell, or what do you want to sell?</h2>
+    <p class="q-desc">List your offers and their price points.</p>
+    <textarea class="q-textarea" id="f-q4" placeholder="e.g. 1:1 coaching — $500/month. Digital course — $297. etc." rows="5"></textarea>
+    <p class="field-error" id="err-q4">Please answer this question to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-q4', 'err-q4')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: Q5 — INSTAGRAM SALES -->
+  <div class="slide" id="slide-9">
+    <p class="q-num">Question 5 of 18 · Your Business</p>
+    <h2 class="q-title">Have you made any sales directly from Instagram?</h2>
+    <p class="q-desc">If yes, describe what happened — what content led to it, who bought, and how. If no, describe what's missing — is it a traffic issue, a trust issue, or a clarity issue?</p>
+    <textarea class="q-textarea" id="f-q5" placeholder="Be as specific as you can here — the details matter." rows="6"></textarea>
+    <p class="field-error" id="err-q5">Please answer this question to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-q5', 'err-q5')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: Q6 — ROLE OF INSTAGRAM -->
+  <div class="slide" id="slide-10">
+    <p class="q-num">Question 6 of 18 · Your Business</p>
+    <h2 class="q-title">What role do you want Instagram to play in your business?</h2>
+    <p class="q-desc">Brand awareness, lead generation, direct sales, community, or something else?</p>
+    <textarea class="q-textarea" id="f-q6" placeholder="You can choose more than one — just be specific about what you actually want it to do." rows="4"></textarea>
+    <p class="field-error" id="err-q6">Please answer this question to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-q6', 'err-q6')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 11: YOUR CONTENT SECTION -->
+  <div class="slide" id="slide-11">
+    <p class="section-label">Section 3 of 6</p>
+    <p class="section-statement">"Your content is the signal your audience receives. Let's understand exactly what you're putting out and why."</p>
+    <button class="btn-gold" onclick="nextSlide()">Continue →</button>
+    <div class="btn-row" style="margin-top: 1.5rem;">
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 12: Q7 — POSTING FREQUENCY + FORMATS -->
+  <div class="slide" id="slide-12">
+    <p class="q-num">Question 7 of 18 · Your Content</p>
+    <h2 class="q-title">How often are you currently posting, and what formats are you using?</h2>
+    <p class="q-desc">Reels, carousels, static images, stories, lives — what's your current mix?</p>
+    <textarea class="q-textarea" id="f-q7" placeholder="e.g. 3x per week — mostly Reels, occasional carousels, stories daily." rows="4"></textarea>
+    <p class="field-error" id="err-q7">Please answer this question to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-q7', 'err-q7')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 13: Q8 — BEST-PERFORMING POSTS -->
+  <div class="slide" id="slide-13">
+    <p class="q-num">Question 8 of 18 · Your Content</p>
+    <h2 class="q-title">Share your 2–3 best-performing posts.</h2>
+    <p class="q-desc">The ones that got the most reach, saves, shares, or DMs. What do you think made them land?</p>
+    <textarea class="q-textarea" id="f-q8" placeholder="Link or describe the posts and your read on why they worked." rows="6"></textarea>
+    <p class="field-error" id="err-q8">Please answer this question to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-q8', 'err-q8')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 14: Q9 — CONTENT AVOIDED -->
+  <div class="slide" id="slide-14">
+    <p class="q-num">Question 9 of 18 · Your Content</p>
+    <h2 class="q-title">What kind of content do you avoid posting, and why?</h2>
+    <p class="q-desc">Be specific — is it showing your face, talking about your offers, sharing opinions, or something else?</p>
+    <textarea class="q-textarea" id="f-q9" placeholder="Be honest here — avoidance patterns are often where the biggest leverage is." rows="6"></textarea>
+    <p class="field-error" id="err-q9">Please answer this question to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-q9', 'err-q9')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 15: Q10 — CONTENT SYSTEM -->
+  <div class="slide" id="slide-15">
+    <p class="q-num">Question 10 of 18 · Your Content</p>
+    <h2 class="q-title">Do you have a content system?</h2>
+    <p class="q-desc">A way you plan, batch, or decide what to post. Describe what that looks like — or what it doesn't look like.</p>
+    <textarea class="q-textarea" id="f-q10" placeholder="Be honest — reactive posting counts as an answer too." rows="5"></textarea>
+    <p class="field-error" id="err-q10">Please answer this question to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-q10', 'err-q10')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 16: YOUR GROWTH SECTION -->
+  <div class="slide" id="slide-16">
+    <p class="section-label">Section 4 of 6</p>
+    <p class="section-statement">"Growth doesn't lie. Let's look at what the numbers are actually telling you."</p>
+    <button class="btn-gold" onclick="nextSlide()">Continue →</button>
+    <div class="btn-row" style="margin-top: 1.5rem;">
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 17: Q11 — FOLLOWER GROWTH -->
+  <div class="slide" id="slide-17">
+    <p class="q-num">Question 11 of 18 · Your Growth</p>
+    <h2 class="q-title">What does your follower growth look like?</h2>
+    <p class="q-desc">Is it flat, slow, inconsistent, or growing? Do you know what's driving or stalling it?</p>
+    <textarea class="q-textarea" id="f-q11" placeholder="Describe the trajectory — peaks, drops, plateaus, and any patterns you've noticed." rows="5"></textarea>
+    <p class="field-error" id="err-q11">Please answer this question to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-q11', 'err-q11')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 18: Q12 — GROWTH STRATEGIES TRIED -->
+  <div class="slide" id="slide-18">
+    <p class="q-num">Question 12 of 18 · Your Growth</p>
+    <h2 class="q-title">What growth strategies have you already tried?</h2>
+    <p class="q-desc">Hashtags, collaborations, SEO, posting frequency, paid ads, etc. What worked, and what didn't?</p>
+    <textarea class="q-textarea" id="f-q12" placeholder="Be specific — 'I tried hashtags' is different from 'I used 30 hashtags in every post for 3 months and got X result.'" rows="6"></textarea>
+    <p class="field-error" id="err-q12">Please answer this question to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-q12', 'err-q12')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 19: Q13 — AUDIENCE MATCH -->
+  <div class="slide" id="slide-19">
+    <p class="q-num">Question 13 of 18 · Your Growth</p>
+    <h2 class="q-title">Do the followers you're currently attracting actually match who you want to reach?</h2>
+    <p class="q-desc">If not, where's the disconnect?</p>
+    <textarea class="q-textarea" id="f-q13" placeholder="Who are you actually getting versus who you want? What feels off?" rows="6"></textarea>
+    <p class="field-error" id="err-q13">Please answer this question to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-q13', 'err-q13')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 20: THE REAL PROBLEM SECTION -->
+  <div class="slide" id="slide-20">
+    <p class="section-label">Section 5 of 6</p>
+    <p class="section-statement">"This is where we get to the root. These next three questions matter most — take your time."</p>
+    <button class="btn-gold" onclick="nextSlide()">Continue →</button>
+    <div class="btn-row" style="margin-top: 1.5rem;">
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 21: Q14 — BIGGEST PROBLEM -->
+  <div class="slide" id="slide-21">
+    <p class="q-num">Question 14 of 18 · The Real Problem</p>
+    <h2 class="q-title">If you had to name the single biggest reason your Instagram isn't working the way you want it to, what would it be?</h2>
+    <textarea class="q-textarea" id="f-q14" placeholder="One thing. Be direct." rows="5"></textarea>
+    <p class="field-error" id="err-q14">Please answer this question to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-q14', 'err-q14')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 22: Q15 — DISCOMFORT -->
+  <div class="slide" id="slide-22">
+    <p class="q-num">Question 15 of 18 · The Real Problem</p>
+    <h2 class="q-title">Is there any part of showing up on Instagram that feels uncomfortable, inconsistent, or like it's costing you something?</h2>
+    <p class="q-desc">Describe it honestly. This could be visibility fear, imposter syndrome, not knowing what to say, or something you can't quite name yet.</p>
+    <textarea class="q-textarea" id="f-q15" placeholder="This is a safe place to be real — the more honest you are, the more useful our session will be." rows="6"></textarea>
+    <p class="field-error" id="err-q15">Please answer this question to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-q15', 'err-q15')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 23: Q16 — DISTINCTIVENESS CLARITY -->
+  <div class="slide" id="slide-23">
+    <p class="q-num">Question 16 of 18 · The Real Problem</p>
+    <h2 class="q-title">On a scale of 1–10, how clear are you on what makes your account distinct from everyone else in your space?</h2>
+    <p class="q-desc">What does that clarity or lack of it feel like?</p>
+    <textarea class="q-textarea" id="f-q16" placeholder="e.g. Honestly, a 4. I know what I do, but I couldn't clearly articulate why someone would choose me over others..." rows="5"></textarea>
+    <p class="field-error" id="err-q16">Please answer this question to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-q16', 'err-q16')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 24: SESSION INTENT SECTION -->
+  <div class="slide" id="slide-24">
+    <p class="section-label">Section 6 of 6</p>
+    <p class="section-statement">"Almost there. Let's make sure I know exactly what success looks like for you in our time together."</p>
+    <button class="btn-gold" onclick="nextSlide()">Continue →</button>
+    <div class="btn-row" style="margin-top: 1.5rem;">
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 25: Q17 — SESSION GOAL -->
+  <div class="slide" id="slide-25">
+    <p class="q-num">Question 17 of 18 · Session Intent</p>
+    <h2 class="q-title">What would make this session a 10/10 for you?</h2>
+    <p class="q-desc">What specific outcome, clarity, or shift are you walking away with?</p>
+    <textarea class="q-textarea" id="f-q17" placeholder="Be specific — 'I'd feel clearer about X', 'I'd have a plan for Y', 'I'd know exactly how to Z'..." rows="5"></textarea>
+    <p class="field-error" id="err-q17">Please answer this question to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-q17', 'err-q17')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 26: Q18 — ANYTHING ELSE -->
+  <div class="slide" id="slide-26">
+    <p class="q-num">Question 18 of 18 · Session Intent</p>
+    <h2 class="q-title">Is there anything you want me to know before we begin?</h2>
+    <p class="q-desc">About where you are, what you've tried, or what's felt particularly stuck.</p>
+    <textarea class="q-textarea" id="f-q18" placeholder="Anything at all — no detail is too small." rows="5"></textarea>
+    <p class="field-error" id="err-q18">Please answer this question to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" id="submitBtn" onclick="submitForm()">Submit →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+    <p class="submit-error" id="submit-error">Something went wrong. Please try again or email me directly at isisanchalee@gmail.com.</p>
+  </div>
+
+  <!-- SLIDE 27: ENDING -->
+  <div class="slide" id="slide-27">
+    <div class="ending-symbol">✦</div>
+    <h2 class="ending-title">Your questionnaire<br>is received.</h2>
+    <p class="ending-body">Thank you for taking the time to share so honestly. I'll review everything before our session. Now go ahead and book your time — you'll receive a copy of your responses in your inbox shortly.</p>
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+      <a href="https://calendar.app.google/ccjGnyGvVzSyL6vQ9" target="_blank" class="btn-gold">Book Your Session →</a>
+      <a href="https://isisanchalee.com" class="btn-outline">Return to Website</a>
+    </div>
+  </div>
+
+</div>
+
+<div class="quiz-footer">Isis Anchalee · Instagram Strategy Session</div>
+
+<script>
+  const TOTAL_SLIDES = 27;
+  let current = 0;
+
+  function updateProgress() {
+    const pct = (current / TOTAL_SLIDES) * 100;
+    document.getElementById('progressBar').style.width = pct + '%';
+  }
+
+  function showSlide(n) {
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+    const el = document.getElementById('slide-' + n);
+    if (el) { el.classList.add('active'); current = n; updateProgress(); }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function nextSlide() { showSlide(current + 1); }
+  function prevSlide() { showSlide(current - 1); }
+
+  function validateAndNext(fieldId, errId) {
+    const val = document.getElementById(fieldId).value.trim();
+    const err = document.getElementById(errId);
+    if (!val) { err.style.display = 'block'; return; }
+    err.style.display = 'none';
+    nextSlide();
+  }
+
+  function validateEmail() {
+    const val = document.getElementById('f-email').value.trim();
+    const err = document.getElementById('err-email');
+    if (!val || !val.includes('@') || !val.includes('.')) {
+      err.style.display = 'block'; return;
+    }
+    err.style.display = 'none';
+    nextSlide();
+  }
+
+  async function submitForm() {
+    const q18 = document.getElementById('f-q18').value.trim();
+    const err = document.getElementById('err-q18');
+    if (!q18) { err.style.display = 'block'; return; }
+    err.style.display = 'none';
+
+    const submitBtn = document.getElementById('submitBtn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+
+    const payload = {
+      name:    document.getElementById('f-name').value.trim(),
+      email:   document.getElementById('f-email').value.trim(),
+      q1:      document.getElementById('f-q1').value.trim(),
+      q2:      document.getElementById('f-q2').value.trim(),
+      q3:      document.getElementById('f-q3').value.trim(),
+      q4:      document.getElementById('f-q4').value.trim(),
+      q5:      document.getElementById('f-q5').value.trim(),
+      q6:      document.getElementById('f-q6').value.trim(),
+      q7:      document.getElementById('f-q7').value.trim(),
+      q8:      document.getElementById('f-q8').value.trim(),
+      q9:      document.getElementById('f-q9').value.trim(),
+      q10:     document.getElementById('f-q10').value.trim(),
+      q11:     document.getElementById('f-q11').value.trim(),
+      q12:     document.getElementById('f-q12').value.trim(),
+      q13:     document.getElementById('f-q13').value.trim(),
+      q14:     document.getElementById('f-q14').value.trim(),
+      q15:     document.getElementById('f-q15').value.trim(),
+      q16:     document.getElementById('f-q16').value.trim(),
+      q17:     document.getElementById('f-q17').value.trim(),
+      q18:     q18,
+    };
+
+    try {
+      const res = await fetch('/api/ig-strategy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error('Server error');
+      showSlide(27);
+    } catch (e) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit →';
+      document.getElementById('submit-error').style.display = 'block';
+    }
+  }
+
+  // Enter key advances (except textareas)
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+      const btn = document.querySelector('#slide-' + current + ' .btn-gold:not([disabled])');
+      if (btn) btn.click();
+    }
+  });
+
+  updateProgress();
+</script>
+</body>
+</html>

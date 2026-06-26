@@ -46,7 +46,7 @@ module.exports = async function handler(req, res) {
         line_items: [{ price: product.stripePriceId, quantity: 1 }],
         allow_promotion_codes: true,
         success_url: isAudit
-          ? `${process.env.SITE_URL}/socialgrowth.html?purchase=audit-success&session_id={CHECKOUT_SESSION_ID}`
+          ? `${process.env.SITE_URL}/ig-strategy-questionnaire.html`
           : `${process.env.SITE_URL}/socialgrowth.html?purchase=success&session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${process.env.SITE_URL}/socialgrowth.html`,
         metadata: { productId },
