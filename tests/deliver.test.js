@@ -246,12 +246,8 @@ test('all returned download URLs use the correct Google Drive export format', as
 
   for (const file of res.body.files) {
     assert.ok(
-      file.url.startsWith('https://drive.google.com/uc?export=download&id='),
-      `URL should use the direct download format: ${file.url}`
-    );
-    assert.ok(
-      file.viewUrl.startsWith('https://drive.google.com/file/d/'),
-      `viewUrl should use the file view format: ${file.viewUrl}`
+      file.url.includes('/api/proxy-audio?fileId='),
+      `URL should use the proxy download format: ${file.url}`
     );
   }
   clearMocks();

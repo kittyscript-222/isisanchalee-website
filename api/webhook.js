@@ -24,7 +24,9 @@ const {
   notifyAudioPurchaseReceived,
   notifyRTTSessionBooked,
   sendAudioConfirmation,
+  sendIGStrategyNextSteps,
 } = require('../lib/email');
+const { logFollowUpSchedule } = require('../lib/sheets');
 
 const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
 
@@ -97,10 +99,11 @@ module.exports = async function handler(req, res) {
 
     if (instagramProducts.length && !alreadyNotifiedInstagram) {
       // Build file list across all instagram products in this purchase
+      const site = process.env.SITE_URL || 'https://isisanchalee.com';
       const allFiles = instagramProducts.flatMap(p =>
         (p.files || []).map(f => ({
           name: f.name,
-          url: `https://drive.google.com/uc?export=download&id=${f.driveFileId}`,
+          url: `${site}/api/proxy-audio?fileId=${f.driveFileId}`,
         }))
       );
 
@@ -116,6 +119,23 @@ module.exports = async function handler(req, res) {
           await sendAudioConfirmation(email, { productName, files: allFiles, isInstagram: true, isAudit });
         } catch (err) {
           console.error('Instagram sendAudioConfirmation error:', err);
+        }
+      }
+
+      // Send pre-session homework email for strategy session purchases
+      if (isAudit && email) {
+        try {
+          await sendIGStrategyNextSteps(email, { name });
+        } catch (err) {
+          console.error('sendIGStrategyNextSteps error:', err);
+        }
+
+        // Schedule 30-day follow-up
+        const sendAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+        try {
+          await logFollowUpSchedule({ name, email, type: 'ig-strategy', sendAt });
+        } catch (err) {
+          console.error('logFollowUpSchedule (ig-strategy) error:', err);
         }
       }
 
@@ -191,6 +211,16 @@ module.exports = async function handler(req, res) {
         });
       } catch (err) {
         console.error('notifyRTTSessionBooked error:', err);
+      }
+
+      // Schedule 30-day follow-up
+      if (email) {
+        const sendAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+        try {
+          await logFollowUpSchedule({ name, email, type: 'rtt', sendAt });
+        } catch (err) {
+          console.error('logFollowUpSchedule (rtt) error:', err);
+        }
       }
 
       try {

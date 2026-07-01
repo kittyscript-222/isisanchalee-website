@@ -45,11 +45,10 @@ module.exports = async function handler(req, res) {
 
     // Sessions (RTT, audit-only) have no files — caller should redirect to
     // calendar instead of calling this endpoint, but handle gracefully.
+    const site = process.env.SITE_URL || 'https://isisanchalee.com';
     const files = (product.files || []).map(f => ({
       name: f.name,
-      url: `https://drive.google.com/uc?export=download&id=${f.driveFileId}`,
-      // Also provide a viewable link (opens in browser) as fallback
-      viewUrl: `https://drive.google.com/file/d/${f.driveFileId}/view`,
+      url: `${site}/api/proxy-audio?fileId=${f.driveFileId}`,
     }));
 
     console.log('deliver: serving', files.length, 'file(s) for', productId, 'to', session.customer_details?.email);

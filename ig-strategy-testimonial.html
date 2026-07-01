@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Share Your Results | Instagram Strategy — Isis Anchalee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0A0807;
+      --surface: #111009;
+      --gold: #C5A880;
+      --gold-light: #D4BC9A;
+      --cream: #F2EDE6;
+      --muted: rgba(242,237,230,0.45);
+      --border: rgba(197,168,128,0.15);
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans: 'Montserrat', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--cream);
+      font-family: var(--sans);
+      font-weight: 300;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .progress-bar {
+      position: fixed; top: 0; left: 0; height: 2px;
+      background: var(--gold); z-index: 100;
+      transition: width 0.5s ease;
+    }
+    .quiz-wrap {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 4rem 1.5rem;
+    }
+    .slide {
+      display: none;
+      max-width: 680px; width: 100%;
+      animation: fadeUp 0.5s ease forwards;
+    }
+    .slide.active { display: block; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .welcome-symbol { font-size: 1.5rem; color: var(--gold); margin-bottom: 2rem; letter-spacing: 0.3em; }
+    .welcome-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 300; line-height: 1.15;
+      color: var(--cream); margin-bottom: 1.5rem;
+    }
+    .welcome-title em { font-style: italic; color: var(--gold); }
+    .welcome-body { font-size: 1.05rem; line-height: 1.9; color: var(--muted); margin-bottom: 2rem; max-width: 560px; }
+    .section-label { font-size: 0.65rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+    .section-statement {
+      font-family: var(--serif);
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      font-weight: 300; font-style: italic;
+      color: var(--gold-light); line-height: 1.6;
+      border-left: 1.5px solid var(--gold);
+      padding-left: 2rem; margin-bottom: 3rem;
+    }
+    .q-num { font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; display: flex; align-items: center; gap: 0.7rem; }
+    .q-num::before { content: ''; display: block; width: 20px; height: 0.5px; background: var(--gold); }
+    .q-title { font-family: var(--serif); font-size: clamp(1.4rem, 3.5vw, 2rem); font-weight: 300; line-height: 1.3; color: var(--cream); margin-bottom: 0.8rem; }
+    .q-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.75; margin-bottom: 2.2rem; }
+    .q-input, .q-textarea {
+      width: 100%; background: transparent;
+      border: none; border-bottom: 0.5px solid rgba(197,168,128,0.3);
+      color: var(--cream); font-family: var(--sans);
+      font-size: 1.1rem; font-weight: 300;
+      padding: 0.8rem 0; outline: none;
+      transition: border-color 0.2s;
+      caret-color: var(--gold);
+    }
+    .q-input:focus, .q-textarea:focus { border-bottom-color: var(--gold); }
+    .q-input::placeholder, .q-textarea::placeholder { color: rgba(242,237,230,0.2); }
+    .q-textarea {
+      resize: none; min-height: 160px;
+      border: 0.5px solid rgba(197,168,128,0.2);
+      padding: 1rem; line-height: 1.8;
+      background: rgba(197,168,128,0.03);
+    }
+    .q-textarea:focus { border-color: rgba(197,168,128,0.5); }
+
+    .upload-zone {
+      border: 0.5px solid rgba(197,168,128,0.25);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      background: rgba(197,168,128,0.02);
+      position: relative;
+    }
+    .upload-zone:hover, .upload-zone.drag-over { border-color: var(--gold); background: rgba(197,168,128,0.05); }
+    .upload-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .upload-icon { font-size: 2rem; color: var(--gold); margin-bottom: 1rem; }
+    .upload-label { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+    .upload-label strong { color: var(--cream); font-weight: 400; }
+    .upload-status { font-size: 0.8rem; color: var(--gold); margin-top: 1.2rem; line-height: 1.6; min-height: 1.2em; }
+    .upload-progress { height: 2px; background: rgba(197,168,128,0.15); margin-top: 1rem; display: none; }
+    .upload-progress-bar { height: 100%; background: var(--gold); width: 0%; transition: width 0.3s; }
+    .optional-tag { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(197,168,128,0.5); margin-left: 0.8rem; }
+
+    .btn-gold {
+      background: var(--gold); color: var(--bg);
+      border: none; font-family: var(--sans);
+      font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      padding: 1.1rem 2.8rem; cursor: pointer;
+      transition: background 0.2s; display: inline-block;
+    }
+    .btn-gold:hover { background: var(--gold-light); }
+    .btn-gold:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-outline {
+      background: transparent; color: var(--gold);
+      border: 0.5px solid rgba(197,168,128,0.35);
+      font-family: var(--sans); font-size: 0.78rem;
+      font-weight: 400; letter-spacing: 0.14em;
+      text-transform: uppercase; padding: 1rem 2.2rem;
+      cursor: pointer; transition: all 0.2s;
+      display: inline-block; text-decoration: none;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--cream); }
+    .btn-row { display: flex; gap: 1rem; align-items: center; margin-top: 2.5rem; flex-wrap: wrap; }
+    .btn-back { background: none; border: none; color: var(--muted); font-family: var(--sans); font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: color 0.2s; padding: 0; }
+    .btn-back:hover { color: var(--cream); }
+
+    .ending-symbol { font-family: var(--serif); font-size: 3rem; color: var(--gold); margin-bottom: 2rem; }
+    .ending-title { font-family: var(--serif); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 300; color: var(--cream); margin-bottom: 1.5rem; line-height: 1.2; }
+    .ending-body { font-size: 1rem; color: var(--muted); line-height: 1.9; margin-bottom: 3rem; max-width: 520px; }
+
+    .field-error { font-size: 0.78rem; color: #e07070; margin-top: 0.5rem; display: none; }
+    .submit-error { font-size: 0.85rem; color: #e07070; margin-top: 1rem; display: none; line-height: 1.6; }
+    .quiz-footer { position: fixed; bottom: 2rem; right: 2rem; font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(242,237,230,0.15); }
+
+    @media (max-width: 600px) { .quiz-wrap { padding: 3rem 1.2rem; } }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+
+<div class="quiz-wrap">
+
+  <!-- SLIDE 0: WELCOME -->
+  <div class="slide active" id="slide-0">
+    <div class="welcome-symbol">✦ ✦ ✦</div>
+    <h1 class="welcome-title">Share your<br><em>results.</em></h1>
+    <p class="welcome-body">Your experience helps others who are standing at the edge of their own decision, wondering if this is worth it. Tell them — in your own words — what changed.</p>
+    <p class="welcome-body">You can leave a written testimonial, a short video, or both. It takes about 5 minutes.</p>
+    <button class="btn-gold" onclick="nextSlide()">Begin →</button>
+  </div>
+
+  <!-- SLIDE 1: NAME -->
+  <div class="slide" id="slide-1">
+    <p class="q-num">Your details</p>
+    <h2 class="q-title">What's your name?</h2>
+    <p class="q-desc">First name only is completely fine.</p>
+    <input type="text" class="q-input" id="f-name" placeholder="Your name" autocomplete="off" />
+    <p class="field-error" id="err-name">Please enter your name to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-name', 'err-name')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: EMAIL -->
+  <div class="slide" id="slide-2">
+    <p class="q-num">Contact</p>
+    <h2 class="q-title">What's your email address?</h2>
+    <p class="q-desc">So I can confirm receipt and reach you if I have questions.</p>
+    <input type="email" class="q-input" id="f-email" placeholder="your@email.com" autocomplete="off" />
+    <p class="field-error" id="err-email">Please enter a valid email address.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateEmail()">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: HANDLE (OPTIONAL) -->
+  <div class="slide" id="slide-3">
+    <p class="q-num">Your Instagram <span class="optional-tag">Optional</span></p>
+    <h2 class="q-title">What's your Instagram handle?</h2>
+    <p class="q-desc">If you're happy for me to tag you when I share your testimonial. Leave blank if you'd prefer to stay untagged.</p>
+    <input type="text" class="q-input" id="f-handle" placeholder="@yourhandle" autocomplete="off" />
+    <div class="btn-row">
+      <button class="btn-gold" onclick="nextSlide()">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: WRITTEN TESTIMONIAL -->
+  <div class="slide" id="slide-4">
+    <p class="q-num">Your experience</p>
+    <h2 class="q-title">What shifted for you after our strategy session?</h2>
+    <p class="q-desc">Where were you before — with your content, your confidence, or your growth — and what changed? Specific results, follower growth, mindset shifts, clarity, anything that's moved for you.</p>
+    <textarea class="q-textarea" id="f-testimonial" placeholder="Share your experience…" rows="7"></textarea>
+    <p class="field-error" id="err-testimonial">Please share a little about your experience to continue.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-testimonial', 'err-testimonial')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: CREDIT -->
+  <div class="slide" id="slide-5">
+    <p class="q-num">How to credit you</p>
+    <h2 class="q-title">How should I attribute your testimonial?</h2>
+    <p class="q-desc">e.g. "— Sarah, beauty creator" or "— S.M." or "— Anonymous". I'll always use whatever you're comfortable with.</p>
+    <input type="text" class="q-input" id="f-credit" placeholder="e.g. Sarah, lifestyle creator  /  S.M.  /  Anonymous" autocomplete="off" />
+    <p class="field-error" id="err-credit">Please let me know how to credit you.</p>
+    <div class="btn-row">
+      <button class="btn-gold" onclick="validateAndNext('f-credit', 'err-credit')">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: VIDEO (OPTIONAL) -->
+  <div class="slide" id="slide-6">
+    <p class="q-num">Video testimonial <span class="optional-tag">Optional</span></p>
+    <h2 class="q-title">Want to record a short video?</h2>
+    <p class="q-desc">1–3 minutes of you talking about your results is incredibly compelling for other creators sitting on the fence. Record it on your phone, upload it below, and I'll handle the rest. Totally optional.</p>
+
+    <div class="upload-zone" id="uploadZone">
+      <input type="file" id="f-video" accept="video/*" onchange="handleVideoSelect(this)" />
+      <div class="upload-icon">▷</div>
+      <div class="upload-label"><strong>Tap to select your video</strong><br>MP4, MOV or any video format · Max 500MB</div>
+    </div>
+    <div class="upload-status" id="uploadStatus"></div>
+    <div class="upload-progress" id="uploadProgress">
+      <div class="upload-progress-bar" id="uploadProgressBar"></div>
+    </div>
+    <p class="submit-error" id="err-video"></p>
+
+    <div class="btn-row">
+      <button class="btn-gold" onclick="nextSlide()">Continue →</button>
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+    <p style="font-size:0.78rem;color:var(--muted);margin-top:1.5rem;">No video? No problem — just continue.</p>
+  </div>
+
+  <!-- SLIDE 7: SUBMIT -->
+  <div class="slide" id="slide-7">
+    <p class="section-label">Almost done</p>
+    <p class="section-statement">"Results like yours are exactly what other creators need to hear."</p>
+    <p style="font-size:0.9rem;color:var(--muted);line-height:1.8;margin-bottom:2rem;">Submit below and your testimonial lands directly with me. I'll confirm receipt and let you know how I've featured your words.</p>
+    <button class="btn-gold" id="btnSubmit" onclick="submitTestimonial()">Submit my testimonial →</button>
+    <p class="submit-error" id="err-submit"></p>
+    <div class="btn-row" style="margin-top:1.2rem;">
+      <button class="btn-back" onclick="prevSlide()">← Back</button>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: THANK YOU -->
+  <div class="slide" id="slide-8">
+    <div class="ending-symbol">✦</div>
+    <h2 class="ending-title">You're amazing.<br><em>Thank you.</em></h2>
+    <p class="ending-body">Your results have been received. What you've shared will mean so much to other creators who are exactly where you were before we worked together.</p>
+    <p class="ending-body">With gratitude,<br><em style="color:var(--gold);">Isis</em></p>
+    <a href="https://isisanchalee.com/socialgrowth" class="btn-outline">Back to Social Growth →</a>
+  </div>
+
+</div>
+
+<div class="quiz-footer">Isis Anchalee · Instagram Strategy</div>
+
+<script>
+  const TOTAL_SLIDES = 9;
+  let current = 0;
+  let videoFileId = null;
+
+  function updateProgress() {
+    const pct = (current / (TOTAL_SLIDES - 1)) * 100;
+    document.getElementById('progressBar').style.width = pct + '%';
+  }
+
+  function showSlide(n) {
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+    document.getElementById('slide-' + n).classList.add('active');
+    current = n;
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function nextSlide() { showSlide(current + 1); }
+  function prevSlide() { showSlide(current - 1); }
+
+  function validateAndNext(fieldId, errId) {
+    const val = document.getElementById(fieldId).value.trim();
+    if (!val) { document.getElementById(errId).style.display = 'block'; return; }
+    document.getElementById(errId).style.display = 'none';
+    nextSlide();
+  }
+
+  function validateEmail() {
+    const val = document.getElementById('f-email').value.trim();
+    const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+    document.getElementById('err-email').style.display = ok ? 'none' : 'block';
+    if (ok) nextSlide();
+  }
+
+  function handleVideoSelect(input) {
+    const file = input.files[0];
+    if (!file) return;
+    if (file.size > 500 * 1024 * 1024) {
+      document.getElementById('err-video').textContent = 'File is too large. Please upload a video under 500MB.';
+      document.getElementById('err-video').style.display = 'block';
+      input.value = '';
+      return;
+    }
+    document.getElementById('err-video').style.display = 'none';
+    document.getElementById('uploadStatus').textContent = `${file.name} selected — will upload when you submit.`;
+  }
+
+  async function uploadVideo(file) {
+    const status = document.getElementById('uploadStatus');
+    const progressWrap = document.getElementById('uploadProgress');
+    const progressBar = document.getElementById('uploadProgressBar');
+
+    status.textContent = 'Uploading video…';
+    progressWrap.style.display = 'block';
+    progressBar.style.width = '0%';
+
+    return new Promise((resolve, reject) => {
+      const formData = new FormData();
+      formData.append('video', file);
+      formData.append('type', 'ig-strategy');
+      formData.append('name', document.getElementById('f-name').value.trim());
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '/api/testimonial-upload');
+
+      xhr.upload.onprogress = (e) => {
+        if (e.lengthComputable) {
+          const pct = Math.round((e.loaded / e.total) * 100);
+          progressBar.style.width = pct + '%';
+          status.textContent = `Uploading… ${pct}%`;
+        }
+      };
+
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          const data = JSON.parse(xhr.responseText);
+          status.textContent = '✓ Video uploaded successfully.';
+          resolve(data.fileId);
+        } else {
+          reject(new Error('Upload failed'));
+        }
+      };
+
+      xhr.onerror = () => reject(new Error('Upload failed'));
+      xhr.send(formData);
+    });
+  }
+
+  async function submitTestimonial() {
+    const btn = document.getElementById('btnSubmit');
+    const err = document.getElementById('err-submit');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    err.style.display = 'none';
+
+    try {
+      const videoInput = document.getElementById('f-video');
+      if (videoInput.files[0]) {
+        try {
+          videoFileId = await uploadVideo(videoInput.files[0]);
+        } catch (e) {
+          console.error('Video upload failed:', e);
+          document.getElementById('uploadStatus').textContent = 'Video upload failed — submitting text testimonial only.';
+        }
+      }
+
+      const res = await fetch('/api/testimonial', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'ig-strategy',
+          name: document.getElementById('f-name').value.trim(),
+          email: document.getElementById('f-email').value.trim(),
+          handle: document.getElementById('f-handle').value.trim(),
+          testimonial: document.getElementById('f-testimonial').value.trim(),
+          credit: document.getElementById('f-credit').value.trim(),
+          videoFileId,
+        }),
+      });
+
+      if (!res.ok) throw new Error('Submission failed');
+      showSlide(8);
+    } catch (e) {
+      err.textContent = 'Something went wrong. Please try again or email isisanchalee@gmail.com directly.';
+      err.style.display = 'block';
+      btn.disabled = false;
+      btn.textContent = 'Submit my testimonial →';
+    }
+  }
+
+  const zone = document.getElementById('uploadZone');
+  if (zone) {
+    zone.addEventListener('dragover', () => zone.classList.add('drag-over'));
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+    zone.addEventListener('drop', () => zone.classList.remove('drag-over'));
+  }
+
+  updateProgress();
+</script>
+</body>
+</html>
