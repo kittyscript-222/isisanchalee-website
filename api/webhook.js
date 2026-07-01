@@ -99,11 +99,10 @@ module.exports = async function handler(req, res) {
 
     if (instagramProducts.length && !alreadyNotifiedInstagram) {
       // Build file list across all instagram products in this purchase
-      const site = process.env.SITE_URL || 'https://isisanchalee.com';
       const allFiles = instagramProducts.flatMap(p =>
         (p.files || []).map(f => ({
           name: f.name,
-          url: `${site}/api/proxy-audio?fileId=${f.driveFileId}`,
+          url: `https://drive.google.com/file/d/${f.driveFileId}/view`,
         }))
       );
 
