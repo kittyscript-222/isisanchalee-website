@@ -107,6 +107,7 @@
     .upload-progress { height: 2px; background: rgba(197,168,128,0.15); margin-top: 1rem; display: none; }
     .upload-progress-bar { height: 100%; background: var(--gold); width: 0%; transition: width 0.3s; }
     .optional-tag { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(197,168,128,0.5); margin-left: 0.8rem; }
+    .encouraged-tag { font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--bg); background: var(--gold); padding: 0.25rem 0.6rem; margin-left: 0.8rem; }
 
     .btn-gold {
       background: var(--gold); color: var(--bg);
@@ -196,15 +197,32 @@
     </div>
   </div>
 
-  <!-- SLIDE 4: WRITTEN TESTIMONIAL -->
+  <!-- SLIDE 4: TESTIMONIAL (WRITTEN + VIDEO) -->
   <div class="slide" id="slide-4">
     <p class="q-num">Your experience</p>
     <h2 class="q-title">What shifted for you after our strategy session?</h2>
     <p class="q-desc">Where were you before — with your content, your confidence, or your growth — and what changed? Specific results, follower growth, mindset shifts, clarity, anything that's moved for you.</p>
     <textarea class="q-textarea" id="f-testimonial" placeholder="Share your experience…" rows="7"></textarea>
-    <p class="field-error" id="err-testimonial">Please share a little about your experience to continue.</p>
+    <p class="field-error" id="err-testimonial">Please share a written testimonial or record a video below (or both) to continue.</p>
+
+    <div style="height:0.5px;background:var(--border);margin:2.8rem 0;"></div>
+
+    <p class="q-num">Video testimonial <span class="encouraged-tag">Highly encouraged</span></p>
+    <p class="q-desc">1–3 minutes of you talking about your results is the single most compelling thing for other creators sitting on the fence. Record it on your phone, upload it below, and I'll handle the rest — written alone is welcome too if you'd rather not be on camera.</p>
+
+    <div class="upload-zone" id="uploadZone">
+      <input type="file" id="f-video" accept="video/*" onchange="handleVideoSelect(this)" />
+      <div class="upload-icon">▷</div>
+      <div class="upload-label"><strong>Tap to select your video</strong><br>MP4, MOV or any video format · Max 500MB</div>
+    </div>
+    <div class="upload-status" id="uploadStatus"></div>
+    <div class="upload-progress" id="uploadProgress">
+      <div class="upload-progress-bar" id="uploadProgressBar"></div>
+    </div>
+    <p class="submit-error" id="err-video"></p>
+
     <div class="btn-row">
-      <button class="btn-gold" onclick="validateAndNext('f-testimonial', 'err-testimonial')">Continue →</button>
+      <button class="btn-gold" onclick="validateTestimonialSlide()">Continue →</button>
       <button class="btn-back" onclick="prevSlide()">← Back</button>
     </div>
   </div>
@@ -222,32 +240,8 @@
     </div>
   </div>
 
-  <!-- SLIDE 6: VIDEO (OPTIONAL) -->
+  <!-- SLIDE 6: SUBMIT -->
   <div class="slide" id="slide-6">
-    <p class="q-num">Video testimonial <span class="optional-tag">Optional</span></p>
-    <h2 class="q-title">Want to record a short video?</h2>
-    <p class="q-desc">1–3 minutes of you talking about your results is incredibly compelling for other creators sitting on the fence. Record it on your phone, upload it below, and I'll handle the rest. Totally optional.</p>
-
-    <div class="upload-zone" id="uploadZone">
-      <input type="file" id="f-video" accept="video/*" onchange="handleVideoSelect(this)" />
-      <div class="upload-icon">▷</div>
-      <div class="upload-label"><strong>Tap to select your video</strong><br>MP4, MOV or any video format · Max 500MB</div>
-    </div>
-    <div class="upload-status" id="uploadStatus"></div>
-    <div class="upload-progress" id="uploadProgress">
-      <div class="upload-progress-bar" id="uploadProgressBar"></div>
-    </div>
-    <p class="submit-error" id="err-video"></p>
-
-    <div class="btn-row">
-      <button class="btn-gold" onclick="nextSlide()">Continue →</button>
-      <button class="btn-back" onclick="prevSlide()">← Back</button>
-    </div>
-    <p style="font-size:0.78rem;color:var(--muted);margin-top:1.5rem;">No video? No problem — just continue.</p>
-  </div>
-
-  <!-- SLIDE 7: SUBMIT -->
-  <div class="slide" id="slide-7">
     <p class="section-label">Almost done</p>
     <p class="section-statement">"Results like yours are exactly what other creators need to hear."</p>
     <p style="font-size:0.9rem;color:var(--muted);line-height:1.8;margin-bottom:2rem;">Submit below and your testimonial lands directly with me. I'll confirm receipt and let you know how I've featured your words.</p>
@@ -258,8 +252,8 @@
     </div>
   </div>
 
-  <!-- SLIDE 8: THANK YOU -->
-  <div class="slide" id="slide-8">
+  <!-- SLIDE 7: THANK YOU -->
+  <div class="slide" id="slide-7">
     <div class="ending-symbol">✦</div>
     <h2 class="ending-title">You're amazing.<br><em>Thank you.</em></h2>
     <p class="ending-body">Your results have been received. What you've shared will mean so much to other creators who are exactly where you were before we worked together.</p>
@@ -272,7 +266,7 @@
 <div class="quiz-footer">Isis Anchalee · Instagram Strategy</div>
 
 <script>
-  const TOTAL_SLIDES = 9;
+  const TOTAL_SLIDES = 8;
   let current = 0;
   let videoFileId = null;
 
@@ -304,6 +298,17 @@
     const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
     document.getElementById('err-email').style.display = ok ? 'none' : 'block';
     if (ok) nextSlide();
+  }
+
+  function validateTestimonialSlide() {
+    const text = document.getElementById('f-testimonial').value.trim();
+    const hasVideo = document.getElementById('f-video').files.length > 0;
+    if (!text && !hasVideo) {
+      document.getElementById('err-testimonial').style.display = 'block';
+      return;
+    }
+    document.getElementById('err-testimonial').style.display = 'none';
+    nextSlide();
   }
 
   function handleVideoSelect(input) {
@@ -393,7 +398,7 @@
       });
 
       if (!res.ok) throw new Error('Submission failed');
-      showSlide(8);
+      showSlide(7);
     } catch (e) {
       err.textContent = 'Something went wrong. Please try again or email isisanchalee@gmail.com directly.';
       err.style.display = 'block';

@@ -112,6 +112,7 @@
     .upload-progress-bar { height: 100%; background: var(--gold); width: 0%; transition: width 0.3s; }
 
     .optional-tag { font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(197,168,128,0.5); margin-left: 0.8rem; }
+    .encouraged-tag { font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--bg); background: var(--gold); padding: 0.25rem 0.6rem; margin-left: 0.8rem; }
 
     .btn-gold {
       background: var(--gold); color: var(--bg);
@@ -189,15 +190,32 @@
     </div>
   </div>
 
-  <!-- SLIDE 3: WRITTEN TESTIMONIAL -->
+  <!-- SLIDE 3: TESTIMONIAL (WRITTEN + VIDEO) -->
   <div class="slide" id="slide-3">
     <p class="q-num">Written testimonial</p>
     <h2 class="q-title">What shifted for you after your RTT session?</h2>
     <p class="q-desc">What were you struggling with before, and what has changed — in how you feel, how you think, or how you move through life? Be as specific as you feel comfortable being.</p>
     <textarea class="q-textarea" id="f-testimonial" placeholder="Share your experience..." rows="7"></textarea>
-    <p class="field-error" id="err-testimonial">Please share a little about your experience to continue.</p>
+    <p class="field-error" id="err-testimonial">Please share a written testimonial or record a video below (or both) to continue.</p>
+
+    <div style="height:0.5px;background:var(--border);margin:2.8rem 0;"></div>
+
+    <p class="q-num">Video testimonial <span class="encouraged-tag">Highly encouraged</span></p>
+    <p class="q-desc">A 1–3 minute video of you speaking to your experience is the single most powerful way to help someone else find the courage to begin. Record it on your phone in a quiet spot, then upload it below — written alone is welcome too if you'd rather not be on camera.</p>
+
+    <div class="upload-zone" id="uploadZone">
+      <input type="file" id="f-video" accept="video/*" onchange="handleVideoSelect(this)" />
+      <div class="upload-icon">▷</div>
+      <div class="upload-label"><strong>Tap to select your video</strong><br>MP4, MOV or any video format · Max 500MB</div>
+    </div>
+    <div class="upload-status" id="uploadStatus"></div>
+    <div class="upload-progress" id="uploadProgress">
+      <div class="upload-progress-bar" id="uploadProgressBar"></div>
+    </div>
+    <p class="submit-error" id="err-video"></p>
+
     <div class="btn-row">
-      <button class="btn-gold" onclick="validateAndNext('f-testimonial', 'err-testimonial')">Continue →</button>
+      <button class="btn-gold" onclick="validateTestimonialSlide()">Continue →</button>
       <button class="btn-back" onclick="prevSlide()">← Back</button>
     </div>
   </div>
@@ -215,32 +233,8 @@
     </div>
   </div>
 
-  <!-- SLIDE 5: VIDEO (OPTIONAL) -->
+  <!-- SLIDE 5: SUBMIT -->
   <div class="slide" id="slide-5">
-    <p class="q-num">Video testimonial <span class="optional-tag">Optional</span></p>
-    <h2 class="q-title">Would you like to record a short video?</h2>
-    <p class="q-desc">A 1–3 minute video of you speaking to your experience is incredibly powerful for others who are considering this work. Record it on your phone in a quiet spot, then upload it below. Completely optional — your written words are more than enough.</p>
-
-    <div class="upload-zone" id="uploadZone">
-      <input type="file" id="f-video" accept="video/*" onchange="handleVideoSelect(this)" />
-      <div class="upload-icon">▷</div>
-      <div class="upload-label"><strong>Tap to select your video</strong><br>MP4, MOV or any video format · Max 500MB</div>
-    </div>
-    <div class="upload-status" id="uploadStatus"></div>
-    <div class="upload-progress" id="uploadProgress">
-      <div class="upload-progress-bar" id="uploadProgressBar"></div>
-    </div>
-    <p class="submit-error" id="err-video"></p>
-
-    <div class="btn-row">
-      <button class="btn-gold" id="btnVideoNext" onclick="nextSlide()">Continue →</button>
-      <button class="btn-back" onclick="prevSlide()">← Back</button>
-    </div>
-    <p style="font-size:0.78rem;color:var(--muted);margin-top:1.5rem;">You can also skip the video and continue with your written testimonial.</p>
-  </div>
-
-  <!-- SLIDE 6: SUBMIT -->
-  <div class="slide" id="slide-6">
     <p class="section-label">Almost done</p>
     <p class="section-statement">"Thank you for taking the time to share this. Your words carry more power than you know."</p>
     <p style="font-size:0.9rem;color:var(--muted);line-height:1.8;margin-bottom:2rem;">Hit submit and your testimonial will be sent directly to me. I'll be in touch if I have any questions or to let you know how I've featured your words.</p>
@@ -251,13 +245,13 @@
     </div>
   </div>
 
-  <!-- SLIDE 7: THANK YOU -->
-  <div class="slide" id="slide-7">
+  <!-- SLIDE 6: THANK YOU -->
+  <div class="slide" id="slide-6">
     <div class="ending-symbol">✦</div>
     <h2 class="ending-title">Thank you,<br><em>from my heart.</em></h2>
     <p class="ending-body">Your testimonial has been received. Knowing what shifted for you means everything — and your words will help others find the courage to begin their own healing.</p>
     <p class="ending-body">With so much love and gratitude,<br><em style="color:var(--gold);">Isis</em></p>
-    <a href="https://isisanchalee.com/rtt-hypnotherapy" class="btn-outline">Back to RTT →</a>
+    <a href="https://isisanchalee.com" class="btn-outline">Back to Website →</a>
   </div>
 
 </div>
@@ -265,7 +259,7 @@
 <div class="quiz-footer">Isis Anchalee · RTT Hypnotherapy</div>
 
 <script>
-  const TOTAL_SLIDES = 8;
+  const TOTAL_SLIDES = 7;
   let current = 0;
   let videoFileId = null; // set after upload
 
@@ -297,6 +291,17 @@
     const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
     document.getElementById('err-email').style.display = ok ? 'none' : 'block';
     if (ok) nextSlide();
+  }
+
+  function validateTestimonialSlide() {
+    const text = document.getElementById('f-testimonial').value.trim();
+    const hasVideo = document.getElementById('f-video').files.length > 0;
+    if (!text && !hasVideo) {
+      document.getElementById('err-testimonial').style.display = 'block';
+      return;
+    }
+    document.getElementById('err-testimonial').style.display = 'none';
+    nextSlide();
   }
 
   function handleVideoSelect(input) {
@@ -387,7 +392,7 @@
       });
 
       if (!res.ok) throw new Error('Submission failed');
-      showSlide(7);
+      showSlide(6);
     } catch (e) {
       err.textContent = 'Something went wrong. Please try again or email isisanchalee@gmail.com directly.';
       err.style.display = 'block';
