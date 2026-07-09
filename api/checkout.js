@@ -33,6 +33,26 @@ module.exports = async function handler(req, res) {
     }
   }
 
+  // ── SAFE TO BE SEEN COURSE BUNDLE CHECKOUT ─────────────────────────────────
+  if (productId === 'safe_to_be_seen') {
+    const product = PRODUCTS[productId];
+    if (!product) return res.status(404).json({ error: 'Product not found' });
+    try {
+      const session = await stripe.checkout.sessions.create({
+        mode: 'payment',
+        line_items: [{ price: product.stripePriceId, quantity: 1 }],
+        allow_promotion_codes: true,
+        success_url: `${process.env.SITE_URL}/safetobeseen.html?purchase=success&session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${process.env.SITE_URL}/safetobeseen.html`,
+        metadata: { productId },
+      });
+      return res.status(200).json({ url: session.url });
+    } catch (err) {
+      console.error('Safe to Be Seen checkout error:', err);
+      return res.status(500).json({ error: 'Failed to create checkout session' });
+    }
+  }
+
   // ── INSTAGRAM GUIDE / AUDIO / AUDIT CHECKOUT ───────────────────────────────
   const instagramProductIds = ['instagram_guide','instagram_guide_bundle','instagram_guide_audit','instagram_guide_audio_audit','magnetic_growth_audio','instagram_audit_session'];
   const instagramAuditIds = ['instagram_guide_audit','instagram_guide_audio_audit','instagram_audit_session'];

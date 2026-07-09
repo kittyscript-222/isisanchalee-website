@@ -18,12 +18,13 @@
 
 const Stripe = require('stripe');
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
-const { PRODUCTS } = require('../lib/products');
+const { PRODUCTS, AUDIO_BY_NAME } = require('../lib/products');
 const {
   notifyCustomAudioPaymentReceived,
   notifyAudioPurchaseReceived,
   notifyRTTSessionBooked,
   sendAudioConfirmation,
+  sendCourseWelcome,
   sendIGStrategyNextSteps,
 } = require('../lib/email');
 const { logFollowUpSchedule } = require('../lib/sheets');
@@ -174,6 +175,60 @@ module.exports = async function handler(req, res) {
       }
     }
 
+    // ── Safe to Be Seen course bundle ─────────────────────────────────────────
+    // Sends the student a welcome email with all bundle downloads, notifies
+    // Isis, and schedules a 30-day follow-up (re-assessment + testimonial ask).
+    const courseProducts = products.filter(p => p.isCourse);
+    const alreadyNotifiedCourse = fullSession.metadata?.courseNotified === 'true';
+
+    if (courseProducts.length && !alreadyNotifiedCourse) {
+      const course = courseProducts[0];
+      const courseFiles = (course.files || []).map(f => ({
+        name: f.name,
+        url: `https://drive.google.com/file/d/${f.driveFileId}/view`,
+      }));
+
+      if (email) {
+        try {
+          await sendCourseWelcome(email, { name, files: courseFiles });
+        } catch (err) {
+          console.error('sendCourseWelcome error:', err);
+        }
+
+        // Schedule 30-day follow-up (reuses the existing follow-up scheduler)
+        const sendAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+        try {
+          await logFollowUpSchedule({ name, email, type: 'course', sendAt });
+        } catch (err) {
+          console.error('logFollowUpSchedule (course) error:', err);
+        }
+      }
+
+      // Internal notification to Isis
+      try {
+        await notifyAudioPurchaseReceived({
+          name,
+          email,
+          audioNames: [course.name],
+          productName: course.name,
+          amount,
+          currency,
+          purchaseLabel: 'Safe to Be Seen Course Bundle',
+        });
+      } catch (err) {
+        console.error('Course notifyAudioPurchaseReceived error:', err);
+      }
+
+      // Deduplicate so Stripe retries don't double-notify
+      try {
+        await stripe.checkout.sessions.update(session.id, {
+          metadata: { ...fullSession.metadata, courseNotified: 'true' },
+        });
+      } catch (err) {
+        console.error('Failed to set courseNotified metadata:', err);
+      }
+    }
+
     // ── Custom Audio: notify Isis immediately, before any brief is submitted ──
     const hasCustomAudio = products.some((p) => p.id === 'custom_audio');
     if (hasCustomAudio) {
@@ -231,30 +286,53 @@ module.exports = async function handler(req, res) {
       }
     }
 
-    // ── Audio library purchases / bundles: internal notification ──
-    // (downloads.js already sends the customer's confirmation email + file links
-    // when they land on success.html — this webhook adds the same internal
-    // notification as a guaranteed fallback, deduped via Stripe metadata so
-    // Isis isn't emailed twice for the same order.)
-    const hasAudioProduct = products.some((p) => (!p.isSession && !p.isBundle || p.isBundle) && !instagramIds.has(p.id));
+    // ── Audio library purchases / bundles ──────────────────────────────────
+    // Previously the customer's download email only fired from downloads.js,
+    // which only runs if the buyer's browser actually loads success.html and
+    // that fetch completes — anyone who closed the tab (or hit a network
+    // blip) right after paying never got their audios. The webhook now sends
+    // it directly, guaranteed, using metadata.audioNames for the real list of
+    // audios purchased (line items only reflect bundle pricing, not which
+    // audios were picked). downloads.js checks the same `emailSent` flag so
+    // it won't double-send if the buyer does land on success.html.
+    const hasAudioProduct = products.some((p) => (!p.isSession && !p.isBundle || p.isBundle) && !p.isCourse && !instagramIds.has(p.id));
     const alreadyNotified = fullSession.metadata?.webhookNotified === 'true';
+    const alreadyEmailed = fullSession.metadata?.emailSent === 'true';
 
-    if (hasAudioProduct && !hasCustomAudio && !alreadyNotified) {
-      const audioNames = products.map((p) => p.name);
-      const productName = products.length === 1 ? products[0].name : `${products.length} items`;
+    if (hasAudioProduct && !hasCustomAudio && (!alreadyNotified || !alreadyEmailed)) {
+      const purchasedAudioNames = JSON.parse(fullSession.metadata?.audioNames || '[]');
+      const audioNames = purchasedAudioNames.length ? purchasedAudioNames : products.map((p) => p.name);
+      const productName = audioNames.length === 1 ? audioNames[0] : `${audioNames.length} Hypnosis Audio${audioNames.length > 1 ? 's' : ''}`;
 
-      try {
-        await notifyAudioPurchaseReceived({ name, email, audioNames, productName, amount, currency });
-      } catch (err) {
-        console.error('notifyAudioPurchaseReceived error:', err);
+      if (email && !alreadyEmailed) {
+        const files = audioNames
+          .map((n) => AUDIO_BY_NAME[n])
+          .filter(Boolean)
+          .flatMap((p) => (p.files || []).map((f) => ({ name: f.name, url: `https://drive.google.com/file/d/${f.driveFileId}/view` })));
+
+        if (files.length) {
+          try {
+            await sendAudioConfirmation(email, { productName, files });
+          } catch (err) {
+            console.error('sendAudioConfirmation error:', err);
+          }
+        }
+      }
+
+      if (!alreadyNotified) {
+        try {
+          await notifyAudioPurchaseReceived({ name, email, audioNames, productName, amount, currency });
+        } catch (err) {
+          console.error('notifyAudioPurchaseReceived error:', err);
+        }
       }
 
       try {
         await stripe.checkout.sessions.update(session.id, {
-          metadata: { ...fullSession.metadata, webhookNotified: 'true' },
+          metadata: { ...fullSession.metadata, webhookNotified: 'true', emailSent: 'true' },
         });
       } catch (err) {
-        console.error('Failed to set webhookNotified metadata:', err);
+        console.error('Failed to set webhookNotified/emailSent metadata:', err);
       }
     }
 

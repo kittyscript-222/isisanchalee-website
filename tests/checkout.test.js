@@ -32,6 +32,8 @@ jest.mock('../lib/products', () => ({
     magnetic_growth_audio: { stripePriceId: 'price_1TkiLzC38S5O6HWPouVNCLAh' },
     instagram_audit_session: { stripePriceId: 'price_1TkiMLC38S5O6HWPzjaUjeId' },
 
+    safe_to_be_seen: { stripePriceId: 'price_safe_to_be_seen', isCourse: true },
+
     bundle_10: { stripePriceId: 'price_bundle_10', isBundle: true },
     bundle_5: { stripePriceId: 'price_bundle_5', isBundle: true },
     bundle_3: { stripePriceId: 'price_bundle_3', isBundle: true },
@@ -185,7 +187,7 @@ describe('Instagram guide / audio / audit checkout', () => {
     ['instagram_audit_session', 'price_1TkiMLC38S5O6HWPzjaUjeId'],
   ];
 
-  test.each(auditCases)('%s creates a session with the correct price and the audit-success_url', async (productId, priceId) => {
+  test.each(auditCases)('%s creates a session with the correct price and the questionnaire success_url', async (productId, priceId) => {
     createSession.mockResolvedValueOnce({ url: `https://checkout.stripe.com/${productId}` });
     const req = mockReq({ productId });
     const res = mockRes();
@@ -193,7 +195,7 @@ describe('Instagram guide / audio / audit checkout', () => {
 
     expect(createSession).toHaveBeenCalledWith(expect.objectContaining({
       line_items: [{ price: priceId, quantity: 1 }],
-      success_url: `${process.env.SITE_URL}/socialgrowth.html?purchase=audit-success&session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${process.env.SITE_URL}/ig-strategy-questionnaire.html`,
       cancel_url: `${process.env.SITE_URL}/socialgrowth.html`,
       metadata: { productId },
     }));
@@ -222,6 +224,37 @@ describe('Instagram guide / audio / audit checkout', () => {
   test('Stripe failure during Instagram checkout returns 500', async () => {
     createSession.mockRejectedValueOnce(new Error('stripe down'));
     const req = mockReq({ productId: 'instagram_guide_audio_audit' });
+    const res = mockRes();
+    await handler(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith({ error: 'Failed to create checkout session' });
+  });
+});
+
+// ── SAFE TO BE SEEN COURSE BUNDLE CHECKOUT ─────────────────────────────────
+
+describe('Safe to Be Seen course bundle checkout', () => {
+  test('safe_to_be_seen creates a session with the correct price and the /safetobeseen success_url', async () => {
+    createSession.mockResolvedValueOnce({ url: 'https://checkout.stripe.com/sts' });
+    const req = mockReq({ productId: 'safe_to_be_seen' });
+    const res = mockRes();
+    await handler(req, res);
+
+    expect(createSession).toHaveBeenCalledWith(expect.objectContaining({
+      mode: 'payment',
+      line_items: [{ price: 'price_safe_to_be_seen', quantity: 1 }],
+      success_url: `${process.env.SITE_URL}/safetobeseen.html?purchase=success&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.SITE_URL}/safetobeseen.html`,
+      metadata: { productId: 'safe_to_be_seen' },
+    }));
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith({ url: 'https://checkout.stripe.com/sts' });
+  });
+
+  test('Stripe failure during course checkout returns 500', async () => {
+    createSession.mockRejectedValueOnce(new Error('stripe down'));
+    const req = mockReq({ productId: 'safe_to_be_seen' });
     const res = mockRes();
     await handler(req, res);
 

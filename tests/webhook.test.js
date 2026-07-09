@@ -173,11 +173,16 @@ test('custom_audio purchase fires notifyCustomAudioPaymentReceived', async () =>
   clearMocks();
 });
 
-test('regular audio purchase fires notifyAudioPurchaseReceived and sets dedup metadata', async () => {
+test('regular audio purchase fires sendAudioConfirmation (customer) + notifyAudioPurchaseReceived (internal) and sets dedup metadata', async () => {
   sentNotifications = [];
   updatedMetadata = [];
   setMocks({
-    stripe: makeFakeStripe({ sessionOverrides: { priceId: 'price_1TitYaC38S5O6HWPEVduUAKM' } }), // nervous_system_regulation
+    stripe: makeFakeStripe({
+      sessionOverrides: {
+        priceId: 'price_1TitYaC38S5O6HWPEVduUAKM', // nervous_system_regulation
+        metadata: { audioNames: JSON.stringify(['Nervous System Regulation']) },
+      },
+    }),
     resend: {
       Resend: class {
         emails = { send: async (p) => { sentNotifications.push(p); return {}; } };
@@ -197,15 +202,21 @@ test('regular audio purchase fires notifyAudioPurchaseReceived and sets dedup me
   await handler(req, res);
 
   assert.equal(res.statusCode, 200);
-  assert.equal(sentNotifications.length, 1);
-  assert.match(sentNotifications[0].subject, /audio purchase/i);
-  assert.match(sentNotifications[0].subject, /\$195/, 'subject should include the dollar amount from the Stripe session');
+  assert.equal(sentNotifications.length, 2);
+
+  const customerEmail = sentNotifications.find((n) => n.to === 'halo@example.com');
+  const internalNotification = sentNotifications.find((n) => n.to !== 'halo@example.com');
+  assert.ok(customerEmail, 'customer should receive their download email directly from the webhook');
+  assert.match(internalNotification.subject, /audio purchase/i);
+  assert.match(internalNotification.subject, /\$195/, 'subject should include the dollar amount from the Stripe session');
+
   assert.equal(updatedMetadata.length, 1);
   assert.equal(updatedMetadata[0].payload.metadata.webhookNotified, 'true');
+  assert.equal(updatedMetadata[0].payload.metadata.emailSent, 'true');
   clearMocks();
 });
 
-test('does not double-notify if webhookNotified metadata is already set', async () => {
+test('does not double-notify if webhookNotified and emailSent metadata are already set', async () => {
   sentNotifications = [];
   updatedMetadata = [];
   const factory = () => ({
@@ -219,7 +230,7 @@ test('does not double-notify if webhookNotified metadata is already set', async 
           customer_details: { name: 'Halo', email: 'halo@example.com' },
           amount_total: 3300,
           currency: 'usd',
-          metadata: { webhookNotified: 'true' }, // already notified
+          metadata: { webhookNotified: 'true', emailSent: 'true' }, // already fully processed
           line_items: { data: [{ price: { id: 'price_1TitYaC38S5O6HWPEVduUAKM' } }] },
         }),
         update: async (sessionId, payload) => { updatedMetadata.push({ sessionId, payload }); return {}; },

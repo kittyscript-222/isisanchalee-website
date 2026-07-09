@@ -10,7 +10,7 @@
 // vercel.json cron config fires this daily at 09:00 UTC.
 
 const { getAndMarkDueFollowUps } = require('../lib/sheets');
-const { sendRTTFollowUp, sendIGStrategyFollowUp } = require('../lib/email');
+const { sendRTTFollowUp, sendIGStrategyFollowUp, sendCourseFollowUp } = require('../lib/email');
 
 module.exports = async function handler(req, res) {
   // Vercel Cron passes the secret as a Bearer token
@@ -30,6 +30,7 @@ module.exports = async function handler(req, res) {
     const results = await Promise.allSettled(
       due.map(({ name, email, type }) => {
         if (type === 'ig-strategy') return sendIGStrategyFollowUp(email, { name });
+        if (type === 'course') return sendCourseFollowUp(email, { name });
         return sendRTTFollowUp(email, { name });
       })
     );

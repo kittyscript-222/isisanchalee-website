@@ -236,7 +236,7 @@ test('Stripe failure returns 500', async () => {
 
 // ── Download URL format ───────────────────────────────────────────────────────
 
-test('all returned download URLs use the correct Google Drive export format', async () => {
+test('all returned download URLs use the Google Drive file view format', async () => {
   const handler = freshDeliverModule({
     metadata: { productId: 'instagram_guide_bundle' },
   });
@@ -245,9 +245,10 @@ test('all returned download URLs use the correct Google Drive export format', as
   await handler(req, res);
 
   for (const file of res.body.files) {
-    assert.ok(
-      file.url.includes('/api/proxy-audio?fileId='),
-      `URL should use the proxy download format: ${file.url}`
+    assert.match(
+      file.url,
+      /^https:\/\/drive\.google\.com\/file\/d\/[^/]+\/view$/,
+      `URL should be a Drive file view link: ${file.url}`
     );
   }
   clearMocks();
