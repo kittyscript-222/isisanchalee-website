@@ -982,6 +982,13 @@
     <h2 id="ig-overlay-heading" style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:400;color:#F5F0E8;line-height:1.2;margin-bottom:1rem;">You're in.</h2>
     <p id="ig-overlay-sub" style="font-size:1rem;line-height:1.8;color:rgba(245,240,232,0.65);margin-bottom:2.5rem;font-weight:300;"></p>
 
+    <!-- In-app browser warning — Instagram/Facebook/TikTok's built-in browser blocks
+         Google Drive's sign-in flow even for public files, showing a false "sign in
+         to Google" wall. Nudge these visitors to open the page in their real browser. -->
+    <div id="ig-inapp-browser-warning" style="display:none; margin-bottom:1.5rem; padding:1rem 1.25rem; background:rgba(184,151,90,0.08); border:0.5px solid rgba(184,151,90,0.3); text-align:left; font-size:0.85rem; line-height:1.6; color:rgba(245,240,232,0.85); font-weight:300;">
+      <strong style="color:#B8975A;">Having trouble downloading?</strong> You're viewing this inside an app's built-in browser, which can block Google Drive downloads and wrongly ask you to sign in. Tap the <strong>•••</strong> or <strong>share</strong> icon above and choose <strong>"Open in Safari"</strong> or <strong>"Open in Chrome"</strong>, then try the download link again.
+    </div>
+
     <!-- Download buttons — shown for guide/audio purchases -->
     <div id="ig-overlay-downloads" style="display:none; margin-bottom:2rem;"></div>
 
@@ -1026,6 +1033,15 @@
     if (!overlay) return;
     overlay.style.display = 'block';
     document.body.style.overflow = 'hidden';
+
+    // Instagram/Facebook/TikTok/etc. in-app browsers block Google Drive's
+    // sign-in flow and show "sign in to Google" even for public files.
+    const inAppWarning = document.getElementById('ig-inapp-browser-warning');
+    if (inAppWarning) {
+      const ua = navigator.userAgent || '';
+      const isInAppBrowser = /Instagram|FBAN|FBAV|FB_IAB|Line\/|MicroMessenger|TikTok|BytedanceWebview/i.test(ua);
+      if (isInAppBrowser) inAppWarning.style.display = 'block';
+    }
 
     // isAudit must be defined BEFORE the gtag call that references it
     const isAudit = purchaseType === 'audit-success';

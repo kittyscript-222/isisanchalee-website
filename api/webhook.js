@@ -116,7 +116,7 @@ module.exports = async function handler(req, res) {
       // Send customer confirmation email with download links (digital products only)
       if (allFiles.length && email) {
         try {
-          await sendAudioConfirmation(email, { productName, files: allFiles, isInstagram: true, isAudit });
+          await sendAudioConfirmation(email, { productName, productNames: instagramProducts.map(p => p.name), files: allFiles, isInstagram: true, isAudit });
         } catch (err) {
           console.error('Instagram sendAudioConfirmation error:', err);
         }
@@ -287,14 +287,14 @@ module.exports = async function handler(req, res) {
     }
 
     // ── Audio library purchases / bundles ──────────────────────────────────
-    // Previously the customer's download email only fired from downloads.js,
-    // which only runs if the buyer's browser actually loads success.html and
-    // that fetch completes — anyone who closed the tab (or hit a network
-    // blip) right after paying never got their audios. The webhook now sends
-    // it directly, guaranteed, using metadata.audioNames for the real list of
-    // audios purchased (line items only reflect bundle pricing, not which
-    // audios were picked). downloads.js checks the same `emailSent` flag so
-    // it won't double-send if the buyer does land on success.html.
+    // This webhook is the ONLY place that sends the customer's download email
+    // and internal notification for audio purchases — api/downloads.js (called
+    // from success.html) only returns file/transaction data, never sends
+    // anything itself, specifically to avoid a race where both paths fire
+    // near-simultaneously and the customer gets two confirmation emails.
+    // Uses metadata.audioNames for the real list of audios purchased (line
+    // items only reflect bundle pricing, not which audios were picked).
+    // `webhookNotified`/`emailSent` dedupe against Stripe's own webhook retries.
     const hasAudioProduct = products.some((p) => (!p.isSession && !p.isBundle || p.isBundle) && !p.isCourse && !instagramIds.has(p.id));
     const alreadyNotified = fullSession.metadata?.webhookNotified === 'true';
     const alreadyEmailed = fullSession.metadata?.emailSent === 'true';
@@ -302,7 +302,7 @@ module.exports = async function handler(req, res) {
     if (hasAudioProduct && !hasCustomAudio && (!alreadyNotified || !alreadyEmailed)) {
       const purchasedAudioNames = JSON.parse(fullSession.metadata?.audioNames || '[]');
       const audioNames = purchasedAudioNames.length ? purchasedAudioNames : products.map((p) => p.name);
-      const productName = audioNames.length === 1 ? audioNames[0] : `${audioNames.length} Hypnosis Audio${audioNames.length > 1 ? 's' : ''}`;
+      const productName = audioNames.join(', ');
 
       if (email && !alreadyEmailed) {
         const files = audioNames
@@ -312,7 +312,7 @@ module.exports = async function handler(req, res) {
 
         if (files.length) {
           try {
-            await sendAudioConfirmation(email, { productName, files });
+            await sendAudioConfirmation(email, { productName, productNames: audioNames, files });
           } catch (err) {
             console.error('sendAudioConfirmation error:', err);
           }

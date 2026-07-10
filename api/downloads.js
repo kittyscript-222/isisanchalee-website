@@ -1,8 +1,15 @@
 // api/downloads.js
+// Returns download links + transaction data for the success.html page.
+// Does NOT send the confirmation email or internal notification — those are
+// guaranteed server-side by api/webhook.js the instant payment clears. This
+// endpoint used to also send them here, gated on a `session.metadata.emailSent`
+// check-then-set that raced with webhook.js's own identical check (the browser
+// hitting success.html and Stripe's webhook fire at nearly the same time), so
+// customers sometimes got two confirmation emails with slightly different
+// product-name text depending on which path won the race.
 const Stripe = require('stripe');
-const { PRODUCTS, AUDIO_BY_NAME } = require('../lib/products');
+const { AUDIO_BY_NAME } = require('../lib/products');
 const { getDownloadUrls } = require('../lib/drive');
-const { sendAudioConfirmation, notifyAudioPurchaseReceived } = require('../lib/email');
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 
 module.exports = async function handler(req, res) {
@@ -38,36 +45,7 @@ module.exports = async function handler(req, res) {
     }
 
     const files = await getDownloadUrls(filesToDeliver);
-    const productName = `${audioNames.length} Hypnosis Audio${audioNames.length > 1 ? 's' : ''}`;
-
-    // Send confirmation email once
-    if (!session.metadata?.emailSent) {
-      const email = session.customer_details?.email;
-      if (email) {
-        try {
-          await sendAudioConfirmation(email, { productName, files });
-          await stripe.checkout.sessions.update(session_id, {
-            metadata: { ...session.metadata, emailSent: 'true' },
-          });
-        } catch (emailErr) {
-          console.error('Email send error:', emailErr);
-        }
-
-        // Internal notification to Isis
-        try {
-          await notifyAudioPurchaseReceived({
-            name: session.customer_details?.name,
-            email: session.customer_details?.email,
-            audioNames,
-            productName,
-            amount: session.amount_total != null ? session.amount_total / 100 : null,
-            currency: session.currency || 'usd',
-          });
-        } catch (notifyErr) {
-          console.error('Internal notification error:', notifyErr);
-        }
-      }
-    }
+    const productName = audioNames.join(', ');
 
     return res.status(200).json({
       productName,
